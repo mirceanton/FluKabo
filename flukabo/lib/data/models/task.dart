@@ -47,7 +47,11 @@ class TaskModel {
     };
   }
 
-  Widget buildIcon() => const Icon(MdiIcons.circle, size: 48.0);
+  Widget buildIcon() => Icon(
+        MdiIcons.circle,
+        size: 48.0,
+        color: priorityColor,
+      );
   Widget buildTitle() {
     return Hero(
       tag: "${_name}_title",
