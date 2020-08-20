@@ -135,7 +135,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettingsPage>
   /// The listener makes sure the arrow rotates 180 degrees (2*pi/360)
   ///
   _AppearanceSettingsPageState() {
-    Future.delayed(Duration(milliseconds: 5)).then((value) {
+    Future.delayed(const Duration(milliseconds: 5)).then((value) {
       // automatically switch to the right page based on the current theme
       _pageController.jumpToPage(UserPreferences().isDarkTheme ? 0 : 1);
       _isInitialized = true;
