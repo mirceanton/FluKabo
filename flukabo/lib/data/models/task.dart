@@ -1,3 +1,4 @@
+import 'package:flukabo/ui/pages/task/task_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -34,6 +35,17 @@ class TaskModel {
   }
 
   bool hasDescription() => _description.isNotEmpty;
+
+  Set<Future> navigate(BuildContext context) {
+    return {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TaskDetailsPage(this),
+        ),
+      )
+    };
+  }
 
   Widget buildIcon() => const Icon(MdiIcons.circle, size: 48.0);
   Widget buildTitle() {

@@ -1,6 +1,5 @@
 import 'package:flukabo/data/models/task.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TaskTile extends StatelessWidget {
   final TaskModel _task;
@@ -9,7 +8,7 @@ class TaskTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => {}, // todo navigate to task page
+      onTap: () => _task.navigate(context),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
         leading: _task.buildIcon(),
