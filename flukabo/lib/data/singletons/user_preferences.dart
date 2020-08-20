@@ -46,6 +46,7 @@ class UserPreferences {
       defaults[Prefs.Port].toString();
   String get api =>
       _preferences.getString(keys[Prefs.API]) ?? defaults[Prefs.API].toString();
+  String get fullAddress => '$baseUrl:$port/$api';
   bool get acceptAllCerts =>
       _preferences.getBool(keys[Prefs.Certs]) ?? defaults[Prefs.Certs] == true;
   String get userName =>
