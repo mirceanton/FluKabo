@@ -32,6 +32,7 @@ dependencies:
   shared_preferences: ^0.5.8
   curved_navigation_bar: ^0.3.3
   material_design_icons_flutter: ^4.0.5345
+  http: ^0.12.2
 
 dev_dependencies:
   lint: ^1.1.1
