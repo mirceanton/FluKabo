@@ -9,7 +9,7 @@ class ProjectTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => {}, // TODO navigate to project page,
+      onTap: () => project.navigate(context),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
         leading: project.buildBgImage(

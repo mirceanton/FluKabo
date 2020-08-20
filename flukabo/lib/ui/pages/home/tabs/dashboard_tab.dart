@@ -34,6 +34,7 @@ class DashboardTab extends HomeTab {
             children: [
               Container(
                 height: 48.0,
+                alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.all(8.0),
                 child: const Text(
                   'Personal Projects',
@@ -52,6 +53,7 @@ class DashboardTab extends HomeTab {
               // ---
               Container(
                 height: 48.0,
+                alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.all(8.0),
                 child: const Text(
                   'Your Tasks',

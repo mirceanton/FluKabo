@@ -67,7 +67,7 @@ class ClickArea extends StatelessWidget {
         width: cardWidth,
         height: cardHeight,
         child: InkWell(
-          onTap: () => {}, // TODO navigate to project page
+          onTap: () => project.navigate(context),
         ),
       ),
     );

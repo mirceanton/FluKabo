@@ -1,3 +1,4 @@
+import 'package:flukabo/ui/pages/project/project_board_page.dart';
 import 'package:flutter/material.dart';
 
 class ProjectModel {
@@ -26,6 +27,17 @@ class ProjectModel {
   String get backgroundImage => _backgroundImage;
   bool get isPrivate => _private;
   IconData get privacyIcon => isPrivate ? Icons.lock : null;
+
+  Set<Future> navigate(BuildContext context) {
+    return {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProjectBoardPage(this),
+        ),
+      )
+    };
+  }
 
   // Widget Generating methods
   Widget buildBgImage({@required double width, @required double height}) {
