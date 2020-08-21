@@ -1,4 +1,5 @@
 import 'package:flukabo/data/models/project.dart';
+import 'package:flukabo/ui/templates/project/project_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -19,11 +20,16 @@ class ProjectsTab extends HomeTab {
   }
 
   // TODO
+
   @override
   Widget buildSelf() {
-    return Center(
-      child: Text(
-        getName(),
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: ProjectListView(
+        width: double.infinity,
+        height: double.infinity,
+        projects: _projects,
+        showCards: false,
       ),
     );
   }
