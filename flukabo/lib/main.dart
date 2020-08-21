@@ -4,8 +4,9 @@ import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/theme/theme_bloc.dart';
-import 'ui/pages/home/home_page.dart';
+import 'bloc/theme/theme.dart';
+import 'ui/pages/home/home.dart';
+import 'ui/pages/search/search.dart';
 import 'ui/pages/settings/settings.dart';
 
 Future<void> main() async {
@@ -47,6 +48,7 @@ class FlukaboApp extends StatelessWidget {
         '/settings': (context) => SettingsPage(),
         '/settings/server': (context) => ServerSettingsPage(),
         '/settings/appearance': (context) => AppearanceSettingsPage(),
+        '/search': (context) => SearchPage(),
       },
     );
   }
