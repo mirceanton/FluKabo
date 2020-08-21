@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/theme/theme_bloc.dart';
 import 'ui/pages/home/home_page.dart';
+import 'ui/pages/settings/settings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,6 +44,9 @@ class FlukaboApp extends StatelessWidget {
       initialRoute: '/home',
       routes: {
         '/home': (context) => HomePage(),
+        '/settings': (context) => SettingsPage(),
+        '/settings/server': (context) => ServerSettingsPage(),
+        '/settings/appearance': (context) => AppearanceSettingsPage(),
       },
     );
   }
