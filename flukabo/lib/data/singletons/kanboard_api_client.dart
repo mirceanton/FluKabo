@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 
@@ -14,9 +16,7 @@ class Failure implements Exception {
 
 class KanboardAPI {
   static final KanboardAPI _instance = KanboardAPI._constructor();
-
   factory KanboardAPI() => _instance;
-
   KanboardAPI._constructor();
 
   String _encodeAuth({@required String user, @required String token}) =>
@@ -95,4 +95,27 @@ class KanboardAPI {
         acceptCerts: acceptCerts,
         command: 'getVersion',
       );
+
+  Future<String> getString(String command) async {
+    final Response response = await _sendRequest(
+      url: UserPreferences().fullAddress,
+      user: UserPreferences().userName,
+      token: UserPreferences().token,
+      acceptCerts: UserPreferences().acceptAllCerts,
+      command: command,
+    );
+    return jsonDecode(response.body)['result'].toString();
+  }
+
+  Future<Map<String, String>> getStringMap(String command) async {
+    final Response response = await _sendRequest(
+      url: UserPreferences().fullAddress,
+      user: UserPreferences().userName,
+      token: UserPreferences().token,
+      acceptCerts: UserPreferences().acceptAllCerts,
+      command: command,
+    );
+    return Map.from(
+        jsonDecode(response.body)['result'] as Map<String, dynamic>);
+  }
 }
