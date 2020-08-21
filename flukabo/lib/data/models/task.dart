@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TaskModel {
   final String _name;
@@ -33,4 +34,21 @@ class TaskModel {
   }
 
   bool hasDescription() => _description.isNotEmpty;
+
+  Widget buildIcon() => const Icon(MdiIcons.circle, size: 48.0);
+  Widget buildTitle() {
+    return Hero(
+      tag: "${_name}_title",
+      child: Material(
+        color: Colors.transparent,
+        child: Text(
+          _name,
+          style: const TextStyle(
+            fontSize: 16,
+            letterSpacing: 1.1,
+          ),
+        ),
+      ),
+    );
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flukabo/data/models/task.dart';
+import 'package:flukabo/ui/templates/task/task_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -21,9 +22,12 @@ class TasksTab extends HomeTab {
   // TODO
   @override
   Widget buildSelf() {
-    return Center(
-      child: Text(
-        getName(),
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: TaskListView(
+        tasks: _tasks,
+        width: double.infinity,
+        height: double.infinity,
       ),
     );
   }
