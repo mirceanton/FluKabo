@@ -34,20 +34,13 @@ abstract class HomeTab {
         return _buildErrorIndicator(context);
       default: // this includes the [AuthInitialState]
         print("Initial state");
-        return buildSelf();
-      //! return _buildInitPage();
-    }
-  }
-
-  void _mainListener(BuildContext context, AuthState state) {
-    if (state is AuthErrorState) {
-      _showSnackbar(context: context, content: state.errmsg);
+        return _buildInitPage();
     }
   }
 
   Widget getBody() {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: _mainListener,
+      listener: (_, __) {},
       builder: _mainBuilder,
     );
   }

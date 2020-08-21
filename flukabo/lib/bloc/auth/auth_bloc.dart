@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:equatable/equatable.dart';
+import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 
@@ -17,11 +17,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // we don't have to check for event type since we only have 1 type of events
     yield const AuthLoadingState();
     try {
-      // TODO attempt login(event.url, event.port, event.api, event.certs, event.username, event.token)
+      await KanboardAPI().sendRequest(
+        url: event.url,
+        user: event.username,
+        token: event.token,
+        acceptCerts: event.acceptAllCerts,
+        command: 'getVersion',
+      );
       yield const AuthSuccessState();
-    } catch (e) {
-      // todo implement proper error handling
-      yield const AuthErrorState(errmsg: 'error');
+    } on Failure catch (f) {
+      yield AuthErrorState(errmsg: f.message);
     }
   }
 }
