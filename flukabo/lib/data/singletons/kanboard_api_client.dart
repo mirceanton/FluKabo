@@ -34,7 +34,7 @@ class KanboardAPI {
     return httpClient;
   }
 
-  Future<Response> sendRequest({
+  Future<Response> _sendRequest({
     @required String url,
     @required String user,
     @required String token,
@@ -81,4 +81,18 @@ class KanboardAPI {
       throw const Failure('OS Exception');
     }
   }
+
+  Future<Response> testConnection({
+    @required String url,
+    @required String user,
+    @required String token,
+    @required bool acceptCerts,
+  }) =>
+      _sendRequest(
+        url: url,
+        user: user,
+        token: token,
+        acceptCerts: acceptCerts,
+        command: 'getVersion',
+      );
 }

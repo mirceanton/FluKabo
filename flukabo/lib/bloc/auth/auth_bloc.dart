@@ -17,12 +17,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // we don't have to check for event type since we only have 1 type of events
     yield const AuthLoadingState();
     try {
-      await KanboardAPI().sendRequest(
+      await KanboardAPI().testConnection(
         url: event.url,
         user: event.username,
         token: event.token,
         acceptCerts: event.acceptAllCerts,
-        command: 'getVersion',
       );
       yield const AuthSuccessState();
     } on Failure catch (f) {
