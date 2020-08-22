@@ -1,5 +1,7 @@
 part of 'auth_bloc.dart';
 
+/// An event that simulates an auth attempt.
+/// It contains all the relevant data required to perform any action via the API
 class AuthEvent extends Equatable {
   final String username, token, url;
   final bool acceptAllCerts;

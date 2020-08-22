@@ -136,6 +136,7 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
       _userController = TextEditingController(),
       _tokenController = TextEditingController();
 
+  /// [_getUrl] concatenates the [base]:[port]/[api] in the presented fashion
   String _getURL({
     @required String base,
     @required String port,
@@ -183,16 +184,26 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
     print("Pressed the back icon");
   }
 
-  // TODO document me
+  ///
+  /// [_updatePreferences] updates all the fields from the UserPreferences
+  /// singleton
+  /// It extracts the text from all of the textEditingControllers and trims it,
+  /// then sends it to the UserPreferences setter, which in turn updates
+  /// the shared preferenes
+  /// Same thing for the _allowCerts field.
+  ///
   void _updatePreferences() {
-    UserPreferences().baseUrl = _baseUrlController.text;
-    UserPreferences().port = _portController.text;
-    UserPreferences().api = _apiController.text;
+    UserPreferences().baseUrl = _baseUrlController.text.trim();
+    UserPreferences().port = _portController.text.trim();
+    UserPreferences().api = _apiController.text.trim();
     UserPreferences().acceptAllCerts = _allowCerts;
-    UserPreferences().userName = _userController.text;
-    UserPreferences().token = _tokenController.text;
+    UserPreferences().userName = _userController.text.trim();
+    UserPreferences().token = _tokenController.text.trim();
   }
 
+  ///
+  /// [_showSnack] is self explanatory. It shows the given [message] in a
+  /// custom Snackbar
   void _showSnack({
     @required BuildContext buildContext,
     @required String message,
@@ -202,21 +213,31 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
     ));
   }
 
-  // TODO document me
+  ///
+  /// [_builder] is the builder for the BlocConsumer Widget in the [build]
+  /// function.
+  /// This makes sure that the apropriate build function gets called, based on
+  /// the state created by the AuthBloc
+  ///
   Widget _builder(BuildContext context, AuthState state) {
     switch (state.runtimeType) {
       case AuthLoadingState:
-        return buildLoading(context);
+        return _buildLoading(context);
       case AuthSuccessState:
-        return buildSuccess(context);
+        return _buildSuccess(context);
       case AuthErrorState:
-        return buildError(context);
+        return _buildError(context);
       default:
-        return buildInitial(context);
+        return _buildInitial(context);
     }
   }
 
-  // TODO document me
+  ///
+  /// [_listener] is the listener for the BlocConsumer Widget in the [build]
+  /// function.
+  /// This makes sure to show a snackbar in case of any error/succesful action,
+  /// providing some  context to the user
+  ///
   void _listener(BuildContext context, AuthState state) {
     if (state is AuthErrorState) {
       print('Error STATE');
@@ -265,20 +286,46 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
     );
   }
 
-  // TODO document me
-  Widget buildError(BuildContext context) =>
-      buildMainUI(buildContext: context, color: Colors.redAccent);
+  ///
+  /// [_buildError] returns the [_buildMainUI] layout with the RedAccent Color
+  /// applied to the title icons and text, visually indicating a failed login
+  /// to the user
+  ///
+  Widget _buildError(BuildContext context) =>
+      _buildMainUI(buildContext: context, color: Colors.redAccent);
 
-  // TODO document me
-  Widget buildSuccess(BuildContext context) =>
-      buildMainUI(buildContext: context, color: Colors.greenAccent);
+  ///
+  /// [_buildSuccess] returns the [_buildMainUI] layout with the GreenAccent Color
+  /// applied to the title icons and text, visually indicating a succesful login
+  /// to the user
+  ///
+  Widget _buildSuccess(BuildContext context) =>
+      _buildMainUI(buildContext: context, color: Colors.greenAccent);
 
-  // TODO document me
-  Widget buildInitial(BuildContext context) =>
-      buildMainUI(buildContext: context, color: Theme.of(context).accentColor);
+  ///
+  /// [_buildInitial] returns the [_buildMainUI] layout with the Accent Color
+  /// applied to the title icons and text
+  ///
+  Widget _buildInitial(BuildContext context) =>
+      _buildMainUI(buildContext: context, color: Theme.of(context).accentColor);
 
-  // TODO document me
-  Widget buildMainUI({BuildContext buildContext, Color color}) {
+  ///
+  /// [_buildMainUI] return the actual layout of the page.
+  /// This method is implemented in all of the other custom build* methods.
+  /// The given [color] is applied to the CategoryTitle icons and text
+  ///
+  /// The layout consists of 3 main categories:
+  ///   1. Server Settings
+  ///     - Url: edit text
+  ///     - Port: edit text
+  ///     - ApiPath: edit text
+  ///   2. Authentication
+  ///     - Username: edit text
+  ///     - API Token: edit text
+  ///   3. Security
+  ///     - Accept unsafe certificates: checkbox
+  ///
+  Widget _buildMainUI({BuildContext buildContext, Color color}) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -290,6 +337,7 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
             controllers: [_baseUrlController, _portController, _apiController],
           ),
           const Divider(),
+          // ---
           CategoryTile(
             title: 'Authentication',
             icon: MdiIcons.accountLock,
@@ -298,6 +346,7 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
             controllers: [_userController, _tokenController],
           ),
           const Divider(),
+          // ---
           CategoryTile(
             title: 'Security',
             icon: MdiIcons.security,
@@ -322,11 +371,15 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
     );
   }
 
-  // TODO document me
-  Widget buildLoading(BuildContext context) {
+  ///
+  /// [_buildLoading] returns the [_buildMainUI] layout under a semi-transparent
+  /// black container, hence blocking any interaction with it, and places  a
+  /// loading bar in the center of the screen
+  ///
+  Widget _buildLoading(BuildContext context) {
     return Stack(
       children: [
-        buildMainUI(
+        _buildMainUI(
           buildContext: context,
           color: Theme.of(context).accentColor,
         ),

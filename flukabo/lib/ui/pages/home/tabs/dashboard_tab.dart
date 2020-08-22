@@ -24,7 +24,14 @@ class DashboardTab extends HomeTab {
     //TODO
   }
 
-  // TODO
+  ///
+  /// [buildSelf] returns the unique layout of the DashboardTab
+  /// This layout consists of a Horizontal Scrolling list, highlighting the
+  /// personal Projects of the active user, showing them in the Card Layout,
+  /// followed by a Vertical scrolling list, populated by all the tasks assigned
+  /// to the user, showed in the List Tile layout
+  /// Each of the lists has a title above it
+  ///
   @override
   Widget buildSelf() {
     return SafeArea(

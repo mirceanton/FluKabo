@@ -8,32 +8,43 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 
+/// Custom Error class
 class Failure implements Exception {
   final String message;
-
   const Failure(this.message);
 }
 
+/// A singleton meant to handle all the API calls to the Kanbaord Server
 class KanboardAPI {
   static final KanboardAPI _instance = KanboardAPI._constructor();
   factory KanboardAPI() => _instance;
   KanboardAPI._constructor();
 
+  /// [_encodeAuth] encodes the user and token for the http header
   String _encodeAuth({@required String user, @required String token}) =>
       'Basic ${base64Encode(utf8.encode("$user:$token"))}';
 
-  Map<String, String> _getHeaders(String user, String token) => {
+  /// [_getBasicHeader] returns the header with the content type and auth only
+  Map<String, String> _getBasicHeader(String user, String token) => {
         HttpHeaders.contentTypeHeader: "application/json",
         HttpHeaders.authorizationHeader: _encodeAuth(user: user, token: token),
       };
 
-  HttpClient _customClient(bool acceptCerts) {
+  ///
+  /// [_getHttpClient] returns a custom http client with a 3sec timeout and
+  /// custom badCertificateCallback method
+  ///
+  HttpClient _getHttpClient(bool acceptCerts) {
     final HttpClient httpClient = HttpClient();
     httpClient.badCertificateCallback = (_cert, _host, _port) => acceptCerts;
     httpClient.connectionTimeout = const Duration(seconds: 3);
     return httpClient;
   }
 
+  ///
+  /// [_sendRequest] handles sending a post request to the Kanboard Server
+  /// and throws a [Failure] if an exception is caught
+  ///
   Future<Response> _sendRequest({
     @required String url,
     @required String user,
@@ -41,9 +52,9 @@ class KanboardAPI {
     @required bool acceptCerts,
     @required String command,
   }) async {
-    final HttpClient httpClient = _customClient(acceptCerts);
+    final HttpClient httpClient = _getHttpClient(acceptCerts);
     final IOClient ioClient = IOClient(httpClient);
-    final Map<String, String> headers = _getHeaders(user, token);
+    final Map<String, String> headers = _getBasicHeader(user, token);
     final String body =
         jsonEncode({"jsonrpc": "2.0", "method": command, "id": 1});
     Response response;
@@ -82,6 +93,10 @@ class KanboardAPI {
     }
   }
 
+  ///
+  /// [testConnection] sends a dummy 'getVersion' request in order to see if the
+  /// credentials and server address are right
+  ///
   Future<Response> testConnection({
     @required String url,
     @required String user,
@@ -96,6 +111,10 @@ class KanboardAPI {
         command: 'getVersion',
       );
 
+  ///
+  /// [getString] embeds the [command] into the request and parses the json
+  /// response into a string
+  ///
   Future<String> getString(String command) async {
     final Response response = await _sendRequest(
       url: UserPreferences().fullAddress,
@@ -107,6 +126,10 @@ class KanboardAPI {
     return jsonDecode(response.body)['result'].toString();
   }
 
+  ///
+  /// [getStringMap] embeds the [command] into the request and parses the json
+  /// response into a Map<String, String>
+  ///
   Future<Map<String, String>> getStringMap(String command) async {
     final Response response = await _sendRequest(
       url: UserPreferences().fullAddress,

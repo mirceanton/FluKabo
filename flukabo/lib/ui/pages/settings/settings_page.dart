@@ -20,11 +20,12 @@ class SettingsItem extends StatelessWidget {
   final IconData leading;
   final String title, subtitle;
 
-  const SettingsItem(
-      {@required this.onTap,
-      @required this.leading,
-      @required this.title,
-      @required this.subtitle});
+  const SettingsItem({
+    @required this.onTap,
+    @required this.leading,
+    @required this.title,
+    @required this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {

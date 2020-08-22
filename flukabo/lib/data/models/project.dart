@@ -43,7 +43,7 @@ class ProjectModel {
   ProjectModel.fromJson(Map<String, String> json)
       : _id = int.parse(json['id']),
         _name = json['name'],
-        _backgroundImage = "https://source.unsplash.com/random",
+        _backgroundImage = "https://source.unsplash.com/random", // FIXME
         _isActive = json['is_active'] == '1',
         _token = json['token'],
         _lastModified = double.parse(json['last_modified']),

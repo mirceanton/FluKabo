@@ -1,6 +1,13 @@
 import 'package:flukabo/data/models/task.dart';
 import 'package:flutter/material.dart';
 
+///
+/// A basic list tile used to showcase a Task
+/// The [title] of the tile is the [task name]
+/// The [subtitle] is the [task description]
+/// The leading icon is a circle with a color based on the task priority
+/// [onTap] navigates to the TaskDetails page of [_task]
+///
 class TaskTile extends StatelessWidget {
   final TaskModel _task;
   const TaskTile(this._task);

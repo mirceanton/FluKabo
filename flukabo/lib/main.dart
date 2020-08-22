@@ -1,5 +1,5 @@
 import 'package:flukabo/bloc/auth/auth_bloc.dart';
-import 'package:flukabo/bloc/theme/app_themes.dart';
+import 'package:flukabo/res/app_themes.dart';
 import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

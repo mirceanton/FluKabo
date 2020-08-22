@@ -7,9 +7,7 @@ abstract class AuthState extends Equatable {
   List<Object> get props => [];
 }
 
-///
 /// Initial state -> no login attempt made
-///
 class AuthInitialState extends AuthState {
   const AuthInitialState();
 
@@ -17,9 +15,7 @@ class AuthInitialState extends AuthState {
   List<Object> get props => [];
 }
 
-///
 /// Loading State -> currently processing a login attempt
-///
 class AuthLoadingState extends AuthState {
   const AuthLoadingState();
 
@@ -27,9 +23,7 @@ class AuthLoadingState extends AuthState {
   List<Object> get props => [];
 }
 
-///
 /// Success State -> login attempt was successful
-///
 class AuthSuccessState extends AuthState {
   const AuthSuccessState();
 
@@ -37,9 +31,7 @@ class AuthSuccessState extends AuthState {
   List<Object> get props => [];
 }
 
-///
 /// Error State -> login attempt failed
-///
 class AuthErrorState extends AuthState {
   final int errno; // error number
   final String errmsg; // error message

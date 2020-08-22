@@ -19,8 +19,10 @@ class ProjectsTab extends HomeTab {
     //TODO
   }
 
-  // TODO
-
+  ///
+  /// [buildSelf] returns the unique layout of the ProjectsTab
+  /// this is simply a List showcasing all of the projects in the List Tile view
+  ///
   @override
   Widget buildSelf() {
     return RefreshIndicator(

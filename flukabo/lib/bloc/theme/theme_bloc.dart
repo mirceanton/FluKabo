@@ -5,11 +5,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/material.dart';
 
-import 'app_themes.dart';
+import '../../res/app_themes.dart';
 
 part 'theme_event.dart';
 part 'theme_state.dart';
 
+/// A BLoC made to handle switching from the light theme to the dark one and
+/// vice versa
 class ThemeBloc extends Bloc<ThemeSwitchEvent, ThemeState> {
   final AppTheme initialTheme;
   ThemeBloc(this.initialTheme)

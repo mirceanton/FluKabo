@@ -1,6 +1,8 @@
 import 'package:flukabo/data/models/project.dart';
 import 'package:flutter/material.dart';
 
+// FIXME
+
 class ProjectBoardPage extends StatefulWidget {
   final ProjectModel _project;
   const ProjectBoardPage(this._project);

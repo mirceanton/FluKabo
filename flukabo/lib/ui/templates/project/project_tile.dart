@@ -2,6 +2,12 @@ import 'package:flukabo/data/models/project.dart';
 import 'package:flukabo/res/dimensions.dart';
 import 'package:flutter/material.dart';
 
+///
+/// A basic List tile showcasing a project
+/// The [title] is the project name, the [subtitle] is the project description
+/// The [leading] widget is a 48px wide square image of the project.bgimage
+/// [onTap] navigates to the ProjectBoardPage of the project
+///
 class ProjectTile extends StatelessWidget {
   final ProjectModel project;
   const ProjectTile(this.project);

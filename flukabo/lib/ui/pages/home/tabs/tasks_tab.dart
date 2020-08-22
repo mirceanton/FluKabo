@@ -19,7 +19,10 @@ class TasksTab extends HomeTab {
     //TODO
   }
 
-  // TODO
+  ///
+  /// [buildSelf] returns the unique layout of the TasksTab
+  /// this is simply a List showcasing all of the tasks in the List Tile view
+  ///
   @override
   Widget buildSelf() {
     return RefreshIndicator(

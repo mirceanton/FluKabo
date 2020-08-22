@@ -1,41 +1,18 @@
+import 'package:flukabo/res/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../bloc/theme/theme.dart';
 
-// ignore: constant_identifier_names
-enum Prefs { BaseURL, Port, API, Certs, User, Token, Theme }
-
-Map<Prefs, dynamic> defaults = {
-  Prefs.BaseURL: 'https://0.0.0.0',
-  Prefs.Port: '80',
-  Prefs.API: '/jsonrpc.php',
-  Prefs.Certs: false,
-  Prefs.User: '',
-  Prefs.Token: '',
-  Prefs.Theme: AppTheme.Dark.toString(),
-};
-Map<Prefs, String> keys = {
-  Prefs.BaseURL: 'base_url',
-  Prefs.Port: 'port',
-  Prefs.API: 'api_path',
-  Prefs.Certs: 'allow_certs',
-  Prefs.User: 'user_name',
-  Prefs.Token: 'user_token',
-  Prefs.Theme: 'theme',
-};
-
+/// A singleton made to simplify interacting with the Shared Preferences
 class UserPreferences {
   SharedPreferences _preferences;
-
   static final UserPreferences _instance = UserPreferences._constructor();
-
   factory UserPreferences() => _instance;
+  UserPreferences._constructor(); // empty constructor
 
-  UserPreferences._constructor();
-
-  Future<void> init() async {
-    _preferences = await SharedPreferences.getInstance();
-  }
+  /// [init] caches a shared preferences instance
+  Future<void> init() async =>
+      _preferences = await SharedPreferences.getInstance();
 
   // Get Values From
   String get baseUrl =>
@@ -72,6 +49,7 @@ class UserPreferences {
   set token(String _token) => _preferences.setString(keys[Prefs.Token], _token);
   set theme(String _theme) => _preferences.setString(keys[Prefs.Theme], _theme);
 
+  // Toggle functions
   void switchTheme() {
     if (theme == AppTheme.Dark.toString()) {
       theme = AppTheme.Light.toString();
