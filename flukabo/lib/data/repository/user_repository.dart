@@ -41,7 +41,7 @@ class UserRepository {
 
   Future<User> getUserByID(int id) async {
     final String response = await KanboardAPI().getJson(
-      command: userCommands[UserProcedures.create],
+      command: userCommands[UserProcedures.getById],
       params: {'user_id': id.toString()},
     );
     if (jsonDecode(response)['result'] != null) {
@@ -83,5 +83,28 @@ class UserRepository {
         }
       }
     }
+  }
+
+  Future<bool> updateUser({
+    @required int id,
+    String username = '',
+    String name = '',
+    String email = '',
+    String role = '',
+  }) async {
+    final User user = await getUserByID(id);
+    final Map<String, String> params = {};
+    params.putIfAbsent('id', () => id.toString());
+    params.putIfAbsent(
+        'username', () => username.isEmpty ? user.username : username);
+    params.putIfAbsent('name', () => name.isEmpty ? user.name : name);
+    params.putIfAbsent('email', () => email.isEmpty ? user.email : email);
+    params.putIfAbsent('role', () => role.isEmpty ? user.role : role);
+    final String response = jsonDecode(await KanboardAPI().getJson(
+      command: userCommands[UserProcedures.update],
+      params: params,
+    ))['result']
+        .toString();
+    return response == 'true';
   }
 }
