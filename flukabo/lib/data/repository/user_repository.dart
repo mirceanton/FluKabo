@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
@@ -16,7 +18,7 @@ class UserRepository {
     String email = '',
     String role = 'app-user',
   }) async {
-    final String response = await KanboardAPI().getString(
+    final String response = jsonDecode(await KanboardAPI().getJson(
       command: userCommands[UserProcedures.create],
       params: {
         'username': username,
@@ -25,7 +27,8 @@ class UserRepository {
         'email': email,
         'role': role,
       },
-    );
+    ))['result']
+        .toString();
     final int statusCode = response == 'false' ? 0 : int.parse(response);
     if (statusCode == 0) {
       print('Failed to add user');
@@ -36,11 +39,26 @@ class UserRepository {
     }
   }
 
-  Future<User> getUserbyID(int id) async {
-    final Map<String, String> response = await KanboardAPI().getStringMap(
-      command: userCommands[UserProcedures.getById],
+  Future<User> getUserByID(int id) async {
+    final String response = await KanboardAPI().getJson(
+      command: userCommands[UserProcedures.create],
       params: {'user_id': id.toString()},
     );
-    return User.fromJson(response);
+    if (jsonDecode(response)['result'] != null) {
+      final Map<String, String> body =
+          Map.from(jsonDecode(response)['result'] as Map<String, dynamic>);
+      return User.fromJson(body);
+    } else {
+      final String error = jsonDecode(response)['error'].toString();
+      if (error == null) {
+        throw const Failure('Failed to fetch user. Invalid id');
+      } else {
+        if (error.contains('Invalid params')) {
+          throw const Failure('Failed to fetch user. Invalid parameters.');
+        } else {
+          throw const Failure('Failed to fetch user.');
+        }
+      }
+    }
   }
 }
