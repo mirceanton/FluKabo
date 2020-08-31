@@ -47,6 +47,7 @@ class UserRepository {
     final result = jsonDecode(json)['result'];
     if (result != null) {
       final Map<String, String> body = Map.from(result as Map<String, dynamic>);
+      print('Successfully fetched user $id.');
       return User.fromJson(body);
     } else {
       throw const Failure('Failed to fetch user.');
@@ -59,6 +60,7 @@ class UserRepository {
       params: {'username': name},
     );
     if (jsonDecode(response)['result'] != null) {
+      print('Successfully fetched user $name.');
       final Map<String, String> body =
           Map.from(jsonDecode(response)['result'] as Map<String, dynamic>);
       return User.fromJson(body);
@@ -93,6 +95,7 @@ class UserRepository {
     );
     final String result = jsonDecode(json)['result'].toString();
     if (result != null) {
+      print('Successfully updated user $id.');
       return result == 'true';
     } else {
       print('Failed to fetch user.');
@@ -109,9 +112,44 @@ class UserRepository {
     );
     final String result = jsonDecode(json)['result'].toString();
     if (result != null) {
+      print('Successfully removed user $id.');
       return result == 'true';
     } else {
-      print('Failed to fetch user.');
+      print('Failed to remove user.');
+      return false;
+    }
+  }
+
+  Future<bool> disableUser(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: userCommands[UserProcedures.disable],
+      params: {
+        'user_id': id.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != null) {
+      print('Successfully disabled user $id.');
+      return result == 'true';
+    } else {
+      print('Failed to disable user.');
+      return false;
+    }
+  }
+
+  Future<bool> enableUser(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: userCommands[UserProcedures.enable],
+      params: {
+        'user_id': id.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != null) {
+      print('Successfully enabled user $id.');
+      return result == 'true';
+    } else {
+      print('Failed to enable user.');
       return false;
     }
   }
