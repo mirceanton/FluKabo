@@ -153,4 +153,6 @@ class UserRepository {
       return false;
     }
   }
+
+  Future<bool> isActiveUser(int id) async => (await getUserByID(id)).isActive;
 }
