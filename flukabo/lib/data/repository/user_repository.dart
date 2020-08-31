@@ -11,6 +11,19 @@ class UserRepository {
   factory UserRepository() => _instance;
   UserRepository._constructor(); // empty constructor
 
+  ///
+  /// [createUser] returns true if the user was added successfully ot false
+  /// otherwise
+  ///
+  /// [username] and [password] are required, as all users have to have a way to
+  /// log in
+  /// [name] and [email] are optional, and can be changed later if needed
+  /// If no value is provided, then these fields will be represented by an empty
+  /// string
+  /// [role] is also optional, but has a default value of 'app-user'.
+  /// In order to provide higher privileges for the user, make sure to specify
+  /// the correct role, such as 'app-manager' or 'app-admin'
+  ///
   Future<bool> createUser({
     @required String username,
     @required String password,
@@ -39,7 +52,11 @@ class UserRepository {
     }
   }
 
-  Future<User> getUserByID(int id) async {
+  ///
+  ///[getUserById] returns a User object if the given id is valid
+  /// or throws a Failure otherwise
+  ///
+  Future<User> getUserById(int id) async {
     final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.getById],
       params: {'user_id': id.toString()},
@@ -54,6 +71,10 @@ class UserRepository {
     }
   }
 
+  ///
+  ///[getUserByName] returns a User object if the given name is valid
+  /// or throws a Failure otherwise (also throws failure if name doesn't exist)
+  ///
   Future<User> getUserByName(String name) async {
     final String response = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.getByName],
@@ -69,6 +90,10 @@ class UserRepository {
     }
   }
 
+  ///
+  /// [getAllUsers] returns a List of users if the fetch was successfull, or it
+  /// throws a Failure if the api call failed for some reason
+  ///
   Future<List<User>> getAllUsers() async {
     final List<User> users = [];
     final String json = await KanboardAPI().getJson(
@@ -88,6 +113,15 @@ class UserRepository {
     }
   }
 
+  ///
+  /// [updateUser] returns true if the user was updated successfully ot false
+  /// otherwise
+  ///
+  /// [id] is the only required field, as this is the identifier by which we
+  /// get the user which we want to update
+  /// All the other fields, aka [username], [name], [email] and [role] are
+  /// completely optional and will be kept unchanged if no value is provided
+  ///
   Future<bool> updateUser({
     @required int id,
     String username = '',
@@ -97,7 +131,7 @@ class UserRepository {
   }) async {
     User user;
     try {
-      user = await getUserByID(id);
+      user = await getUserById(id);
     } on Failure catch (f) {
       print(f.message);
       rethrow;
@@ -122,6 +156,12 @@ class UserRepository {
     }
   }
 
+  ///
+  /// [removeUser] returns true if the user was successfully removed, or false
+  /// otherwise
+  /// This function completely removes the user from the databse.
+  ///! Be careful, as this action cannot be undone
+  ///
   Future<bool> removeUser(int id) async {
     final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.remove],
@@ -139,6 +179,12 @@ class UserRepository {
     }
   }
 
+  ///
+  /// [disableUser] returns true if the user was successfully disabled, or false
+  /// otherwise
+  /// This function sets the user.isActive to false
+  /// This can be undone via the [enableUser] function
+  ///
   Future<bool> disableUser(int id) async {
     final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.disable],
@@ -156,6 +202,12 @@ class UserRepository {
     }
   }
 
+  ///
+  /// [enableUser] returns true if the user was successfully enabled, or false
+  /// otherwise
+  /// This function sets the user.isActive to true
+  /// This can be undone via the [disableUser] function
+  ///
   Future<bool> enableUser(int id) async {
     final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.enable],
@@ -173,5 +225,6 @@ class UserRepository {
     }
   }
 
-  Future<bool> isActiveUser(int id) async => (await getUserByID(id)).isActive;
+  /// [isActiveUser] returns the user.isActive field
+  Future<bool> isActiveUser(int id) async => (await getUserById(id)).isActive;
 }
