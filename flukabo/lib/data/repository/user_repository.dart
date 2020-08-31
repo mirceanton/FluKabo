@@ -35,4 +35,12 @@ class UserRepository {
       return true;
     }
   }
+
+  Future<User> getUserbyID(int id) async {
+    final Map<String, String> response = await KanboardAPI().getStringMap(
+      command: userCommands[UserProcedures.getById],
+      params: {'user_id': id.toString()},
+    );
+    return User.fromJson(response);
+  }
 }

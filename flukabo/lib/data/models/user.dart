@@ -32,8 +32,10 @@ class User {
         _isLdap = json['is_ldap_user'] == "1",
         _name = json['name'],
         _email = json['email'],
-        _googleId = int.parse(json['google_id']) ?? 0,
-        _githubId = int.parse(json['github_id']) ?? 0,
+        _googleId =
+            json['google_id'] == null ? 0 : int.parse(json['google_id']),
+        _githubId =
+            json['github_id'] == null ? 0 : int.parse(json['github_id']),
         _notificationsEnabled = json['notifications_enabled'] == "1",
         _timezone = json['timezon'],
         _language = json['language'],
@@ -44,7 +46,8 @@ class User {
         _notifFilter = int.parse(json['notifications_filter']) ?? 0,
         _failedLogins = int.parse(json['nb_failed_login']) ?? 0,
         _lockExpirationDate = json['lock_expiration_date'],
-        _gitlabId = int.parse(json['gitlab_id']) ?? 0,
+        _gitlabId =
+            json['gitlab_id'] == null ? 0 : int.parse(json['gitlab_id']),
         _role = json['role'],
         _isActive = json['is_active'] == "1",
         _avatar = json['avatar_path'],
