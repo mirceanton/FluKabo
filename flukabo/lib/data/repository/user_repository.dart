@@ -9,7 +9,7 @@ class UserRepository {
   factory UserRepository() => _instance;
   UserRepository._constructor(); // empty constructor
 
-  Future<void> createUser({
+  Future<bool> createUser({
     @required String username,
     @required String password,
     String name = '',
