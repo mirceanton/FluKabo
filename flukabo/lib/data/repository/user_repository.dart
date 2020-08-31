@@ -61,4 +61,27 @@ class UserRepository {
       }
     }
   }
+
+  Future<User> getUserByName(String name) async {
+    final String response = await KanboardAPI().getJson(
+      command: userCommands[UserProcedures.getByName],
+      params: {'username': name},
+    );
+    if (jsonDecode(response)['result'] != null) {
+      final Map<String, String> body =
+          Map.from(jsonDecode(response)['result'] as Map<String, dynamic>);
+      return User.fromJson(body);
+    } else {
+      final String error = jsonDecode(response)['error'].toString();
+      if (error == null) {
+        throw const Failure('Failed to fetch user. Invalid id');
+      } else {
+        if (error.contains('Invalid params')) {
+          throw const Failure('Failed to fetch user. Invalid parameters.');
+        } else {
+          throw const Failure('Failed to fetch user.');
+        }
+      }
+    }
+  }
 }
