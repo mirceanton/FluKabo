@@ -69,6 +69,25 @@ class UserRepository {
     }
   }
 
+  Future<List<User>> getAllUsers() async {
+    final List<User> users = [];
+    final String json = await KanboardAPI().getJson(
+      command: userCommands[UserProcedures.getAll],
+      params: {},
+    );
+    final List result = jsonDecode(json)['result'] as List;
+    if (result != null) {
+      for (int i = 0; i < result.length; i++) {
+        users.add(User.fromJson(Map.from(result[i] as Map<String, dynamic>)));
+      }
+      print('Succesfully fetched ${users.length} users.');
+      return users;
+    } else {
+      print('Failed to fetch users.');
+      throw const Failure('Failed to fetch users.');
+    }
+  }
+
   Future<bool> updateUser({
     @required int id,
     String username = '',
