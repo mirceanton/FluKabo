@@ -114,28 +114,12 @@ class KanboardAPI {
       );
 
   ///
-  /// [getString] embeds the [command] into the request and parses the json
-  /// response into a string
+  /// [getJson] embeds the [command] into the request and returns the raw json
+  /// response body
   ///
-  Future<String> getString({String command, Map<String, String> params}) async {
-    final Response response = await _sendRequest(
-      url: UserPreferences().fullAddress,
-      user: UserPreferences().userName,
-      token: UserPreferences().token,
-      acceptCerts: UserPreferences().acceptAllCerts,
-      command: command,
-      params: params,
-    );
-    return jsonDecode(response.body)['result'].toString();
-  }
-
-  ///
-  /// [getStringMap] embeds the [command] into the request and parses the json
-  /// response into a Map<String, String>
-  ///
-  Future<Map<String, String>> getStringMap({
-    String command,
-    Map<String, String> params,
+  Future<String> getJson({
+    @required String command,
+    @required Map<String, String> params,
   }) async {
     final Response response = await _sendRequest(
       url: UserPreferences().fullAddress,
@@ -145,7 +129,6 @@ class KanboardAPI {
       command: command,
       params: params,
     );
-    return Map.from(
-        jsonDecode(response.body)['result'] as Map<String, dynamic>);
+    return response.body;
   }
 }
