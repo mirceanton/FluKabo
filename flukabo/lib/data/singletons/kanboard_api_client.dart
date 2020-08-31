@@ -51,12 +51,13 @@ class KanboardAPI {
     @required String token,
     @required bool acceptCerts,
     @required String command,
+    @required Map<String, String> params,
   }) async {
     final HttpClient httpClient = _getHttpClient(acceptCerts);
     final IOClient ioClient = IOClient(httpClient);
     final Map<String, String> headers = _getBasicHeader(user, token);
-    final String body =
-        jsonEncode({"jsonrpc": "2.0", "method": command, "id": 1});
+    final String body = jsonEncode(
+        {"jsonrpc": "2.0", "method": command, "id": 1, "params": params});
     Response response;
 
     try {
@@ -109,19 +110,21 @@ class KanboardAPI {
         token: token,
         acceptCerts: acceptCerts,
         command: 'getVersion',
+        params: null,
       );
 
   ///
   /// [getString] embeds the [command] into the request and parses the json
   /// response into a string
   ///
-  Future<String> getString(String command) async {
+  Future<String> getString({String command, Map<String, String> params}) async {
     final Response response = await _sendRequest(
       url: UserPreferences().fullAddress,
       user: UserPreferences().userName,
       token: UserPreferences().token,
       acceptCerts: UserPreferences().acceptAllCerts,
       command: command,
+      params: params,
     );
     return jsonDecode(response.body)['result'].toString();
   }
@@ -130,13 +133,17 @@ class KanboardAPI {
   /// [getStringMap] embeds the [command] into the request and parses the json
   /// response into a Map<String, String>
   ///
-  Future<Map<String, String>> getStringMap(String command) async {
+  Future<Map<String, String>> getStringMap({
+    String command,
+    Map<String, String> params,
+  }) async {
     final Response response = await _sendRequest(
       url: UserPreferences().fullAddress,
       user: UserPreferences().userName,
       token: UserPreferences().token,
       acceptCerts: UserPreferences().acceptAllCerts,
       command: command,
+      params: params,
     );
     return Map.from(
         jsonDecode(response.body)['result'] as Map<String, dynamic>);

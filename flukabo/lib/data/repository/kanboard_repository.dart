@@ -24,15 +24,33 @@ class KanboardRepository {
 
   /// [init] fetches and caches all the fields
   Future<void> init() async {
-    version = await KanboardAPI()
-        .getString(kanboardCommands[ApplicationProcedures.version]);
-    timezone = await KanboardAPI()
-        .getString(kanboardCommands[ApplicationProcedures.timezone]);
-    applicationRoles = await KanboardAPI()
-        .getStringMap(kanboardCommands[ApplicationProcedures.applicationRoles]);
-    projectRoles = await KanboardAPI()
-        .getStringMap(kanboardCommands[ApplicationProcedures.projectRoles]);
-    defaultTaskColor = defaultColors[await KanboardAPI()
-        .getString(kanboardCommands[ApplicationProcedures.defaultTaskColor])];
+    version = await KanboardAPI().getString(
+      command: kanboardCommands[ApplicationProcedures.version],
+      params: {},
+    );
+    timezone = await KanboardAPI().getString(
+      command: kanboardCommands[ApplicationProcedures.timezone],
+      params: {},
+    );
+    applicationRoles = await KanboardAPI().getStringMap(
+      command: kanboardCommands[ApplicationProcedures.applicationRoles],
+      params: {},
+    );
+    projectRoles = await KanboardAPI().getStringMap(
+      command: kanboardCommands[ApplicationProcedures.projectRoles],
+      params: {},
+    );
+    defaultTaskColor = defaultColors[await KanboardAPI().getString(
+      command: kanboardCommands[ApplicationProcedures.defaultTaskColor],
+      params: {},
+    )];
+  }
+
+  void display() {
+    print('Version: $version');
+    print('Timezone: $timezone');
+    print('Default Task Color: $defaultTaskColor');
+    print('Application roles: $applicationRoles');
+    print('Project roles: $projectRoles');
   }
 }
