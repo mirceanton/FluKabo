@@ -40,25 +40,16 @@ class UserRepository {
   }
 
   Future<User> getUserByID(int id) async {
-    final String response = await KanboardAPI().getJson(
+    final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.getById],
       params: {'user_id': id.toString()},
     );
-    if (jsonDecode(response)['result'] != null) {
-      final Map<String, String> body =
-          Map.from(jsonDecode(response)['result'] as Map<String, dynamic>);
+    final result = jsonDecode(json)['result'];
+    if (result != null) {
+      final Map<String, String> body = Map.from(result as Map<String, dynamic>);
       return User.fromJson(body);
     } else {
-      final String error = jsonDecode(response)['error'].toString();
-      if (error == null) {
-        throw const Failure('Failed to fetch user. Invalid id');
-      } else {
-        if (error.contains('Invalid params')) {
-          throw const Failure('Failed to fetch user. Invalid parameters.');
-        } else {
-          throw const Failure('Failed to fetch user.');
-        }
-      }
+      throw const Failure('Failed to fetch user.');
     }
   }
 
@@ -72,16 +63,7 @@ class UserRepository {
           Map.from(jsonDecode(response)['result'] as Map<String, dynamic>);
       return User.fromJson(body);
     } else {
-      final String error = jsonDecode(response)['error'].toString();
-      if (error == null) {
-        throw const Failure('Failed to fetch user. Invalid id');
-      } else {
-        if (error.contains('Invalid params')) {
-          throw const Failure('Failed to fetch user. Invalid parameters.');
-        } else {
-          throw const Failure('Failed to fetch user.');
-        }
-      }
+      throw const Failure('Failed to fetch user.');
     }
   }
 
@@ -92,19 +74,45 @@ class UserRepository {
     String email = '',
     String role = '',
   }) async {
-    final User user = await getUserByID(id);
-    final Map<String, String> params = {};
-    params.putIfAbsent('id', () => id.toString());
-    params.putIfAbsent(
-        'username', () => username.isEmpty ? user.username : username);
-    params.putIfAbsent('name', () => name.isEmpty ? user.name : name);
-    params.putIfAbsent('email', () => email.isEmpty ? user.email : email);
-    params.putIfAbsent('role', () => role.isEmpty ? user.role : role);
-    final String response = jsonDecode(await KanboardAPI().getJson(
+    User user;
+    try {
+      user = await getUserByID(id);
+    } on Failure catch (f) {
+      print(f.message);
+      rethrow;
+    }
+    final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.update],
-      params: params,
-    ))['result']
-        .toString();
-    return response == 'true';
+      params: {
+        'id': id.toString(),
+        'name': name.isEmpty ? user.name : name,
+        'username': username.isEmpty ? user.username : username,
+        'email': email.isEmpty ? user.email : email,
+        'role': role.isEmpty ? user.role : role,
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != null) {
+      return result == 'true';
+    } else {
+      print('Failed to fetch user.');
+      return false;
+    }
+  }
+
+  Future<bool> removeUser(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: userCommands[UserProcedures.remove],
+      params: {
+        'user_id': id.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != null) {
+      return result == 'true';
+    } else {
+      print('Failed to fetch user.');
+      return false;
+    }
   }
 }
