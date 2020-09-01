@@ -82,3 +82,30 @@ const Map<GroupProcedures, String> groupCommands = {
   GroupProcedures.update: 'updateGroup',
   GroupProcedures.remove: 'removeGroup',
 };
+
+///
+/// ------------
+///
+
+///
+/// Members API Procedures
+/// doc: https://docs.kanboard.org/en/latest/api/group_member_procedures.html
+///
+/// [MembersProcedures] enum of all the used API methods
+/// [membersCommands] map from [MembersProcedures] -> actual api command
+///
+enum MembersProcedures {
+  getGroups,
+  getMembers,
+  addToGroup,
+  removeFromGroup,
+  isInGroup,
+}
+
+const Map<MembersProcedures, String> membersCommands = {
+  MembersProcedures.getGroups: 'getMemberGroups',
+  MembersProcedures.getMembers: 'getGroupMembers',
+  MembersProcedures.addToGroup: 'addGroupMember',
+  MembersProcedures.removeFromGroup: 'removeGroupMember',
+  MembersProcedures.isInGroup: 'isGroupMember',
+};

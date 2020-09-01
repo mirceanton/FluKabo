@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flukabo/data/models/group.dart';
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
@@ -13,8 +14,10 @@ import 'package:flutter/material.dart';
 ///   - User creation
 ///   - User update
 ///   - User removal
-///   - User retrieval (based on either name or id)
+///   - Individual User retrieval (based on either name or id)
+///   - Bulk Users retrieval
 ///   - User enable/disable
+///   - Get all groups associated to the user
 ///
 class UserRepository {
   static final UserRepository _instance = UserRepository._constructor();
@@ -72,7 +75,7 @@ class UserRepository {
       command: userCommands[UserProcedures.getById],
       params: {'user_id': id.toString()},
     );
-    final String result = jsonDecode(json)['result'].toString()
+    final String result = jsonDecode(json)['result'].toString();
     if (result != 'null') {
       final Map<String, String> body = Map.from(result as Map<String, dynamic>);
       print('Successfully fetched user $id.');
@@ -227,7 +230,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    if (result != null) {
       print('Successfully enabled user $id.');
       return result == 'true';
     } else {
@@ -238,4 +241,27 @@ class UserRepository {
 
   /// [isActiveUser] returns the user.isActive field
   Future<bool> isActiveUser(int id) async => (await getUserById(id)).isActive;
+
+  ///
+  /// [getGroupsForUser] returns a list of all the groups for the giver [userId]
+  /// user. (all the groups the user is a member in)
+  ///
+  Future<List<Group>> getGroupsForUser(int userId) async {
+    final List<Group> groups = [];
+    final String json = await KanboardAPI().getJson(
+      command: membersCommands[MembersProcedures.getGroups],
+      params: {'user_id': userId.toString()},
+    );
+    final List result = jsonDecode(json)['result'] as List;
+    if (result != null) {
+      for (int i = 0; i < result.length; i++) {
+        groups.add(Group.fromJson(Map.from(result[i] as Map<String, dynamic>)));
+      }
+      print('Succesfully fetched ${groups.length} groups.');
+      return groups;
+    } else {
+      print('Failed to fetch groups.');
+      throw const Failure('Failed to fetch groups.');
+    }
+  }
 }
