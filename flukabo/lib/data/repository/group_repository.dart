@@ -152,4 +152,25 @@ class GroupRepository {
       return false;
     }
   }
+
+  Future<bool> removeUserFromGroup({
+    @required int userId,
+    @required int groupId,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: membersCommands[MembersProcedures.removeFromGroup],
+      params: {
+        'group_id': groupId.toString(),
+        'user_id': userId.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false') {
+      print('Successfully removed user $userId from group $groupId.');
+      return result == 'true';
+    } else {
+      print('Failed to remove user from group.');
+      return false;
+    }
+  }
 }
