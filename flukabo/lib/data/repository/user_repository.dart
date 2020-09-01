@@ -72,7 +72,7 @@ class UserRepository {
       command: userCommands[UserProcedures.getById],
       params: {'user_id': id.toString()},
     );
-    final String result = jsonDecode(json)['result'].toString(;
+    final String result = jsonDecode(json)['result'].toString();
     if (result != 'null') {
       final Map<String, String> body = Map.from(result as Map<String, dynamic>);
       print('Successfully fetched user $id.');
