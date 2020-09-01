@@ -258,4 +258,26 @@ class UserRepository {
       throw const Failure('Failed to fetch groups.');
     }
   }
+
+  /// [isActiveUser] returns the user.isActive field
+  Future<bool> isUserInGroup({
+    @required int userId,
+    @required int groupId,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: membersCommands[MembersProcedures.isInGroup],
+      params: {
+        'group_id': groupId.toString(),
+        'user_id': userId.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null') {
+      print('Successfully fetched user $userId status in group $groupId.');
+      return result == 'true';
+    } else {
+      print('Failed to getch users group status.');
+      return false;
+    }
+  }
 }
