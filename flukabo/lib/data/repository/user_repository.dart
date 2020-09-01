@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 ///   - Bulk Users retrieval
 ///   - User enable/disable
 ///   - Get all groups associated to the user
-///   - Get wether or not the user is part of a group
 ///
 class UserRepository {
   static final UserRepository _instance = UserRepository._constructor();
@@ -263,31 +262,6 @@ class UserRepository {
     } else {
       print('Failed to fetch groups.');
       throw const Failure('Failed to fetch groups.');
-    }
-  }
-
-  ///
-  /// [isUserInGroup] returns true if the user with the given [userId] is part
-  /// of the group with the given [groupId]
-  ///
-  Future<bool> isUserInGroup({
-    @required int userId,
-    @required int groupId,
-  }) async {
-    final String json = await KanboardAPI().getJson(
-      command: membersCommands[MembersProcedures.isInGroup],
-      params: {
-        'group_id': groupId.toString(),
-        'user_id': userId.toString(),
-      },
-    );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
-      print('Successfully fetched user $userId status in group $groupId.');
-      return result == 'true';
-    } else {
-      print('Failed to getch users group status.');
-      return false;
     }
   }
 }

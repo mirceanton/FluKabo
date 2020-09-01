@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 ///     - Add user to group
 ///     - Get all members associated with a group
 ///     - Remove user for group
+///     - Get wether or not the user is part of a group
 ///
 class GroupRepository {
   static final GroupRepository _instance = GroupRepository._constructor();
@@ -236,6 +237,31 @@ class GroupRepository {
       return result == 'true';
     } else {
       print('Failed to remove user from group.');
+      return false;
+    }
+  }
+
+  ///
+  /// [isUserInGroup] returns true if the user with the given [userId] is part
+  /// of the group with the given [groupId]
+  ///
+  Future<bool> isUserInGroup({
+    @required int userId,
+    @required int groupId,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: membersCommands[MembersProcedures.isInGroup],
+      params: {
+        'group_id': groupId.toString(),
+        'user_id': userId.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null') {
+      print('Successfully fetched user $userId status in group $groupId.');
+      return result == 'true';
+    } else {
+      print('Failed to getch users group status.');
       return false;
     }
   }
