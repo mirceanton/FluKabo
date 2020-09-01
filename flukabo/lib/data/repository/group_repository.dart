@@ -94,4 +94,21 @@ class GroupRepository {
       return false;
     }
   }
+
+  Future<bool> removeGroup(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: groupCommands[GroupProcedures.remove],
+      params: {
+        'group_id': id.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != null) {
+      print('Successfully removed group $id.');
+      return result == 'true';
+    } else {
+      print('Failed to remove group.');
+      return false;
+    }
+  }
 }
