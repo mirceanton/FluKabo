@@ -5,6 +5,17 @@ import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
 import 'package:flutter/material.dart';
 
+///
+/// This is a singleton meant to encapsulate all the methods associated with the
+/// users management feature provided to admin users.
+///
+/// It includes the following functionality:
+///   - User creation
+///   - User update
+///   - User removal
+///   - User retrieval (based on either name or id)
+///   - User enable/disable
+///
 class UserRepository {
   static final UserRepository _instance = UserRepository._constructor();
 
@@ -61,8 +72,8 @@ class UserRepository {
       command: userCommands[UserProcedures.getById],
       params: {'user_id': id.toString()},
     );
-    final result = jsonDecode(json)['result'];
-    if (result != null) {
+    final String result = jsonDecode(json)['result'].toString()
+    if (result != 'null') {
       final Map<String, String> body = Map.from(result as Map<String, dynamic>);
       print('Successfully fetched user $id.');
       return User.fromJson(body);
@@ -147,7 +158,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != null) {
+    if (result != 'null') {
       print('Successfully updated user $id.');
       return result == 'true';
     } else {
@@ -170,7 +181,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != null) {
+    if (result != 'null') {
       print('Successfully removed user $id.');
       return result == 'true';
     } else {
@@ -193,7 +204,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != null) {
+    if (result != 'null') {
       print('Successfully disabled user $id.');
       return result == 'true';
     } else {
@@ -216,7 +227,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != null) {
+    if (result != 'null') {
       print('Successfully enabled user $id.');
       return result == 'true';
     } else {
