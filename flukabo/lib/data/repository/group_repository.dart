@@ -34,8 +34,8 @@ class GroupRepository {
       command: groupCommands[GroupProcedures.get],
       params: {'group_id': id.toString()},
     );
-    final result = jsonDecode(json)['result'];
-    if (result != null) {
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null') {
       final Map<String, String> body = Map.from(result as Map<String, dynamic>);
       print('Successfully fetched group $id.');
       return Group.fromJson(body);
@@ -86,7 +86,7 @@ class GroupRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != null) {
+    if (result != 'null') {
       print('Successfully updated group $id.');
       return result == 'true';
     } else {
@@ -103,7 +103,7 @@ class GroupRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != null) {
+    if (result != 'null') {
       print('Successfully removed group $id.');
       return result == 'true';
     } else {
