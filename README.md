@@ -8,4 +8,4 @@ A client for Kanboard, written in Flutter
 
 (ironically, hosted on Trello...)
 
-[Kanban Board](]https://trello.com/b/BT9f9pSa)
+[Kanban Board](https://trello.com/b/BT9f9pSa)
