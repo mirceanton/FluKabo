@@ -26,8 +26,8 @@ const Map<ApplicationProcedures, String> kanboardCommands = {
 ///
 
 ///
-/// Application API Procedures
-/// doc: https://docs.kanboard.org/en/latest/api/application_procedures.html
+/// User API Procedures
+/// doc: https://docs.kanboard.org/en/latest/api/user_procedures.html
 ///
 /// [UserProcedures] enum of all the used API methods
 /// [userCommands] map from [UserProcedures] -> actual api command
@@ -54,4 +54,31 @@ const Map<UserProcedures, String> userCommands = {
   UserProcedures.enable: 'enableUser',
   UserProcedures.disable: 'disableUser',
   UserProcedures.isActive: 'isActiveUser',
+};
+
+///
+/// ------------
+///
+
+///
+/// Group API Procedures
+/// doc: https://docs.kanboard.org/en/latest/api/group_procedures.html
+///
+/// [GroupProcedures] enum of all the used API methods
+/// [groupCommands] map from [GroupProcedures] -> actual api command
+///
+enum GroupProcedures {
+  create,
+  update,
+  remove,
+  get,
+  getAll,
+}
+
+const Map<GroupProcedures, String> groupCommands = {
+  GroupProcedures.create: 'createGroup',
+  GroupProcedures.get: 'getGroup',
+  GroupProcedures.getAll: 'getAllGroups',
+  GroupProcedures.update: 'updateGroup',
+  GroupProcedures.remove: 'removeGroup',
 };
