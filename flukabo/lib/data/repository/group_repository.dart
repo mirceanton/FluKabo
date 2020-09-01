@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flukabo/data/models/group.dart';
+import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
 import 'package:flutter/material.dart';
@@ -109,6 +110,25 @@ class GroupRepository {
     } else {
       print('Failed to remove group.');
       return false;
+    }
+  }
+
+  Future<List<User>> getMembersForGroup(int groupId) async {
+    final List<User> users = [];
+    final String json = await KanboardAPI().getJson(
+      command: membersCommands[MembersProcedures.getMembers],
+      params: {'group_id': groupId.toString()},
+    );
+    final List result = jsonDecode(json)['result'] as List;
+    if (result != null) {
+      for (int i = 0; i < result.length; i++) {
+        users.add(User.fromJson(Map.from(result[i] as Map<String, dynamic>)));
+      }
+      print('Succesfully fetched ${users.length} users.');
+      return users;
+    } else {
+      print('Failed to fetch users.');
+      throw const Failure('Failed to fetch users.');
     }
   }
 }
