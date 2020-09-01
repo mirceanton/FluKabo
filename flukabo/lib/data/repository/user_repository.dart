@@ -5,6 +5,17 @@ import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
 import 'package:flutter/material.dart';
 
+///
+/// This is a singleton meant to encapsulate all the methods associated with the
+/// users management feature provided to admin users.
+///
+/// It includes the following functionality:
+///   - User creation
+///   - User update
+///   - User removal
+///   - User retrieval (based on either name or id)
+///   - User enable/disable
+///
 class UserRepository {
   static final UserRepository _instance = UserRepository._constructor();
 
