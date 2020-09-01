@@ -131,4 +131,25 @@ class GroupRepository {
       throw const Failure('Failed to fetch users.');
     }
   }
+
+  Future<bool> addUserToGroup({
+    @required int userId,
+    @required int groupId,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: membersCommands[MembersProcedures.addToGroup],
+      params: {
+        'group_id': groupId.toString(),
+        'user_id': userId.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false') {
+      print('Successfully added user $userId to group $groupId.');
+      return result == 'true';
+    } else {
+      print('Failed to add user to group.');
+      return false;
+    }
+  }
 }
