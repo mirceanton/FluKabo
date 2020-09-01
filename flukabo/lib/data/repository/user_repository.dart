@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flukabo/data/models/group.dart';
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
@@ -238,4 +239,23 @@ class UserRepository {
 
   /// [isActiveUser] returns the user.isActive field
   Future<bool> isActiveUser(int id) async => (await getUserById(id)).isActive;
+
+  Future<List<Group>> getGroupsForUser(int userId) async {
+    final List<Group> groups = [];
+    final String json = await KanboardAPI().getJson(
+      command: membersCommands[MembersProcedures.getGroups],
+      params: {'user_id': userId.toString()},
+    );
+    final List result = jsonDecode(json)['result'] as List;
+    if (result != null) {
+      for (int i = 0; i < result.length; i++) {
+        groups.add(Group.fromJson(Map.from(result[i] as Map<String, dynamic>)));
+      }
+      print('Succesfully fetched ${groups.length} groups.');
+      return groups;
+    } else {
+      print('Failed to fetch groups.');
+      throw const Failure('Failed to fetch groups.');
+    }
+  }
 }
