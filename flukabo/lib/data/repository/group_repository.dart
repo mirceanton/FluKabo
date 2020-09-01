@@ -43,4 +43,23 @@ class GroupRepository {
       throw const Failure('Failed to fetch group.');
     }
   }
+
+  Future<List<Group>> getAllGroups() async {
+    final List<Group> groups = [];
+    final String json = await KanboardAPI().getJson(
+      command: groupCommands[GroupProcedures.getAll],
+      params: {},
+    );
+    final List result = jsonDecode(json)['result'] as List;
+    if (result != null) {
+      for (int i = 0; i < result.length; i++) {
+        groups.add(Group.fromJson(Map.from(result[i] as Map<String, dynamic>)));
+      }
+      print('Succesfully fetched ${groups.length} groups.');
+      return groups;
+    } else {
+      print('Failed to fetch groups.');
+      throw const Failure('Failed to fetch groups.');
+    }
+  }
 }
