@@ -14,8 +14,11 @@ import 'package:flutter/material.dart';
 ///   - User creation
 ///   - User update
 ///   - User removal
-///   - User retrieval (based on either name or id)
+///   - Individual User retrieval (based on either name or id)
+///   - Bulk Users retrieval
 ///   - User enable/disable
+///   - Get all groups associated to the user
+///   - Get wether or not the user is part of a group
 ///
 class UserRepository {
   static final UserRepository _instance = UserRepository._constructor();
@@ -240,6 +243,10 @@ class UserRepository {
   /// [isActiveUser] returns the user.isActive field
   Future<bool> isActiveUser(int id) async => (await getUserById(id)).isActive;
 
+  ///
+  /// [getGroupsForUser] returns a list of all the groups for the giver [userId]
+  /// user. (all the groups the user is a member in)
+  ///
   Future<List<Group>> getGroupsForUser(int userId) async {
     final List<Group> groups = [];
     final String json = await KanboardAPI().getJson(
@@ -259,7 +266,10 @@ class UserRepository {
     }
   }
 
-  /// [isActiveUser] returns the user.isActive field
+  ///
+  /// [isUserInGroup] returns true if the user with the given [userId] is part
+  /// of the group with the given [groupId]
+  ///
   Future<bool> isUserInGroup({
     @required int userId,
     @required int groupId,

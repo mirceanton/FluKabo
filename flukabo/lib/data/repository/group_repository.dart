@@ -6,18 +6,46 @@ import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
 import 'package:flutter/material.dart';
 
+///
+/// This is a singleton meant to encapsulate all the methods associated with the
+/// group management feature provided to admin users.
+///
+/// It includes the following functionality:
+///   - Group creation
+///   - Group update
+///   - Group removal
+///   - Individual Group retrieval (based on id)
+///   - Bulk Group retrieval
+///   - Group member manipulation
+///     - Add user to group
+///     - Get all members associated with a group
+///     - Remove user for group
+///
 class GroupRepository {
   static final GroupRepository _instance = GroupRepository._constructor();
 
   factory GroupRepository() => _instance;
   GroupRepository._constructor(); // empty constructor
 
+  ///
+  /// [createGroup] returns true if the group was succesfully created or false
+  /// otherwise.
+  /// [name] is required as all groups must have a name
+  /// [externalId] is an optional parameter. If no value is provided, the
+  /// default is '0'
+  /// the [id] of the newly created group is the [statusCode] (as long as it is
+  /// not 0. then if means there was an error)
+  ///
   Future<bool> createGroup({
     @required String name,
+    int externalId = 0,
   }) async {
     final String response = jsonDecode(await KanboardAPI().getJson(
       command: groupCommands[GroupProcedures.create],
-      params: {'name': name},
+      params: {
+        'name': name,
+        'external_id': externalId.toString(),
+      },
     ))['result']
         .toString();
     final int statusCode = response == 'false' ? 0 : int.parse(response);
@@ -30,6 +58,10 @@ class GroupRepository {
     }
   }
 
+  ///
+  /// [getGroup] returns a Group object if the given id was valid, ot throws an
+  /// instance of failure otherwise
+  ///
   Future<Group> getGroup(int id) async {
     final String json = await KanboardAPI().getJson(
       command: groupCommands[GroupProcedures.get],
@@ -45,6 +77,10 @@ class GroupRepository {
     }
   }
 
+  ///
+  /// [getAllGroups] returns a List of groups if the fetch was successfull, or
+  /// throws an instance of  Failure if the api call failed for some reason
+  ///
   Future<List<Group>> getAllGroups() async {
     final List<Group> groups = [];
     final String json = await KanboardAPI().getJson(
@@ -64,6 +100,15 @@ class GroupRepository {
     }
   }
 
+  ///
+  /// [updateGroup] returns true if the group was updated successfully ot false
+  /// otherwise
+  ///
+  /// [id] is the only required field, as this is the identifier by which we
+  /// get the group which we want to update
+  /// All the other fields, [name] and [externalId] are completely optional and
+  /// will be kept unchanged if no value is provided
+  ///
   Future<bool> updateGroup({
     @required int id,
     String name = '',
@@ -96,6 +141,13 @@ class GroupRepository {
     }
   }
 
+  ///
+  /// [removeGroup] returns true if the group was successfully removed, or false
+  /// otherwise
+  /// This function completely removes the group from the databse, but will not
+  /// delete the members of the group.
+  ///! Be careful, as this action cannot be undone
+  ///
   Future<bool> removeGroup(int id) async {
     final String json = await KanboardAPI().getJson(
       command: groupCommands[GroupProcedures.remove],
@@ -113,6 +165,12 @@ class GroupRepository {
     }
   }
 
+  ///
+  /// [getMembersForGroup] returns a list of Users if the given [groupId] is
+  /// valid, or throws an instance of Failure otherwise
+  /// The returnes list of users represents all the members of the requested
+  /// group
+  ///
   Future<List<User>> getMembersForGroup(int groupId) async {
     final List<User> users = [];
     final String json = await KanboardAPI().getJson(
@@ -132,6 +190,10 @@ class GroupRepository {
     }
   }
 
+  ///
+  /// [addUserToGroup] returns true if the given user was successfully added to
+  /// the given group, or false otherwise
+  ///
   Future<bool> addUserToGroup({
     @required int userId,
     @required int groupId,
@@ -153,6 +215,10 @@ class GroupRepository {
     }
   }
 
+  ///
+  /// [removeUserFromGroup] returns true if the given user was successfully
+  /// removed from the given group, or false otherwise
+  ///
   Future<bool> removeUserFromGroup({
     @required int userId,
     @required int groupId,
