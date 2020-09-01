@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flukabo/data/models/group.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,21 @@ class GroupRepository {
     } else {
       print('Group created succesfully. GID: $statusCode');
       return true;
+    }
+  }
+
+  Future<Group> getGroup(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: groupCommands[GroupProcedures.get],
+      params: {'group_id': id.toString()},
+    );
+    final result = jsonDecode(json)['result'];
+    if (result != null) {
+      final Map<String, String> body = Map.from(result as Map<String, dynamic>);
+      print('Successfully fetched group $id.');
+      return Group.fromJson(body);
+    } else {
+      throw const Failure('Failed to fetch group.');
     }
   }
 }
