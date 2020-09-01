@@ -62,4 +62,36 @@ class GroupRepository {
       throw const Failure('Failed to fetch groups.');
     }
   }
+
+  Future<bool> updateGroup({
+    @required int id,
+    String name = '',
+    int externalId = -1,
+  }) async {
+    Group group;
+    try {
+      group = await getGroup(id);
+    } on Failure catch (f) {
+      print(f.message);
+      rethrow;
+    }
+    final String json = await KanboardAPI().getJson(
+      command: groupCommands[GroupProcedures.update],
+      params: {
+        'group_id': id.toString(),
+        'name': name.isEmpty ? group.name : name,
+        'external_id': externalId == -1
+            ? group.externalID.toString()
+            : externalId.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != null) {
+      print('Successfully updated group $id.');
+      return result == 'true';
+    } else {
+      print('Failed to update group.');
+      return false;
+    }
+  }
 }
