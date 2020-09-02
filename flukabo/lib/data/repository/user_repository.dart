@@ -46,7 +46,7 @@ class UserRepository {
     String email = '',
     String role = 'app-user',
   }) async {
-    final String response = jsonDecode(await KanboardAPI().getJson(
+    final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.create],
       params: {
         'username': username,
@@ -55,10 +55,10 @@ class UserRepository {
         'email': email,
         'role': role,
       },
-    ))['result']
-        .toString();
+    );
+    final String response = jsonDecode(json)['result'].toString();
     final int statusCode = response == 'false' ? 0 : int.parse(response);
-    if (statusCode == 0) {
+    if (response == 'false') {
       print('Failed to add user');
       return false;
     } else {
@@ -87,20 +87,21 @@ class UserRepository {
   }
 
   ///
-  ///[getUserByName] returns a User object if the given name is valid
+  ///[getUserByUsername] returns a User object if the given name is valid
   /// or throws a Failure otherwise (also throws failure if name doesn't exist)
   ///
-  Future<User> getUserByName(String name) async {
-    final String response = await KanboardAPI().getJson(
+  Future<User> getUserByUsername(String name) async {
+    final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.getByName],
       params: {'username': name},
     );
-    if (jsonDecode(response)['result'] != null) {
+    final result = jsonDecode(json)['result'];
+    if (result != null) {
       print('Successfully fetched user $name.');
-      final Map<String, String> body =
-          Map.from(jsonDecode(response)['result'] as Map<String, dynamic>);
+      final Map<String, String> body = Map.from(result as Map<String, dynamic>);
       return User.fromJson(body);
     } else {
+      print('Failed to fetch user.');
       throw const Failure('Failed to fetch user.');
     }
   }

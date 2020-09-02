@@ -42,16 +42,16 @@ class GroupRepository {
     @required String name,
     int externalId = 0,
   }) async {
-    final String response = jsonDecode(await KanboardAPI().getJson(
+    final String json = await KanboardAPI().getJson(
       command: groupCommands[GroupProcedures.create],
       params: {
         'name': name,
         'external_id': externalId.toString(),
       },
-    ))['result']
-        .toString();
+    );
+    final String response = jsonDecode(json)['result'].toString();
     final int statusCode = response == 'false' ? 0 : int.parse(response);
-    if (statusCode == 0) {
+    if (response == 'false') {
       print('Failed to create group');
       return false;
     } else {
