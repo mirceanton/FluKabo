@@ -1,4 +1,4 @@
-class User {
+class UserModel {
   int _id;
   String _username;
   String _password;
@@ -24,8 +24,8 @@ class User {
   String _lockExpirationDate;
   String _filter;
 
-  User.empty();
-  User.fromJson(Map<String, String> json)
+  UserModel.empty();
+  UserModel.fromJson(Map<String, String> json)
       : _id = int.parse(json['id']),
         _username = json['username'],
         _password = json['password'],
