@@ -126,4 +126,49 @@ class ProjectRepository {
       throw const Failure('Failed to fetch projects.');
     }
   }
+
+  ///
+  /// [updateProject] returns true if the project was updated successfully or
+  /// false otherwise
+  ///
+  /// [id] is the only required field, as this is the identifier by which we
+  /// get the project which we want to update
+  /// All the other fields, aka [ownerId], [name], [description] and
+  /// [identifier] are completely optional and will be kept unchanged if no
+  /// value is provided
+  ///
+  Future<bool> updateProject({
+    @required int id,
+    int ownerId = -1,
+    String name = '',
+    String description = '',
+    String identifier = '',
+  }) async {
+    ProjectModel project;
+    try {
+      project = await getProjectById(id);
+    } on Failure catch (f) {
+      print(f.message);
+      rethrow;
+    }
+    final String json = await KanboardAPI().getJson(
+      command: projectCommands[ProjectProcedures.update],
+      params: {
+        'project_id': id.toString(),
+        'name': name.isEmpty ? project.name : name,
+        'description': description.isEmpty ? project.description : description,
+        'owner_id':
+            ownerId == -1 ? project.ownerID.toString() : ownerId.toString(),
+        'identifier': identifier.isEmpty ? project.identifier : identifier,
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null') {
+      print('Successfully updated project $id.');
+      return result == 'true';
+    } else {
+      print('Failed to fetch project.');
+      return false;
+    }
+  }
 }
