@@ -1,3 +1,4 @@
+import 'package:flukabo/data/helpers/json_parser.dart';
 import 'package:flukabo/ui/pages/project/project_board_page.dart';
 import 'package:flutter/material.dart';
 
@@ -36,54 +37,31 @@ class ProjectModel {
 
   ProjectModel.empty();
   ProjectModel.fromJson(Map<String, dynamic> json) {
-    _id = _parseToInt(json['id'].toString());
-    _name = _parseToString(json['name'].toString());
+    _id = parseToInt(json['id'].toString());
+    _name = parseToString(json['name'].toString());
     _backgroundImage = "https://source.unsplash.com/random"; // FIXME
-    _isActive = _parseToBool(json['is_active'].toString());
-    _token = _parseToString(json['token'].toString());
-    _lastModified = _parseToDouble(json['last_modified'].toString());
-    _isPublic = _parseToBool(json['is_public'].toString());
-    _isPrivate = _parseToBool(json['is_private'].toString());
-    _description = _parseToString(json['description'].toString());
-    _identifier = _parseToString(json['identifier'].toString());
-    _startDate = _parseToDouble(json['start_date'].toString());
-    _endDate = _parseToDouble(json['end_date'].toString());
-    _ownerID = _parseToInt(json['owner_id'].toString());
-    _priorityStart = _parseToInt(json['priority_start'].toString());
-    _priorityEnd = _parseToInt(json['priority_end'].toString());
-    _priorityDefault = _parseToInt(json['priority_default'].toString());
-    _email = _parseToString(json['email'].toString());
+    _isActive = parseToBool(json['is_active'].toString());
+    _token = parseToString(json['token'].toString());
+    _lastModified = parseToDouble(json['last_modified'].toString());
+    _isPublic = parseToBool(json['is_public'].toString());
+    _isPrivate = parseToBool(json['is_private'].toString());
+    _description = parseToString(json['description'].toString());
+    _identifier = parseToString(json['identifier'].toString());
+    _startDate = parseToDouble(json['start_date'].toString());
+    _endDate = parseToDouble(json['end_date'].toString());
+    _ownerID = parseToInt(json['owner_id'].toString());
+    _priorityStart = parseToInt(json['priority_start'].toString());
+    _priorityEnd = parseToInt(json['priority_end'].toString());
+    _priorityDefault = parseToInt(json['priority_default'].toString());
+    _email = parseToString(json['email'].toString());
     _predefinedEmailSubjects =
-        _parseToString(json['predefined_email_subjects'].toString());
+        parseToString(json['predefined_email_subjects'].toString());
     _swimlaneTaskLimit =
-        _parseToBool(json['per_swimlane_task_limits'].toString());
-    _taskLimit = _parseToInt(json['task_limit'].toString());
-    _enableGlobalTags = _parseToBool(json['enable_global_tags'].toString());
+        parseToBool(json['per_swimlane_task_limits'].toString());
+    _taskLimit = parseToInt(json['task_limit'].toString());
+    _enableGlobalTags = parseToBool(json['enable_global_tags'].toString());
     _url = Map<String, String>.from(json['url'] as Map<String, dynamic>);
   }
-
-  // Helper functions
-  String _parseToString(String json) => json == 'null' ? '' : json;
-  double _parseToDouble(String json) {
-    if (json.isEmpty) return 0.0;
-    try {
-      return double.parse(json);
-    } catch (_) {
-      return 0.0;
-    }
-  }
-
-  int _parseToInt(String json) {
-    if (json.isEmpty) return 0;
-    try {
-      return int.parse(json);
-    } catch (_) {
-      return 0;
-    }
-  }
-
-  bool _parseToBool(String json) =>
-      json.isNotEmpty && (json == '1' || json == 'true');
 
   // Getters for private fields
   int get id => _id;

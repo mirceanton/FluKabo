@@ -1,3 +1,4 @@
+import 'package:flukabo/data/helpers/json_parser.dart';
 import 'package:flukabo/data/models/project.dart';
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/repository/project_repository.dart';
@@ -13,31 +14,12 @@ class EventModel {
 
   EventModel.empty();
   EventModel.fromJson(Map<String, dynamic> json) {
-    _id = _parseToInt(json['id'].toString());
-    _taskId = _parseToInt(json['task_id'].toString());
-    _projectId = _parseToInt(json['project_id'].toString());
-    _authorId = _parseToInt(json['creator_id'].toString());
-    _date = _parseToDouble(json['date_creation'].toString());
-    _title = _parseToString(json['event_title'].toString());
-  }
-
-  String _parseToString(String json) => json == 'null' ? '' : json;
-  double _parseToDouble(String json) {
-    if (json.isEmpty) return 0.0;
-    try {
-      return double.parse(json);
-    } catch (_) {
-      return 0.0;
-    }
-  }
-
-  int _parseToInt(String json) {
-    if (json.isEmpty) return 0;
-    try {
-      return int.parse(json);
-    } catch (_) {
-      return 0;
-    }
+    _id = parseToInt(json['id'].toString());
+    _taskId = parseToInt(json['task_id'].toString());
+    _projectId = parseToInt(json['project_id'].toString());
+    _authorId = parseToInt(json['creator_id'].toString());
+    _date = parseToDouble(json['date_creation'].toString());
+    _title = parseToString(json['event_title'].toString());
   }
 
   // Getters
