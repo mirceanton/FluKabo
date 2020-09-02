@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flukabo/ui/pages/project/project_board_page.dart';
 import 'package:flutter/material.dart';
 

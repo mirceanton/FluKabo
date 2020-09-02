@@ -65,6 +65,25 @@ class ProjectRepository {
   }
 
   ///
+  ///[getProjectById] returns a Project object if the given id is valid
+  /// or throws a Failure otherwise
+  ///
+  Future<ProjectModel> getProjectById(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectCommands[ProjectProcedures.getById],
+      params: {'project_id': id.toString()},
+    );
+    final Map<String, dynamic> result =
+        jsonDecode(json)['result'] as Map<String, dynamic>;
+    if (result != null) {
+      print('Successfully fetched project $id.');
+      return ProjectModel.fromJson(result);
+    } else {
+      throw const Failure('Failed to fetch project.');
+    }
+  }
+
+  ///
   ///[getProjectByName] returns a Project object if the given name is valid
   /// or throws a Failure otherwise (also throws failure if name doesn't exist)
   ///

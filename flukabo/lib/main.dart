@@ -1,4 +1,5 @@
 import 'package:flukabo/bloc/auth/auth_bloc.dart';
+import 'package:flukabo/data/repository/project_repository.dart';
 import 'package:flukabo/res/app_themes.dart';
 import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ import 'ui/pages/settings/settings.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await UserPreferences().init();
+
+  await ProjectRepository().getProjectById(4);
 
   runApp(const FlukaboApp());
 }
