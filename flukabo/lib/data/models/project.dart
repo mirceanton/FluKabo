@@ -7,14 +7,11 @@ class ProjectModel {
   int _id;
   String _name;
   String _backgroundImage;
-  bool _isPrivate;
   bool _isActive;
   String _token;
   double _lastModified;
   bool _isPublic;
-  bool _everybodyAllowed;
-  String _defaultSwimlane;
-  bool _showDefaultSwimlane;
+  bool _isPrivate;
   String _description;
   String _identifier;
   double _startDate, _endDate;
@@ -40,32 +37,55 @@ class ProjectModel {
         _isPrivate = isPrivate;
 
   ProjectModel.empty();
-  ProjectModel.fromJson(Map<String, String> json)
-      : _id = int.parse(json['id']),
-        _name = json['name'],
-        _backgroundImage = "https://source.unsplash.com/random", // FIXME
-        _isActive = json['is_active'] == '1',
-        _token = json['token'],
-        _lastModified = double.parse(json['last_modified']),
-        _isPublic = json['is_public'] == '1',
-        _isPrivate = json['is_private'] == '1',
-        _everybodyAllowed = json['is_everybody_allowed'] == '1',
-        _defaultSwimlane = json['default_swimlane'],
-        _showDefaultSwimlane = json['show_default_swimlane'] == '1',
-        _description = json['description'],
-        _identifier = json['identifier'],
-        _startDate = double.parse(json['start_date']),
-        _endDate = double.parse(json['end_date']),
-        _ownerID = int.parse(json['owner_id']),
-        _priorityStart = int.parse(json['priority_start']),
-        _priorityEnd = int.parse(json['priority_end']),
-        _priorityDefault = int.parse(json['priority_default']),
-        _email = json['email'],
-        _predefinedEmailSubjects = json['predefined_email_subjects'],
-        _swimlaneTaskLimit = json['per_swimlane_task_limits'] == '1',
-        _taskLimit = int.parse(json['task_limit']),
-        _enableGlobalTags = json['enable_global_tags'] == '1',
-        _url = Map.from(jsonDecode(json['url']) as Map<String, dynamic>);
+  ProjectModel.fromJson(Map<String, dynamic> json) {
+    _id = _parseToInt(json['id'].toString());
+    _name = _parseToString(json['name'].toString());
+    _backgroundImage = "https://source.unsplash.com/random"; // FIXME
+    _isActive = _parseToBool(json['is_active'].toString());
+    _token = _parseToString(json['token'].toString());
+    _lastModified = _parseToDouble(json['last_modified'].toString());
+    _isPublic = _parseToBool(json['is_public'].toString());
+    _isPrivate = _parseToBool(json['is_private'].toString());
+    _description = _parseToString(json['description'].toString());
+    _identifier = _parseToString(json['identifier'].toString());
+    _startDate = _parseToDouble(json['start_date'].toString());
+    _endDate = _parseToDouble(json['end_date'].toString());
+    _ownerID = _parseToInt(json['owner_id'].toString());
+    _priorityStart = _parseToInt(json['priority_start'].toString());
+    _priorityEnd = _parseToInt(json['priority_end'].toString());
+    _priorityDefault = _parseToInt(json['priority_default'].toString());
+    _email = _parseToString(json['email'].toString());
+    _predefinedEmailSubjects =
+        _parseToString(json['predefined_email_subjects'].toString());
+    _swimlaneTaskLimit =
+        _parseToBool(json['per_swimlane_task_limits'].toString());
+    _taskLimit = _parseToInt(json['task_limit'].toString());
+    _enableGlobalTags = _parseToBool(json['enable_global_tags'].toString());
+    _url = Map<String, String>.from(json['url'] as Map<String, dynamic>);
+  }
+
+  // Helper functions
+  String _parseToString(String json) => json == 'null' ? '' : json;
+  double _parseToDouble(String json) {
+    if (json.isEmpty) return 0.0;
+    try {
+      return double.parse(json);
+    } catch (_) {
+      return 0.0;
+    }
+  }
+
+  int _parseToInt(String json) {
+    if (json.isEmpty) return 0;
+    try {
+      return int.parse(json);
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  bool _parseToBool(String json) =>
+      json.isNotEmpty && (json == '1' || json == 'true');
 
   // Getters for private fields
   int get id => _id;
@@ -78,9 +98,6 @@ class ProjectModel {
   double get lastModified => _lastModified;
   bool get isPublic => _isPublic;
   IconData get publicIcon => _isPublic ? Icons.group : null; // FIXME
-  bool get everybodyAllowed => _everybodyAllowed;
-  String get defaultSwimlane => _defaultSwimlane;
-  bool get showDefaultSwimlane => _showDefaultSwimlane;
   String get description => _description;
   String get identifier => _identifier;
   double get startDate => _startDate;
