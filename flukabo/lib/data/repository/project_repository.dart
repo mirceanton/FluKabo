@@ -194,4 +194,50 @@ class ProjectRepository {
       return false;
     }
   }
+
+  ///
+  /// [disableProject] returns true if the project was successfully disabled, or false
+  /// otherwise
+  /// This function sets the project.isActive to false
+  /// This can be undone via the [enableProject] function
+  ///
+  Future<bool> disableProject(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectCommands[ProjectProcedures.disable],
+      params: {
+        'project_id': id.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null') {
+      print('Successfully disabled project $id.');
+      return result == 'true';
+    } else {
+      print('Failed to disable project.');
+      return false;
+    }
+  }
+
+  ///
+  /// [enableProject] returns true if the project was successfully enabled, or false
+  /// otherwise
+  /// This function sets the project.isActive to true
+  /// This can be undone via the [disableProject] function
+  ///
+  Future<bool> enableProject(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectCommands[ProjectProcedures.enable],
+      params: {
+        'project_id': id.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != null) {
+      print('Successfully enabled project $id.');
+      return result == 'true';
+    } else {
+      print('Failed to enable project.');
+      return false;
+    }
+  }
 }
