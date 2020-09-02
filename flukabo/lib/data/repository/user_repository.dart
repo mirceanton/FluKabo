@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flukabo/data/models/group.dart';
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
-import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
+import 'package:flukabo/res/kanboard/api_procedures/members_procedures.dart';
+import 'package:flukabo/res/kanboard/api_procedures/user_procedures.dart';
 import 'package:flutter/material.dart';
 
 ///
