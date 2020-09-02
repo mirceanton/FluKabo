@@ -1,4 +1,6 @@
-class User {
+import 'package:flukabo/data/helpers/json_parser.dart';
+
+class UserModel {
   int _id;
   String _username;
   String _password;
@@ -24,35 +26,35 @@ class User {
   String _lockExpirationDate;
   String _filter;
 
-  User.empty();
-  User.fromJson(Map<String, String> json)
-      : _id = int.parse(json['id']),
-        _username = json['username'],
-        _password = json['password'],
-        _isLdap = json['is_ldap_user'] == "1",
-        _name = json['name'],
-        _email = json['email'],
-        _googleId =
-            json['google_id'] == null ? 0 : int.parse(json['google_id']),
-        _githubId =
-            json['github_id'] == null ? 0 : int.parse(json['github_id']),
-        _notificationsEnabled = json['notifications_enabled'] == "1",
-        _timezone = json['timezon'],
-        _language = json['language'],
-        _disableLogin = json['disable_login_form'] == "1",
-        _has2Fa = json['twofactor_activated'] == "1",
-        _twoFaSecret = json['twofactor_secret'],
-        _token = json['token'],
-        _notifFilter = int.parse(json['notifications_filter']) ?? 0,
-        _failedLogins = int.parse(json['nb_failed_login']) ?? 0,
-        _lockExpirationDate = json['lock_expiration_date'],
-        _gitlabId =
-            json['gitlab_id'] == null ? 0 : int.parse(json['gitlab_id']),
-        _role = json['role'],
-        _isActive = json['is_active'] == "1",
-        _avatar = json['avatar_path'],
-        _apiToken = json['api_access_token'],
-        _filter = json['filter'];
+  UserModel.empty();
+  UserModel.fromJson(Map<String, String> json) {
+    _id = parseToInt(json['id'].toString());
+    _username = parseToString(json['username'].toString());
+    _password = parseToString(json['password'].toString());
+    _isLdap = parseToBool(json['is_ldap_user'].toString());
+    _name = parseToString(json['name'].toString());
+    _email = parseToString(json['email'].toString());
+    _googleId = parseToInt(json['google_id'].toString());
+    _githubId = parseToInt(json['github_id'].toString());
+    _notificationsEnabled =
+        parseToBool(json['notifications_enabled'].toString());
+    _timezone = parseToString(json['timezon'].toString());
+    _language = parseToString(json['language'].toString());
+    _disableLogin = parseToBool(json['disable_login_form'].toString());
+    _has2Fa = parseToBool(json['twofactor_activated'].toString());
+    _twoFaSecret = parseToString(json['twofactor_secret'].toString());
+    _token = parseToString(json['token'].toString());
+    _notifFilter = parseToInt(json['notifications_filter'].toString());
+    _failedLogins = parseToInt(json['nb_failed_login'].toString());
+    _lockExpirationDate =
+        parseToString(json['lock_expiration_date'].toString());
+    _gitlabId = json['gitlab_id'] == null ? 0 : int.parse(json['gitlab_id']);
+    _role = parseToString(json['role'].toString());
+    _isActive = parseToBool(json['is_active'].toString());
+    _avatar = parseToString(json['avatar_path'].toString());
+    _apiToken = parseToString(json['api_access_token'].toString());
+    _filter = parseToString(json['filter'].toString());
+  }
 
   // Getters
   int get id => _id;

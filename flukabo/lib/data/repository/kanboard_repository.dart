@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
-import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
+import 'package:flukabo/res/kanboard/api_procedures/application_procedures.dart';
 import 'package:flukabo/res/kanboard/kanboard_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

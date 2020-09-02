@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flukabo/data/models/group.dart';
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
-import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
+import 'package:flukabo/res/kanboard/api_procedures/group_procedures.dart';
+import 'package:flukabo/res/kanboard/api_procedures/members_procedures.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -41,16 +42,16 @@ class GroupRepository {
     @required String name,
     int externalId = 0,
   }) async {
-    final String response = jsonDecode(await KanboardAPI().getJson(
+    final String json = await KanboardAPI().getJson(
       command: groupCommands[GroupProcedures.create],
       params: {
         'name': name,
         'external_id': externalId.toString(),
       },
-    ))['result']
-        .toString();
+    );
+    final String response = jsonDecode(json)['result'].toString();
     final int statusCode = response == 'false' ? 0 : int.parse(response);
-    if (statusCode == 0) {
+    if (response == 'false') {
       print('Failed to create group');
       return false;
     } else {
@@ -63,7 +64,7 @@ class GroupRepository {
   /// [getGroup] returns a Group object if the given id was valid, ot throws an
   /// instance of failure otherwise
   ///
-  Future<Group> getGroup(int id) async {
+  Future<GroupModel> getGroup(int id) async {
     final String json = await KanboardAPI().getJson(
       command: groupCommands[GroupProcedures.get],
       params: {'group_id': id.toString()},
@@ -72,7 +73,7 @@ class GroupRepository {
     if (result != 'null') {
       final Map<String, String> body = Map.from(result as Map<String, dynamic>);
       print('Successfully fetched group $id.');
-      return Group.fromJson(body);
+      return GroupModel.fromJson(body);
     } else {
       throw const Failure('Failed to fetch group.');
     }
@@ -82,8 +83,8 @@ class GroupRepository {
   /// [getAllGroups] returns a List of groups if the fetch was successfull, or
   /// throws an instance of  Failure if the api call failed for some reason
   ///
-  Future<List<Group>> getAllGroups() async {
-    final List<Group> groups = [];
+  Future<List<GroupModel>> getAllGroups() async {
+    final List<GroupModel> groups = [];
     final String json = await KanboardAPI().getJson(
       command: groupCommands[GroupProcedures.getAll],
       params: {},
@@ -91,7 +92,8 @@ class GroupRepository {
     final List result = jsonDecode(json)['result'] as List;
     if (result != null) {
       for (int i = 0; i < result.length; i++) {
-        groups.add(Group.fromJson(Map.from(result[i] as Map<String, dynamic>)));
+        groups.add(
+            GroupModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
       }
       print('Succesfully fetched ${groups.length} groups.');
       return groups;
@@ -115,7 +117,7 @@ class GroupRepository {
     String name = '',
     int externalId = -1,
   }) async {
-    Group group;
+    GroupModel group;
     try {
       group = await getGroup(id);
     } on Failure catch (f) {
@@ -172,8 +174,8 @@ class GroupRepository {
   /// The returnes list of users represents all the members of the requested
   /// group
   ///
-  Future<List<User>> getMembersForGroup(int groupId) async {
-    final List<User> users = [];
+  Future<List<UserModel>> getMembersForGroup(int groupId) async {
+    final List<UserModel> users = [];
     final String json = await KanboardAPI().getJson(
       command: membersCommands[MembersProcedures.getMembers],
       params: {'group_id': groupId.toString()},
@@ -181,7 +183,8 @@ class GroupRepository {
     final List result = jsonDecode(json)['result'] as List;
     if (result != null) {
       for (int i = 0; i < result.length; i++) {
-        users.add(User.fromJson(Map.from(result[i] as Map<String, dynamic>)));
+        users.add(
+            UserModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
       }
       print('Succesfully fetched ${users.length} users.');
       return users;

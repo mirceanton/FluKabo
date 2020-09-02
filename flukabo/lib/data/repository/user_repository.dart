@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flukabo/data/models/group.dart';
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
-import 'package:flukabo/res/kanboard/kanboard_api_commands.dart';
+import 'package:flukabo/res/kanboard/api_procedures/members_procedures.dart';
+import 'package:flukabo/res/kanboard/api_procedures/user_procedures.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -45,7 +46,7 @@ class UserRepository {
     String email = '',
     String role = 'app-user',
   }) async {
-    final String response = jsonDecode(await KanboardAPI().getJson(
+    final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.create],
       params: {
         'username': username,
@@ -54,10 +55,10 @@ class UserRepository {
         'email': email,
         'role': role,
       },
-    ))['result']
-        .toString();
+    );
+    final String response = jsonDecode(json)['result'].toString();
     final int statusCode = response == 'false' ? 0 : int.parse(response);
-    if (statusCode == 0) {
+    if (response == 'false') {
       print('Failed to add user');
       return false;
     } else {
@@ -70,36 +71,37 @@ class UserRepository {
   ///[getUserById] returns a User object if the given id is valid
   /// or throws a Failure otherwise
   ///
-  Future<User> getUserById(int id) async {
+  Future<UserModel> getUserById(int id) async {
     final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.getById],
       params: {'user_id': id.toString()},
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    final Map result = jsonDecode(json)['result'] as Map;
+    if (result != null) {
       final Map<String, String> body = Map.from(result as Map<String, dynamic>);
       print('Successfully fetched user $id.');
-      return User.fromJson(body);
+      return UserModel.fromJson(body);
     } else {
       throw const Failure('Failed to fetch user.');
     }
   }
 
   ///
-  ///[getUserByName] returns a User object if the given name is valid
+  ///[getUserByUsername] returns a User object if the given name is valid
   /// or throws a Failure otherwise (also throws failure if name doesn't exist)
   ///
-  Future<User> getUserByName(String name) async {
-    final String response = await KanboardAPI().getJson(
+  Future<UserModel> getUserByUsername(String name) async {
+    final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.getByName],
       params: {'username': name},
     );
-    if (jsonDecode(response)['result'] != null) {
+    final result = jsonDecode(json)['result'];
+    if (result != null) {
       print('Successfully fetched user $name.');
-      final Map<String, String> body =
-          Map.from(jsonDecode(response)['result'] as Map<String, dynamic>);
-      return User.fromJson(body);
+      final Map<String, String> body = Map.from(result as Map<String, dynamic>);
+      return UserModel.fromJson(body);
     } else {
+      print('Failed to fetch user.');
       throw const Failure('Failed to fetch user.');
     }
   }
@@ -108,8 +110,8 @@ class UserRepository {
   /// [getAllUsers] returns a List of users if the fetch was successfull, or it
   /// throws a Failure if the api call failed for some reason
   ///
-  Future<List<User>> getAllUsers() async {
-    final List<User> users = [];
+  Future<List<UserModel>> getAllUsers() async {
+    final List<UserModel> users = [];
     final String json = await KanboardAPI().getJson(
       command: userCommands[UserProcedures.getAll],
       params: {},
@@ -117,7 +119,8 @@ class UserRepository {
     final List result = jsonDecode(json)['result'] as List;
     if (result != null) {
       for (int i = 0; i < result.length; i++) {
-        users.add(User.fromJson(Map.from(result[i] as Map<String, dynamic>)));
+        users.add(
+            UserModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
       }
       print('Succesfully fetched ${users.length} users.');
       return users;
@@ -143,7 +146,7 @@ class UserRepository {
     String email = '',
     String role = '',
   }) async {
-    User user;
+    UserModel user;
     try {
       user = await getUserById(id);
     } on Failure catch (f) {
@@ -246,8 +249,8 @@ class UserRepository {
   /// [getGroupsForUser] returns a list of all the groups for the giver [userId]
   /// user. (all the groups the user is a member in)
   ///
-  Future<List<Group>> getGroupsForUser(int userId) async {
-    final List<Group> groups = [];
+  Future<List<GroupModel>> getGroupsForUser(int userId) async {
+    final List<GroupModel> groups = [];
     final String json = await KanboardAPI().getJson(
       command: membersCommands[MembersProcedures.getGroups],
       params: {'user_id': userId.toString()},
@@ -255,7 +258,8 @@ class UserRepository {
     final List result = jsonDecode(json)['result'] as List;
     if (result != null) {
       for (int i = 0; i < result.length; i++) {
-        groups.add(Group.fromJson(Map.from(result[i] as Map<String, dynamic>)));
+        groups.add(
+            GroupModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
       }
       print('Succesfully fetched ${groups.length} groups.');
       return groups;

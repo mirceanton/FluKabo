@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:flukabo/data/helpers/json_parser.dart';
 import 'package:flukabo/ui/pages/project/project_board_page.dart';
 import 'package:flutter/material.dart';
 
@@ -7,14 +6,11 @@ class ProjectModel {
   int _id;
   String _name;
   String _backgroundImage;
-  bool _isPrivate;
   bool _isActive;
   String _token;
   double _lastModified;
   bool _isPublic;
-  bool _everybodyAllowed;
-  String _defaultSwimlane;
-  bool _showDefaultSwimlane;
+  bool _isPrivate;
   String _description;
   String _identifier;
   double _startDate, _endDate;
@@ -40,32 +36,32 @@ class ProjectModel {
         _isPrivate = isPrivate;
 
   ProjectModel.empty();
-  ProjectModel.fromJson(Map<String, String> json)
-      : _id = int.parse(json['id']),
-        _name = json['name'],
-        _backgroundImage = "https://source.unsplash.com/random", // FIXME
-        _isActive = json['is_active'] == '1',
-        _token = json['token'],
-        _lastModified = double.parse(json['last_modified']),
-        _isPublic = json['is_public'] == '1',
-        _isPrivate = json['is_private'] == '1',
-        _everybodyAllowed = json['is_everybody_allowed'] == '1',
-        _defaultSwimlane = json['default_swimlane'],
-        _showDefaultSwimlane = json['show_default_swimlane'] == '1',
-        _description = json['description'],
-        _identifier = json['identifier'],
-        _startDate = double.parse(json['start_date']),
-        _endDate = double.parse(json['end_date']),
-        _ownerID = int.parse(json['owner_id']),
-        _priorityStart = int.parse(json['priority_start']),
-        _priorityEnd = int.parse(json['priority_end']),
-        _priorityDefault = int.parse(json['priority_default']),
-        _email = json['email'],
-        _predefinedEmailSubjects = json['predefined_email_subjects'],
-        _swimlaneTaskLimit = json['per_swimlane_task_limits'] == '1',
-        _taskLimit = int.parse(json['task_limit']),
-        _enableGlobalTags = json['enable_global_tags'] == '1',
-        _url = Map.from(jsonDecode(json['url']) as Map<String, dynamic>);
+  ProjectModel.fromJson(Map<String, dynamic> json) {
+    _id = parseToInt(json['id'].toString());
+    _name = parseToString(json['name'].toString());
+    _backgroundImage = "https://source.unsplash.com/random"; // FIXME
+    _isActive = parseToBool(json['is_active'].toString());
+    _token = parseToString(json['token'].toString());
+    _lastModified = parseToDouble(json['last_modified'].toString());
+    _isPublic = parseToBool(json['is_public'].toString());
+    _isPrivate = parseToBool(json['is_private'].toString());
+    _description = parseToString(json['description'].toString());
+    _identifier = parseToString(json['identifier'].toString());
+    _startDate = parseToDouble(json['start_date'].toString());
+    _endDate = parseToDouble(json['end_date'].toString());
+    _ownerID = parseToInt(json['owner_id'].toString());
+    _priorityStart = parseToInt(json['priority_start'].toString());
+    _priorityEnd = parseToInt(json['priority_end'].toString());
+    _priorityDefault = parseToInt(json['priority_default'].toString());
+    _email = parseToString(json['email'].toString());
+    _predefinedEmailSubjects =
+        parseToString(json['predefined_email_subjects'].toString());
+    _swimlaneTaskLimit =
+        parseToBool(json['per_swimlane_task_limits'].toString());
+    _taskLimit = parseToInt(json['task_limit'].toString());
+    _enableGlobalTags = parseToBool(json['enable_global_tags'].toString());
+    _url = Map<String, String>.from(json['url'] as Map<String, dynamic>);
+  }
 
   // Getters for private fields
   int get id => _id;
@@ -78,9 +74,6 @@ class ProjectModel {
   double get lastModified => _lastModified;
   bool get isPublic => _isPublic;
   IconData get publicIcon => _isPublic ? Icons.group : null; // FIXME
-  bool get everybodyAllowed => _everybodyAllowed;
-  String get defaultSwimlane => _defaultSwimlane;
-  bool get showDefaultSwimlane => _showDefaultSwimlane;
   String get description => _description;
   String get identifier => _identifier;
   double get startDate => _startDate;
