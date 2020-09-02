@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flukabo/data/models/project.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/api_procedures/project_procedures.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,26 @@ class ProjectRepository {
     } else {
       print('Project created succesfully. ProjID: $statusCode');
       return true;
+    }
+  }
+
+  ///
+  ///[getProjectByName] returns a Project object if the given name is valid
+  /// or throws a Failure otherwise (also throws failure if name doesn't exist)
+  ///
+  Future<ProjectModel> getProjectByName(String name) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectCommands[ProjectProcedures.getByName],
+      params: {'name': name},
+    );
+    final Map<String, dynamic> result =
+        jsonDecode(json)['result'] as Map<String, dynamic>;
+    if (result != null) {
+      print('Successfully fetched project $name.');
+      return ProjectModel.fromJson(result);
+    } else {
+      print('Failed to fetch user.');
+      throw const Failure('Failed to fetch user.');
     }
   }
 }
