@@ -102,4 +102,28 @@ class ProjectRepository {
       throw const Failure('Failed to fetch user.');
     }
   }
+
+  ///
+  /// [getAllProjects] returns a List of projects if the fetch was successfull, or it
+  /// throws a Failure if the api call failed for some reason
+  ///
+  Future<List<ProjectModel>> getAllProjects() async {
+    final List<ProjectModel> projects = [];
+    final String json = await KanboardAPI().getJson(
+      command: projectCommands[ProjectProcedures.getAll],
+      params: {},
+    );
+    final List result = jsonDecode(json)['result'] as List;
+    if (result != null) {
+      for (int i = 0; i < result.length; i++) {
+        projects.add(
+            ProjectModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
+      }
+      print('Succesfully fetched ${projects.length} projects.');
+      return projects;
+    } else {
+      print('Failed to fetch projects.');
+      throw const Failure('Failed to fetch projects.');
+    }
+  }
 }
