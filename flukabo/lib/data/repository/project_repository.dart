@@ -171,4 +171,27 @@ class ProjectRepository {
       return false;
     }
   }
+
+  ///
+  /// [removeProject] returns true if the project was successfully removed, or false
+  /// otherwise
+  /// This function completely removes the project from the databse.
+  ///! Be careful, as this action cannot be undone
+  ///
+  Future<bool> removeProject(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectCommands[ProjectProcedures.remove],
+      params: {
+        'project_id': id.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null') {
+      print('Successfully removed project $id.');
+      return result == 'true';
+    } else {
+      print('Failed to remove project.');
+      return false;
+    }
+  }
 }
