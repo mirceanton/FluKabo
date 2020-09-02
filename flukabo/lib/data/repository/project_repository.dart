@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flukabo/data/models/event.dart';
 import 'package:flukabo/data/models/project.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/api_procedures/project_procedures.dart';
@@ -285,6 +286,30 @@ class ProjectRepository {
     } else {
       print('Failed to enable public access.');
       return false;
+    }
+  }
+
+  ///
+  /// [getAllProjects] returns a List of projects if the fetch was successfull, or it
+  /// throws a Failure if the api call failed for some reason
+  ///
+  Future<List<EventModel>> getFeed(int id) async {
+    final List<EventModel> events = [];
+    final String json = await KanboardAPI().getJson(
+      command: projectCommands[ProjectProcedures.getActivity],
+      params: {'project_id': id.toString()},
+    );
+    final List result = jsonDecode(json)['result'] as List;
+    if (result != null) {
+      for (int i = 0; i < result.length; i++) {
+        events.add(
+            EventModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
+      }
+      print('Succesfully fetched ${events.length} events.');
+      return events;
+    } else {
+      print('Failed to fetch events.');
+      throw const Failure('Failed to fetch events.');
     }
   }
 }
