@@ -240,4 +240,51 @@ class ProjectRepository {
       return false;
     }
   }
+
+  ///
+  /// [disablePublicAccess] returns true if the project accessibility level
+  /// was successfully changed to non-public
+  /// otherwise
+  /// This function sets the project.isPublic to false
+  /// This can be undone via the [enablePublicAccess] function
+  ///
+  Future<bool> disablePublicAccess(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectCommands[ProjectProcedures.disablePublicAccess],
+      params: {
+        'project_id': id.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null') {
+      print('Successfully disabled public access for project $id.');
+      return result == 'true';
+    } else {
+      print('Failed to disable public access.');
+      return false;
+    }
+  }
+
+  ///
+  /// [enablePublicAccess] returns true if the project accessibility level
+  /// was successfully changed to public
+  /// This function sets the project.isPublic to true
+  /// This can be undone via the [disablePublicAccess] function
+  ///
+  Future<bool> enablePublicAccess(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectCommands[ProjectProcedures.enablePublicAccess],
+      params: {
+        'project_id': id.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != null) {
+      print('Successfully enabled public access for project $id.');
+      return result == 'true';
+    } else {
+      print('Failed to enable public access.');
+      return false;
+    }
+  }
 }
