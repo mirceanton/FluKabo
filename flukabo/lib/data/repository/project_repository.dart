@@ -367,4 +367,40 @@ class ProjectRepository {
       throw const Failure('Failed to fetch users.');
     }
   }
+
+  ///
+  /// [addUserToProject] returns a true if the given user was successfully
+  /// added to the given project, and false otherwise
+  ///
+  /// the given project is identified by the [projectId] and the user via the
+  /// [userId]
+  /// [role] represents the role the user has within that project, and basically
+  /// sets permissions for certain actions. This value is optional, and if none
+  /// is provided, the default is 'project-member' which is a
+  /// middle-of-the-road permission level, granting higher priviledges compared
+  /// to a 'project-viewer', but lower than a 'project-manager'
+  ///
+  Future<bool> addUserToProject({
+    @required int projectId,
+    @required int userId,
+    String role = 'project-member',
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectPermissionCommands[ProjectPermissionProcedures.addUser],
+      params: {
+        'project_id': projectId.toString(),
+        'user_id': userId.toString(),
+        'role': role,
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false') {
+      print(
+          'Successfully added user $userId to project $projectId with the role of $role');
+      return result == 'true';
+    } else {
+      print('Failed to add user to project.');
+      return false;
+    }
+  }
 }
