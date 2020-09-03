@@ -51,7 +51,7 @@ class GroupRepository {
     );
     final String response = jsonDecode(json)['result'].toString();
     final int statusCode = response == 'false' ? 0 : int.parse(response);
-    if (response == 'false') {
+    if (response == 'false' || response == 'null') {
       print('Failed to create group');
       return false;
     } else {
@@ -135,7 +135,7 @@ class GroupRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    if (result != 'null' && result != 'false') {
       print('Successfully updated group $id.');
       return result == 'true';
     } else {
@@ -159,7 +159,7 @@ class GroupRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    if (result != 'null' && result != 'false') {
       print('Successfully removed group $id.');
       return result == 'true';
     } else {
@@ -260,7 +260,7 @@ class GroupRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    if (result != 'null' && result != 'false') {
       print('Successfully fetched user $userId status in group $groupId.');
       return result == 'true';
     } else {

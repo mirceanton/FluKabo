@@ -166,7 +166,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    if (result != 'null' && result != 'false') {
       print('Successfully updated project $id.');
       return result == 'true';
     } else {
@@ -189,7 +189,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    if (result != 'null' && result != 'false') {
       print('Successfully removed project $id.');
       return result == 'true';
     } else {
@@ -212,7 +212,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    if (result != 'null' && result != 'false') {
       print('Successfully disabled project $id.');
       return result == 'true';
     } else {
@@ -235,7 +235,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != null) {
+    if (result != 'null' && result != 'false') {
       print('Successfully enabled project $id.');
       return result == 'true';
     } else {
@@ -259,7 +259,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    if (result != 'null' && result != 'false') {
       print('Successfully disabled public access for project $id.');
       return result == 'true';
     } else {
@@ -282,7 +282,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != null) {
+    if (result != 'null' && result != 'false') {
       print('Successfully enabled public access for project $id.');
       return result == 'true';
     } else {

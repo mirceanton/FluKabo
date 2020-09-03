@@ -58,7 +58,7 @@ class UserRepository {
     );
     final String response = jsonDecode(json)['result'].toString();
     final int statusCode = response == 'false' ? 0 : int.parse(response);
-    if (response == 'false') {
+    if (response == 'false' || response == 'null') {
       print('Failed to add user');
       return false;
     } else {
@@ -164,7 +164,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    if (result != 'null' && result != 'false') {
       print('Successfully updated user $id.');
       return result == 'true';
     } else {
@@ -187,7 +187,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    if (result != 'null' && result != 'false') {
       print('Successfully removed user $id.');
       return result == 'true';
     } else {
@@ -210,7 +210,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
+    if (result != 'null' && result != 'false') {
       print('Successfully disabled user $id.');
       return result == 'true';
     } else {
@@ -233,7 +233,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != null) {
+    if (result != 'null' && result != 'false') {
       print('Successfully enabled user $id.');
       return result == 'true';
     } else {
