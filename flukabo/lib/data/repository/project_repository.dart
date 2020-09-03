@@ -597,6 +597,11 @@ class ProjectRepository {
     }
   }
 
+  ///
+  /// [addToProjectMetadata] returns true if the [key]:[value] pair was
+  /// successfully linked to the [projectId]
+  /// If the key already exists, then the value is updated
+  ///
   Future<bool> addToProjectMetadata({
     @required int projectId,
     @required String key,
@@ -620,6 +625,10 @@ class ProjectRepository {
     }
   }
 
+  ///
+  /// [getProjectMetadata] returns a all the metadata elements associated with
+  /// the [projectId] in a {key: value} format
+  ///
   Future<Map<String, String>> getProjectMetadata({
     @required int projectId,
   }) async {
@@ -637,6 +646,10 @@ class ProjectRepository {
     }
   }
 
+  ///
+  /// [getProjectMetadataByKey] returns the metadata element associated to the
+  /// given [key] for the project identified by [projectId]
+  ///
   Future<String> getProjectMetadataByKey({
     @required int projectId,
     @required String key,
@@ -659,6 +672,11 @@ class ProjectRepository {
     }
   }
 
+  ///
+  /// [removeFromProjectMetadata] returns true if the [key]:value pair was
+  /// successfully removed from the project identified by the [projectId],
+  /// or false otherwise
+  ///
   Future<bool> removeFromProjectMetadata({
     @required int projectId,
     @required String key,
