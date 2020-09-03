@@ -636,4 +636,26 @@ class ProjectRepository {
       return {};
     }
   }
+
+  Future<bool> removeFromProjectMetadata({
+    @required int projectId,
+    @required String key,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectMetadataCommands[ProjectMetadataProcedures.remove],
+      params: {
+        'project_id': projectId.toString(),
+        'name': key,
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false') {
+      print(
+          'Succesfully removed metadata identified by key:$key from project $projectId');
+      return true;
+    } else {
+      print('Failed to remove project metadata.');
+      return false;
+    }
+  }
 }
