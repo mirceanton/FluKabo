@@ -637,6 +637,28 @@ class ProjectRepository {
     }
   }
 
+  Future<String> getProjectMetadataByKey({
+    @required int projectId,
+    @required String key,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectMetadataCommands[ProjectMetadataProcedures.getByKey],
+      params: {
+        'project_id': projectId.toString(),
+        'name': key,
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false') {
+      print(
+          'Successfully fetched metadata value $result from project $projectId');
+      return result;
+    } else {
+      print('Failed to fetch metadata from project.');
+      return "";
+    }
+  }
+
   Future<bool> removeFromProjectMetadata({
     @required int projectId,
     @required String key,
