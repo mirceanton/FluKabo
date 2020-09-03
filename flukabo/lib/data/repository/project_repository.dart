@@ -569,4 +569,31 @@ class ProjectRepository {
       return false;
     }
   }
+
+  ///
+  /// [getUserRole] returns the role of the user [userId] within the project
+  /// [projectId]
+  ///
+  Future<String> getUserRole({
+    @required int projectId,
+    @required int userId,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command:
+          projectPermissionCommands[ProjectPermissionProcedures.getUserRole],
+      params: {
+        'project_id': projectId.toString(),
+        'user_id': userId.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false') {
+      print(
+          'Successfully fetched users $userId role within project $projectId');
+      return result;
+    } else {
+      print('Failed to fetch user role within project.');
+      return "";
+    }
+  }
 }
