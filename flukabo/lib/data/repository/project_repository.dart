@@ -105,8 +105,8 @@ class ProjectRepository {
   }
 
   ///
-  /// [getAllProjects] returns a List of projects if the fetch was successfull, or it
-  /// throws a Failure if the api call failed for some reason
+  /// [getAllProjects] returns a List of projects if the fetch was successfull,
+  /// or it throws a Failure if the api call failed for some reason
   ///
   Future<List<ProjectModel>> getAllProjects() async {
     final List<ProjectModel> projects = [];
@@ -174,8 +174,8 @@ class ProjectRepository {
   }
 
   ///
-  /// [removeProject] returns true if the project was successfully removed, or false
-  /// otherwise
+  /// [removeProject] returns true if the project was successfully removed, or
+  /// false otherwise
   /// This function completely removes the project from the databse.
   ///! Be careful, as this action cannot be undone
   ///
@@ -197,8 +197,8 @@ class ProjectRepository {
   }
 
   ///
-  /// [disableProject] returns true if the project was successfully disabled, or false
-  /// otherwise
+  /// [disableProject] returns true if the project was successfully disabled,
+  /// or false otherwise
   /// This function sets the project.isActive to false
   /// This can be undone via the [enableProject] function
   ///
@@ -220,8 +220,8 @@ class ProjectRepository {
   }
 
   ///
-  /// [enableProject] returns true if the project was successfully enabled, or false
-  /// otherwise
+  /// [enableProject] returns true if the project was successfully enabled, or
+  /// false otherwise
   /// This function sets the project.isActive to true
   /// This can be undone via the [disableProject] function
   ///
@@ -290,8 +290,8 @@ class ProjectRepository {
   }
 
   ///
-  /// [getAllProjects] returns a List of projects if the fetch was successfull, or it
-  /// throws a Failure if the api call failed for some reason
+  /// [getAllProjects] returns a List of projects if the fetch was successfull,
+  /// or it throws a Failure if the api call failed for some reason
   ///
   Future<List<EventModel>> getFeed(int id) async {
     final List<EventModel> events = [];

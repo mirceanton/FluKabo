@@ -8,8 +8,8 @@ import 'package:flukabo/res/kanboard/api_procedures/members_procedures.dart';
 import 'package:flutter/material.dart';
 
 ///
-/// This is a singleton meant to encapsulate all the methods associated with the
-/// group management feature provided to admin users.
+/// This is a singleton meant to encapsulate all the methods associated with
+/// the group management feature provided to admin users.
 ///
 /// It includes the following functionality:
 ///   - Group creation
@@ -145,8 +145,8 @@ class GroupRepository {
   }
 
   ///
-  /// [removeGroup] returns true if the group was successfully removed, or false
-  /// otherwise
+  /// [removeGroup] returns true if the group was successfully removed, or
+  /// false otherwise
   /// This function completely removes the group from the databse, but will not
   /// delete the members of the group.
   ///! Be careful, as this action cannot be undone

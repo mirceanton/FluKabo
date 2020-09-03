@@ -8,8 +8,8 @@ import 'package:flukabo/res/kanboard/api_procedures/user_procedures.dart';
 import 'package:flutter/material.dart';
 
 ///
-/// This is a singleton meant to encapsulate all the methods associated with the
-/// users management feature provided to admin users.
+/// This is a singleton meant to encapsulate all the methods associated with
+/// the users management feature provided to admin users.
 ///
 /// It includes the following functionality:
 ///   - User creation
@@ -30,11 +30,11 @@ class UserRepository {
   /// [createUser] returns true if the user was added successfully ot false
   /// otherwise
   ///
-  /// [username] and [password] are required, as all users have to have a way to
-  /// log in
+  /// [username] and [password] are required, as all users have to have a way
+  /// to log in
   /// [name] and [email] are optional, and can be changed later if needed
-  /// If no value is provided, then these fields will be represented by an empty
-  /// string
+  /// If no value is provided, then these fields will be represented by an
+  /// empty string
   /// [role] is also optional, but has a default value of 'app-user'.
   /// In order to provide higher privileges for the user, make sure to specify
   /// the correct role, such as 'app-manager' or 'app-admin'
@@ -197,8 +197,8 @@ class UserRepository {
   }
 
   ///
-  /// [disableUser] returns true if the user was successfully disabled, or false
-  /// otherwise
+  /// [disableUser] returns true if the user was successfully disabled, or
+  /// false otherwise
   /// This function sets the user.isActive to false
   /// This can be undone via the [enableUser] function
   ///
@@ -246,8 +246,8 @@ class UserRepository {
   Future<bool> isActiveUser(int id) async => (await getUserById(id)).isActive;
 
   ///
-  /// [getGroupsForUser] returns a list of all the groups for the giver [userId]
-  /// user. (all the groups the user is a member in)
+  /// [getGroupsForUser] returns a list of all the groups for the giver
+  /// [userId] user. (all the groups the user is a member in)
   ///
   Future<List<GroupModel>> getGroupsForUser(int userId) async {
     final List<GroupModel> groups = [];

@@ -95,8 +95,8 @@ class KanboardAPI {
   }
 
   ///
-  /// [testConnection] sends a dummy 'getVersion' request in order to see if the
-  /// credentials and server address are right
+  /// [testConnection] sends a dummy 'getVersion' request in order to see if
+  /// the credentials and server address are right
   ///
   Future<Response> testConnection({
     @required String url,
