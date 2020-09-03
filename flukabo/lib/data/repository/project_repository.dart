@@ -168,7 +168,7 @@ class ProjectRepository {
     final String result = jsonDecode(json)['result'].toString();
     if (result != 'null' && result != 'false') {
       print('Successfully updated project $id.');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to fetch project.');
       return false;
@@ -191,7 +191,7 @@ class ProjectRepository {
     final String result = jsonDecode(json)['result'].toString();
     if (result != 'null' && result != 'false') {
       print('Successfully removed project $id.');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to remove project.');
       return false;
@@ -214,7 +214,7 @@ class ProjectRepository {
     final String result = jsonDecode(json)['result'].toString();
     if (result != 'null' && result != 'false') {
       print('Successfully disabled project $id.');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to disable project.');
       return false;
@@ -237,7 +237,7 @@ class ProjectRepository {
     final String result = jsonDecode(json)['result'].toString();
     if (result != 'null' && result != 'false') {
       print('Successfully enabled project $id.');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to enable project.');
       return false;
@@ -261,7 +261,7 @@ class ProjectRepository {
     final String result = jsonDecode(json)['result'].toString();
     if (result != 'null' && result != 'false') {
       print('Successfully disabled public access for project $id.');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to disable public access.');
       return false;
@@ -284,7 +284,7 @@ class ProjectRepository {
     final String result = jsonDecode(json)['result'].toString();
     if (result != 'null' && result != 'false') {
       print('Successfully enabled public access for project $id.');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to enable public access.');
       return false;
@@ -397,7 +397,7 @@ class ProjectRepository {
     if (result != 'null' && result != 'false') {
       print(
           'Successfully added user $userId to project $projectId with the role of $role');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to add user to project.');
       return false;
@@ -433,7 +433,7 @@ class ProjectRepository {
     if (result != 'null' && result != 'false') {
       print(
           'Successfully added group $groupId to project $projectId with the role of $role');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to add group to project.');
       return false;

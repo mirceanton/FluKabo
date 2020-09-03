@@ -166,7 +166,7 @@ class UserRepository {
     final String result = jsonDecode(json)['result'].toString();
     if (result != 'null' && result != 'false') {
       print('Successfully updated user $id.');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to fetch user.');
       return false;
@@ -189,7 +189,7 @@ class UserRepository {
     final String result = jsonDecode(json)['result'].toString();
     if (result != 'null' && result != 'false') {
       print('Successfully removed user $id.');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to remove user.');
       return false;
@@ -212,7 +212,7 @@ class UserRepository {
     final String result = jsonDecode(json)['result'].toString();
     if (result != 'null' && result != 'false') {
       print('Successfully disabled user $id.');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to disable user.');
       return false;
@@ -235,7 +235,7 @@ class UserRepository {
     final String result = jsonDecode(json)['result'].toString();
     if (result != 'null' && result != 'false') {
       print('Successfully enabled user $id.');
-      return result == 'true';
+      return true;
     } else {
       print('Failed to enable user.');
       return false;
