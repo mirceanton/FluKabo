@@ -468,4 +468,33 @@ class ProjectRepository {
       return false;
     }
   }
+
+  ///
+  /// [removeGroupFromProject] returns a true if the given group was
+  /// successfully removed from the given project, and false otherwise
+  ///
+  /// the given project is identified by the [projectId] and the group via the
+  /// [groupId]
+  ///
+  Future<bool> removeGroupFromProject({
+    @required int projectId,
+    @required int groupId,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command:
+          projectPermissionCommands[ProjectPermissionProcedures.removeGroup],
+      params: {
+        'project_id': projectId.toString(),
+        'group_id': groupId.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false') {
+      print('Successfully removed group $groupId from project $projectId');
+      return true;
+    } else {
+      print('Failed to remove group from project.');
+      return false;
+    }
+  }
 }
