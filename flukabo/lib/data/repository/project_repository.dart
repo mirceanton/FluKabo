@@ -339,4 +339,31 @@ class ProjectRepository {
       throw const Failure('Failed to fetch users.');
     }
   }
+
+  ///
+  /// [getProjectUsers] returns a List of all users associated with the given
+  /// project with a role higher than 'project-viewer' or throws a Failure if
+  /// the api call failed for some reason
+  ///
+  Future<List<UserModel>> getAssignableUsers(int id) async {
+    final List<UserModel> users = [];
+    final String json = await KanboardAPI().getJson(
+      command: projectPermissionCommands[
+          ProjectPermissionProcedures.getAssignableUsers],
+      params: {'project_id': id.toString()},
+    );
+    final Map<String, dynamic> result =
+        jsonDecode(json)['result'] as Map<String, dynamic>;
+    if (result != null) {
+      final List<String> ids = result.keys.toList();
+      for (int i = 0; i < ids.length; i++) {
+        users.add(await UserRepository().getUserById(int.parse(ids[i])));
+      }
+      print('Succesfully fetched ${users.length} users.');
+      return users;
+    } else {
+      print('Failed to fetch users.');
+      throw const Failure('Failed to fetch users.');
+    }
+  }
 }
