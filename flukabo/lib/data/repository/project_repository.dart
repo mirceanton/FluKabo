@@ -317,7 +317,8 @@ class ProjectRepository {
 
   ///
   /// [getProjectUsers] returns a List of all users associated with the given
-  /// project or throws a Failure if the api call failed for some reason
+  /// project (by [id]) or throws a Failure if the api call failed for some
+  /// reason
   ///
   Future<List<UserModel>> getProjectUsers(int id) async {
     final List<UserModel> users = [];
@@ -342,8 +343,8 @@ class ProjectRepository {
 
   ///
   /// [getProjectUsers] returns a List of all users associated with the given
-  /// project with a role higher than 'project-viewer' or throws a Failure if
-  /// the api call failed for some reason
+  /// project (by [id]) with a role higher than 'project-viewer' or throws a
+  /// Failure if the api call failed for some reason
   ///
   Future<List<UserModel>> getAssignableUsers(int id) async {
     final List<UserModel> users = [];
