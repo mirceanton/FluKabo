@@ -64,3 +64,26 @@ const Map<ProjectPermissionProcedures, String> projectPermissionCommands = {
   ProjectPermissionProcedures.changeGroupRole: 'changeProjectGroupRole',
   ProjectPermissionProcedures.getUserRole: 'getProjectUserRole',
 };
+
+///
+/// Project Metadata API Procedures
+/// doc: https://docs.kanboard.org/en/latest/api/project_metadata_procedures.html
+///
+/// [ProjectMetadataProcedures] enum of all the used API methods
+/// [projectMetadataCommands] map from [ProjectMetadataProcedures]
+///     -> actual api command
+///
+enum ProjectMetadataProcedures {
+  getAll,
+  getByKey,
+  add,
+  remove,
+  update,
+}
+
+const Map<ProjectMetadataProcedures, String> projectMetadataCommands = {
+  ProjectMetadataProcedures.getAll: 'getProjectMetadata',
+  ProjectMetadataProcedures.getByKey: 'getProjectMetadataByName',
+  ProjectMetadataProcedures.add: 'saveProjectMetadata',
+  ProjectMetadataProcedures.remove: 'removeProjectMetadata',
+};
