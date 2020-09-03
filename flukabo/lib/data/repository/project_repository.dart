@@ -619,4 +619,21 @@ class ProjectRepository {
       return false;
     }
   }
+
+  Future<Map<String, String>> getProjectMetadata({
+    @required int projectId,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectMetadataCommands[ProjectMetadataProcedures.getAll],
+      params: {'project_id': projectId.toString()},
+    );
+    final Map<String, dynamic> result =
+        jsonDecode(json)['result'] as Map<String, dynamic>;
+    if (result != null) {
+      return Map<String, String>.from(result);
+    } else {
+      print('Failed to fetch project metadata.');
+      return {};
+    }
+  }
 }
