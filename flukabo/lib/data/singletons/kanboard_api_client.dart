@@ -51,7 +51,7 @@ class KanboardAPI {
     @required String token,
     @required bool acceptCerts,
     @required String command,
-    @required Map<String, String> params,
+    @required Map<String, dynamic> params,
   }) async {
     final HttpClient httpClient = _getHttpClient(acceptCerts);
     final IOClient ioClient = IOClient(httpClient);
@@ -119,7 +119,7 @@ class KanboardAPI {
   ///
   Future<String> getJson({
     @required String command,
-    @required Map<String, String> params,
+    @required Map<String, dynamic> params,
   }) async {
     final Response response = await _sendRequest(
       url: UserPreferences().fullAddress,

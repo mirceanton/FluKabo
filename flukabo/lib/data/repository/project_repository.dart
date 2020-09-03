@@ -596,4 +596,27 @@ class ProjectRepository {
       return "";
     }
   }
+
+  Future<bool> addToProjectMetadata({
+    @required int projectId,
+    @required String key,
+    @required String value,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectMetadataCommands[ProjectMetadataProcedures.add],
+      params: {
+        'project_id': projectId.toString(),
+        'values': {key: value},
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false') {
+      print(
+          'Succesfully added metadata pair {$key: $value} to project $projectId');
+      return true;
+    } else {
+      print('Failed to add project metadata.');
+      return false;
+    }
+  }
 }
