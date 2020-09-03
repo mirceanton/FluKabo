@@ -439,4 +439,33 @@ class ProjectRepository {
       return false;
     }
   }
+
+  ///
+  /// [removeUserFromProject] returns a true if the given user was successfully
+  /// removed from the given project, and false otherwise
+  ///
+  /// the given project is identified by the [projectId] and the user via the
+  /// [userId]
+  ///
+  Future<bool> removeUserFromProject({
+    @required int projectId,
+    @required int userId,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command:
+          projectPermissionCommands[ProjectPermissionProcedures.removeUser],
+      params: {
+        'project_id': projectId.toString(),
+        'user_id': userId.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false') {
+      print('Successfully removed user $userId from project $projectId');
+      return true;
+    } else {
+      print('Failed to remove user from project.');
+      return false;
+    }
+  }
 }
