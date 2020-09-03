@@ -403,4 +403,40 @@ class ProjectRepository {
       return false;
     }
   }
+
+  ///
+  /// [addGroupToProject] returns a true if the given group was successfully
+  /// added to the given project, and false otherwise
+  ///
+  /// the given project is identified by the [projectId] and the group via the
+  /// [groupId]
+  /// [role] represents the role the user has within that project, and basically
+  /// sets permissions for certain actions. This value is optional, and if none
+  /// is provided, the default is 'project-member' which is a
+  /// middle-of-the-road permission level, granting higher priviledges compared
+  /// to a 'project-viewer', but lower than a 'project-manager'
+  ///
+  Future<bool> addGroupToProject({
+    @required int projectId,
+    @required int groupId,
+    String role = 'project-member',
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: projectPermissionCommands[ProjectPermissionProcedures.addGroup],
+      params: {
+        'project_id': projectId.toString(),
+        'group_id': groupId.toString(),
+        'role': role,
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false') {
+      print(
+          'Successfully added group $groupId to project $projectId with the role of $role');
+      return result == 'true';
+    } else {
+      print('Failed to add group to project.');
+      return false;
+    }
+  }
 }
