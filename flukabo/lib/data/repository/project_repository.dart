@@ -444,8 +444,7 @@ class ProjectRepository {
   /// [removeUserFromProject] returns a true if the given user was successfully
   /// removed from the given project, and false otherwise
   ///
-  /// the given project is identified by the [projectId] and the user via the
-  /// [userId]
+  /// This function revokes access to user [userId] from group [groupId]
   ///
   Future<bool> removeUserFromProject({
     @required int projectId,
@@ -473,8 +472,7 @@ class ProjectRepository {
   /// [removeGroupFromProject] returns a true if the given group was
   /// successfully removed from the given project, and false otherwise
   ///
-  /// the given project is identified by the [projectId] and the group via the
-  /// [groupId]
+  /// This function revokes access to project [projectId] from group [groupId]
   ///
   Future<bool> removeGroupFromProject({
     @required int projectId,
@@ -494,6 +492,43 @@ class ProjectRepository {
       return true;
     } else {
       print('Failed to remove group from project.');
+      return false;
+    }
+  }
+
+  ///
+  /// [changeUserRole] returns a true if the given user was successfully
+  /// updated in the given project, and false otherwise
+  ///
+  /// the given project is identified by the [projectId] and the user via the
+  /// [userId]
+  /// [role] represents the role the user has within that project, and basically
+  /// sets permissions for certain actions. This value is optional, and if none
+  /// is provided, the default is 'project-member' which is a
+  /// middle-of-the-road permission level, granting higher priviledges compared
+  /// to a 'project-viewer', but lower than a 'project-manager'
+  ///
+  Future<bool> changeUserRole({
+    @required int projectId,
+    @required int userId,
+    String role = 'project-member',
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command:
+          projectPermissionCommands[ProjectPermissionProcedures.changeUserRole],
+      params: {
+        'project_id': projectId.toString(),
+        'user_id': userId.toString(),
+        'role': role,
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false') {
+      print(
+          'Successfully updated user $userId in project $projectId to the role of $role');
+      return true;
+    } else {
+      print('Failed to update user role in project.');
       return false;
     }
   }
