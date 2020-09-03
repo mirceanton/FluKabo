@@ -32,3 +32,35 @@ const Map<ProjectProcedures, String> projectCommands = {
   ProjectProcedures.disablePublicAccess: 'disableProjectPublicAccess',
   ProjectProcedures.getActivity: 'getProjectActivity'
 };
+
+///
+/// Project Permissions API Procedures
+/// doc: https://docs.kanboard.org/en/latest/api/project_permission_procedures.html
+///
+/// [ProjectPermissionProcedures] enum of all the used API methods
+/// [projectPermissionCommands] map from [ProjectPermissionProcedures]
+///     -> actual api command
+///
+enum ProjectPermissionProcedures {
+  getUsers,
+  getAssignableUsers,
+  addUser,
+  addGroup,
+  removeUser,
+  removeGroup,
+  changeUserRole,
+  changeGroupRole,
+  getUserRole,
+}
+
+const Map<ProjectPermissionProcedures, String> projectPermissionCommands = {
+  ProjectPermissionProcedures.getUsers: 'getProjectUsers',
+  ProjectPermissionProcedures.getAssignableUsers: 'getAssignableUsers',
+  ProjectPermissionProcedures.addUser: 'addProjectUser',
+  ProjectPermissionProcedures.addGroup: 'addProjectGroup',
+  ProjectPermissionProcedures.removeUser: 'removeProjectUser',
+  ProjectPermissionProcedures.removeGroup: 'removeProjectGroup',
+  ProjectPermissionProcedures.changeUserRole: 'changeProjectUserRole',
+  ProjectPermissionProcedures.changeGroupRole: 'changeProjectGroupRole',
+  ProjectPermissionProcedures.getUserRole: 'getProjectUserRole',
+};
