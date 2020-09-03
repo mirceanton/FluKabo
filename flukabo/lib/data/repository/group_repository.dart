@@ -135,7 +135,7 @@ class GroupRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully updated group $id.');
       return true;
     } else {
@@ -159,7 +159,7 @@ class GroupRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully removed group $id.');
       return true;
     } else {
@@ -210,7 +210,7 @@ class GroupRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully added user $userId to group $groupId.');
       return true;
     } else {
@@ -235,7 +235,7 @@ class GroupRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully removed user $userId from group $groupId.');
       return true;
     } else {
@@ -260,7 +260,7 @@ class GroupRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully fetched user $userId status in group $groupId.');
       return true;
     } else {

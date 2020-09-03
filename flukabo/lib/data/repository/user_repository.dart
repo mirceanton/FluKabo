@@ -95,10 +95,11 @@ class UserRepository {
       command: userCommands[UserProcedures.getByName],
       params: {'username': name},
     );
-    final result = jsonDecode(json)['result'];
+    final Map<String, dynamic> result =
+        jsonDecode(json)['result'] as Map<String, dynamic>;
     if (result != null) {
       print('Successfully fetched user $name.');
-      final Map<String, String> body = Map.from(result as Map<String, dynamic>);
+      final Map<String, String> body = Map.from(result);
       return UserModel.fromJson(body);
     } else {
       print('Failed to fetch user.');
@@ -164,7 +165,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully updated user $id.');
       return true;
     } else {
@@ -187,7 +188,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully removed user $id.');
       return true;
     } else {
@@ -210,7 +211,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully disabled user $id.');
       return true;
     } else {
@@ -233,7 +234,7 @@ class UserRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully enabled user $id.');
       return true;
     } else {

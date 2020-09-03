@@ -166,7 +166,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully updated project $id.');
       return true;
     } else {
@@ -189,7 +189,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully removed project $id.');
       return true;
     } else {
@@ -212,7 +212,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully disabled project $id.');
       return true;
     } else {
@@ -235,7 +235,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully enabled project $id.');
       return true;
     } else {
@@ -259,7 +259,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully disabled public access for project $id.');
       return true;
     } else {
@@ -282,7 +282,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully enabled public access for project $id.');
       return true;
     } else {
@@ -394,7 +394,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print(
           'Successfully added user $userId to project $projectId with the role of $role');
       return true;
@@ -430,7 +430,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print(
           'Successfully added group $groupId to project $projectId with the role of $role');
       return true;
@@ -459,7 +459,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully removed user $userId from project $projectId');
       return true;
     } else {
@@ -487,7 +487,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print('Successfully removed group $groupId from project $projectId');
       return true;
     } else {
@@ -523,7 +523,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print(
           'Successfully updated user $userId in project $projectId to the role of $role');
       return true;
@@ -560,7 +560,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print(
           'Successfully updated group $groupId in project $projectId to the role of $role');
       return true;
@@ -587,7 +587,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print(
           'Successfully fetched users $userId role within project $projectId');
       return result;
@@ -615,7 +615,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print(
           'Succesfully added metadata pair {$key: $value} to project $projectId');
       return true;
@@ -649,6 +649,9 @@ class ProjectRepository {
   ///
   /// [getProjectMetadataByKey] returns the metadata element associated to the
   /// given [key] for the project identified by [projectId]
+  /// If the given [projectId] is referencing an inexistent project or a project
+  /// to which the current active user has no access, then an instance of
+  /// Failure is thrown
   ///
   Future<String> getProjectMetadataByKey({
     @required int projectId,
@@ -662,7 +665,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print(
           'Successfully fetched metadata value $result from project $projectId');
       return result;
@@ -689,7 +692,7 @@ class ProjectRepository {
       },
     );
     final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false') {
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
       print(
           'Succesfully removed metadata identified by key:$key from project $projectId');
       return true;
