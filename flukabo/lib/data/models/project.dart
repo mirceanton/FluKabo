@@ -1,6 +1,7 @@
-import 'package:flukabo/data/helpers/json_parser.dart';
-import 'package:flukabo/ui/pages/project/project_board_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flukabo/data/helpers/json_parser.dart';
+import 'package:flukabo/data/repository/project_repository.dart';
+import 'package:flukabo/ui/pages/project/project_board_page.dart';
 
 class ProjectModel {
   int _id;
@@ -39,7 +40,6 @@ class ProjectModel {
   ProjectModel.fromJson(Map<String, dynamic> json) {
     _id = parseToInt(json['id'].toString());
     _name = parseToString(json['name'].toString());
-    _backgroundImage = "https://source.unsplash.com/random"; // FIXME
     _isActive = parseToBool(json['is_active'].toString());
     _token = parseToString(json['token'].toString());
     _lastModified = parseToDouble(json['last_modified'].toString());
@@ -63,17 +63,22 @@ class ProjectModel {
     _url = Map<String, String>.from(json['url'] as Map<String, dynamic>);
   }
 
+  Future fetchMetadata() async {
+    _backgroundImage = await ProjectRepository()
+        .getProjectMetadataByKey(projectId: _id, key: 'bgImage');
+  }
+
   // Getters for private fields
   int get id => _id;
   String get name => _name;
   String get backgroundImage => _backgroundImage;
   bool get isPrivate => _isPrivate;
-  IconData get privacyIcon => _isPrivate ? Icons.lock : null;
+  IconData get privacyIcon => _isPrivate ? Icons.lock_outline : Icons.lock_open;
   bool get isActive => _isActive;
   String get token => _token;
   double get lastModified => _lastModified;
   bool get isPublic => _isPublic;
-  IconData get publicIcon => _isPublic ? Icons.group : null; // FIXME
+  IconData get publicIcon => _isPublic ? Icons.group : Icons.person;
   String get description => _description;
   String get identifier => _identifier;
   double get startDate => _startDate;
