@@ -55,6 +55,10 @@ class TagRepository {
     }
   }
 
+  ///
+  /// [getAllTags] returns a list of all of the available tags
+  /// If the api call failed for some reason, an instance of Failure is thrown
+  ///
   Future<List<TagModel>> getAllTags() async {
     final List<TagModel> tags = [];
     final String json = await KanboardAPI().getJson(
@@ -76,6 +80,11 @@ class TagRepository {
     }
   }
 
+  ///
+  /// [getTagsByProject] returns a list of all of the tags associated to the
+  /// project identified by the [projectId]
+  /// If the api call failed for some reason, an instance of Failure is thrown
+  ///
   Future<List<TagModel>> getTagsByProject(int projectId) async {
     final List<TagModel> tags = [];
     final String json = await KanboardAPI().getJson(
@@ -99,6 +108,11 @@ class TagRepository {
     }
   }
 
+  ///
+  /// [updateTag] returns true if the name of the tag [tagId] was changed to
+  /// [tagName] or false if the change failed
+  /// If the api call failed for some reason, an instance of Failure is thrown
+  ///
   Future<bool> updateTag({
     @required int tagId,
     @required String tagName,
@@ -120,6 +134,11 @@ class TagRepository {
     }
   }
 
+  ///
+  /// [removeTag] returns true if the tag was successfully removed from the
+  /// database
+  ///! This action cannot be undone
+  ///
   Future<bool> removeTag(int tagId) async {
     final String json = await KanboardAPI().getJson(
       command: tagCommands[TagProcedures.remove],
@@ -136,4 +155,8 @@ class TagRepository {
       return false;
     }
   }
+
+  // TODO addTagToTask
+  // TODO removeTagFromTask
+  // TODO getTaskTags
 }
