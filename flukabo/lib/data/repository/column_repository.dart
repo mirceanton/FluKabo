@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flukabo/data/models/column.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/api_procedures/column_procedures.dart';
 import 'package:flutter/material.dart';
@@ -49,12 +50,31 @@ class ColumnRepository {
     );
     final String response = jsonDecode(json)['result'].toString();
     if (response == 'false' || response == 'null' || response.isEmpty) {
-      print('Failed to create group');
+      print('Failed to create column');
       return false;
     } else {
       final int statusCode = response == 'false' ? 0 : int.parse(response);
-      print('Group created succesfully. GID: $statusCode');
+      print('Column created succesfully. GID: $statusCode');
       return true;
+    }
+  }
+
+  ///
+  /// [getColumnById] returns a Column object if the given id was valid, ot throws
+  /// an instance of failure otherwise
+  ///
+  Future<ColumnModel> getColumnById(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: columnCommands[ColumnProcedures.get],
+      params: {'column_id': id.toString()},
+    );
+    final Map<String, dynamic> result =
+        jsonDecode(json)['result'] as Map<String, dynamic>;
+    if (result != null) {
+      print('Successfully fetched column $id.');
+      return ColumnModel.fromJson(result);
+    } else {
+      throw const Failure('Failed to fetch column.');
     }
   }
 }
