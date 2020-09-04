@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flukabo/data/models/tag.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/api_procedures/tag_procedures.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,27 @@ class TagRepository {
     } else {
       print('Tag created succesfully. ID: $statusCode');
       return true;
+    }
+  }
+
+  Future<List<TagModel>> getAllTags() async {
+    final List<TagModel> tags = [];
+    final String json = await KanboardAPI().getJson(
+      command: tagCommands[TagProcedures.getAll],
+      params: {},
+    );
+    final List result = jsonDecode(json)['result'] as List;
+    if (result != null) {
+      for (int i = 0; i < result.length; i++) {
+        tags.add(
+          TagModel.fromJson(Map.from(result[i] as Map<String, dynamic>)),
+        );
+      }
+      print('Succesfully fetched ${tags.length} tags.');
+      return tags;
+    } else {
+      print('Failed to fetch tags.');
+      throw const Failure('Failed to fetch tags.');
     }
   }
 }
