@@ -75,4 +75,27 @@ class TagRepository {
       throw const Failure('Failed to fetch tags.');
     }
   }
+
+  Future<List<TagModel>> getTagsByProject(int projectId) async {
+    final List<TagModel> tags = [];
+    final String json = await KanboardAPI().getJson(
+      command: tagCommands[TagProcedures.getByProject],
+      params: {'project_id': projectId.toString()},
+    );
+    final List result = jsonDecode(json)['result'] as List;
+    if (result != null) {
+      for (int i = 0; i < result.length; i++) {
+        tags.add(
+          TagModel.fromJson(Map.from(result[i] as Map<String, dynamic>)),
+        );
+      }
+      print(
+        'Succesfully fetched ${tags.length} tags linked to the project $projectId.',
+      );
+      return tags;
+    } else {
+      print('Failed to fetch tags.');
+      throw const Failure('Failed to fetch tags.');
+    }
+  }
 }
