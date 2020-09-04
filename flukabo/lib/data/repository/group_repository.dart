@@ -69,11 +69,11 @@ class GroupRepository {
       command: groupCommands[GroupProcedures.get],
       params: {'group_id': id.toString()},
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null') {
-      final Map<String, String> body = Map.from(result as Map<String, dynamic>);
+    final Map<String, dynamic> result =
+        jsonDecode(json)['result'] as Map<String, dynamic>;
+    if (result != null) {
       print('Successfully fetched group $id.');
-      return GroupModel.fromJson(body);
+      return GroupModel.fromJson(result);
     } else {
       throw const Failure('Failed to fetch group.');
     }
