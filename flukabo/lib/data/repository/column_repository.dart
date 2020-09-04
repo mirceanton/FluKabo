@@ -150,6 +150,35 @@ class ColumnRepository {
   }
 
   ///
+  /// [moveColumn] returns true if the [columnId] was successfully moved to the
+  /// [newPosition] in [projectId] board view
+  ///
+  Future<bool> moveColumn({
+    @required int projectId,
+    @required int columnId,
+    @required int newPosition,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: columnCommands[ColumnProcedures.relocate],
+      params: {
+        'project_id': projectId.toString(),
+        'column_id': columnId.toString(),
+        'position': newPosition.toString(),
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
+      print(
+        "Successfully moved column $columnId from project $projectId to position $newPosition.",
+      );
+      return true;
+    } else {
+      print('Failed to update column.');
+      return false;
+    }
+  }
+
+  ///
   /// [removeColumn] returns true if the column was successfully removed, or
   /// false otherwise
   /// This function completely removes the column from the databse
