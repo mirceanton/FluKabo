@@ -77,4 +77,49 @@ class ColumnRepository {
       throw const Failure('Failed to fetch column.');
     }
   }
+
+  ///
+  /// [updateColumn] returns true if the column was updated successfully or
+  /// false otherwise
+  ///
+  /// [id] is the only required field, as this is the identifier by which we
+  /// get the column which we want to update
+  /// [title] is also required as this is also the only required field in the
+  /// create method
+  /// All the other fields, [taskLimit] and [description] are completely
+  /// optional and will be kept unchanged if no value is provided
+  ///
+  Future<bool> updateColumn({
+    @required int id,
+    @required String title,
+    int taskLimit = -1,
+    String description = '',
+  }) async {
+    ColumnModel column;
+    try {
+      column = await getColumnById(id);
+    } on Failure catch (f) {
+      print(f.message);
+      rethrow;
+    }
+    final String json = await KanboardAPI().getJson(
+      command: columnCommands[ColumnProcedures.update],
+      params: {
+        'column_id': id.toString(),
+        'title': title,
+        'task_limit': taskLimit == -1
+            ? column.taskLimit.toString()
+            : taskLimit.toString(),
+        'description': description.isEmpty ? column.description : description,
+      },
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
+      print('Successfully updated column $id.');
+      return true;
+    } else {
+      print('Failed to update column.');
+      return false;
+    }
+  }
 }
