@@ -122,4 +122,26 @@ class ColumnRepository {
       return false;
     }
   }
+
+  ///
+  /// [removeColumn] returns true if the column was successfully removed, or
+  /// false otherwise
+  /// This function completely removes the column from the databse
+  ///! The deletion will fail if the column has tasks in it
+  ///! Be careful, as this action cannot be undone
+  ///
+  Future<bool> removeColumn(int id) async {
+    final String json = await KanboardAPI().getJson(
+      command: columnCommands[ColumnProcedures.remove],
+      params: {'column_id': id.toString()},
+    );
+    final String result = jsonDecode(json)['result'].toString();
+    if (result != 'null' && result != 'false' && result.isNotEmpty) {
+      print('Successfully removed column $id.');
+      return true;
+    } else {
+      print('Failed to remove column.');
+      return false;
+    }
+  }
 }
