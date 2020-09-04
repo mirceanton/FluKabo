@@ -8,18 +8,8 @@ class ColumnModel {
   int _position;
   int _projectId;
   int _taskLimit;
+  String _description;
 
-  ColumnModel({
-    int id,
-    String title,
-    int position,
-    int projectId,
-    int taskLimit,
-  })  : _id = id,
-        _title = title,
-        _position = position,
-        _projectId = projectId,
-        _taskLimit = taskLimit;
   ColumnModel.empty();
   ColumnModel.fromJson(Map<String, dynamic> json) {
     _id = parseToInt(json['id'].toString());
@@ -27,6 +17,7 @@ class ColumnModel {
     _position = parseToInt(json['position'].toString());
     _taskLimit = parseToInt(json['task_limit'].toString());
     _title = parseToString(json['title'].toString());
+    _description = parseToString(json['description'].toString());
   }
 
   // Getters for private fields
@@ -37,4 +28,5 @@ class ColumnModel {
   Future<ProjectModel> get project async =>
       ProjectRepository().getProjectById(_projectId);
   int get taskLimit => _taskLimit;
+  String get description => _description;
 }
