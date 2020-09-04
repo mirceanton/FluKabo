@@ -119,4 +119,21 @@ class TagRepository {
       return false;
     }
   }
+
+  Future<bool> removeTag(int tagId) async {
+    final String json = await KanboardAPI().getJson(
+      command: tagCommands[TagProcedures.remove],
+      params: {
+        'tag_id': tagId.toString(),
+      },
+    );
+    final String response = jsonDecode(json)['result'].toString();
+    if (response != 'false' && response != 'null' && response.isNotEmpty) {
+      print('Tag $tagId removed successfully.');
+      return true;
+    } else {
+      print('Failed to remove tag');
+      return false;
+    }
+  }
 }
