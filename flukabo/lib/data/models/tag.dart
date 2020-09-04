@@ -11,6 +11,11 @@ class TagModel {
   String _name;
   String _colorId;
 
+  TagModel({int id, String name, int projectId, String colorId})
+      : _id = id,
+        _projectId = projectId,
+        _name = name,
+        _colorId = colorId;
   TagModel.empty();
   TagModel.fromJson(Map<String, dynamic> json) {
     _id = parseToInt(json['id'].toString());
