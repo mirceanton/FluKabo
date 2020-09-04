@@ -45,11 +45,11 @@ class TagRepository {
       },
     );
     final String response = jsonDecode(json)['result'].toString();
-    final int statusCode = response == 'false' ? 0 : int.parse(response);
     if (response == 'false' || response == 'null' || response.isEmpty) {
       print('Failed to create tag');
       return false;
     } else {
+      final int statusCode = response == 'false' ? 0 : int.parse(response);
       print('Tag created succesfully. ID: $statusCode');
       return true;
     }
@@ -96,6 +96,27 @@ class TagRepository {
     } else {
       print('Failed to fetch tags.');
       throw const Failure('Failed to fetch tags.');
+    }
+  }
+
+  Future<bool> updateTag({
+    @required int tagId,
+    @required String tagName,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: tagCommands[TagProcedures.update],
+      params: {
+        'tag_id': tagId.toString(),
+        'tag': tagName,
+      },
+    );
+    final String response = jsonDecode(json)['result'].toString();
+    if (response != 'false' && response != 'null' && response.isNotEmpty) {
+      print('Tag $tagId name changed to $tagName.');
+      return true;
+    } else {
+      print('Failed to update tag');
+      return false;
     }
   }
 }
