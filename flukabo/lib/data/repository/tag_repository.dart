@@ -1,3 +1,9 @@
+import 'dart:convert';
+
+import 'package:flukabo/data/singletons/kanboard_api_client.dart';
+import 'package:flukabo/res/kanboard/api_procedures/tag_procedures.dart';
+import 'package:flutter/material.dart';
+
 ///
 /// This is a singleton meant to encapsulate all the methods associated with
 /// the tags management functionality provided by the web app.
@@ -17,4 +23,34 @@ class TagRepository {
 
   factory TagRepository() => _instance;
   TagRepository._constructor(); // empty constructor
+
+  ///
+  /// [createTag] returns true if the tag was created successfully ot false
+  /// otherwise
+  ///
+  /// all tags are linked to projects, so [projectId] is a required field
+  /// Also, all tags are just a string of text, so the field [tagName] is also
+  /// required
+  ///
+  Future<bool> createTag({
+    @required int projectId,
+    @required String tagName,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: tagCommands[TagProcedures.create],
+      params: {
+        'project_id': projectId.toString(),
+        'tag': tagName,
+      },
+    );
+    final String response = jsonDecode(json)['result'].toString();
+    final int statusCode = response == 'false' ? 0 : int.parse(response);
+    if (response == 'false' || response == 'null' || response.isEmpty) {
+      print('Failed to create tag');
+      return false;
+    } else {
+      print('Tag created succesfully. ID: $statusCode');
+      return true;
+    }
+  }
 }
