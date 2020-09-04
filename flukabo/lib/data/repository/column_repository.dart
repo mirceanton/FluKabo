@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 ///
 /// This is a singleton meant to encapsulate all the methods associated with
-/// the group management feature provided to admin users.
+/// the column management
 ///
 /// It includes the following functionality:
 ///   - Create Column
