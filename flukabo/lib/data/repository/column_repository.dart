@@ -79,6 +79,32 @@ class ColumnRepository {
   }
 
   ///
+  /// [getColumnsForProject] returns a list of all of the columns from the
+  /// projects [projectId] board
+  /// if the id is invalid, an instance of Failure is thrown
+  ///
+  Future<List<ColumnModel>> getColumnsForProject(int projectId) async {
+    final List<ColumnModel> columns = [];
+    final String json = await KanboardAPI().getJson(
+      command: columnCommands[ColumnProcedures.getAll],
+      params: {'project_id': projectId.toString()},
+    );
+    final List result = jsonDecode(json)['result'] as List;
+    if (result != null) {
+      for (int i = 0; i < result.length; i++) {
+        columns.add(
+          ColumnModel.fromJson(Map.from(result[i] as Map<String, dynamic>)),
+        );
+      }
+      print('Succesfully fetched ${columns.length} columns.');
+      return columns;
+    } else {
+      print('Failed to fetch columns.');
+      throw const Failure('Failed to fetch columns.');
+    }
+  }
+
+  ///
   /// [updateColumn] returns true if the column was updated successfully or
   /// false otherwise
   ///
