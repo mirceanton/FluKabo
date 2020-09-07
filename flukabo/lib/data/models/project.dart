@@ -1,9 +1,10 @@
+import 'package:flukabo/data/models/template_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flukabo/data/helpers/json_parser.dart';
 import 'package:flukabo/data/repository/project_repository.dart';
 import 'package:flukabo/ui/pages/project/project_board_page.dart';
 
-class ProjectModel {
+class ProjectModel extends TemplateModel {
   int _id;
   String _name;
   String _backgroundImage;
@@ -24,6 +25,8 @@ class ProjectModel {
   bool _enableGlobalTags;
   Map<String, String> _url;
 
+  // Constructors
+  // TODO this is a dummy constructor made for testing. DELETEME
   ProjectModel({
     int id,
     String name,
@@ -63,11 +66,6 @@ class ProjectModel {
     _url = Map<String, String>.from(json['url'] as Map<String, dynamic>);
   }
 
-  Future fetchMetadata() async {
-    _backgroundImage = await ProjectRepository()
-        .getProjectMetadataByKey(projectId: _id, key: 'bgImage');
-  }
-
   // Getters for private fields
   int get id => _id;
   String get name => _name;
@@ -93,6 +91,22 @@ class ProjectModel {
   int get taskLimit => _taskLimit;
   bool get enableGlobalTags => _enableGlobalTags;
   Map<String, String> get url => _url;
+  @override
+  String get type => 'project';
+
+  @override
+  ProjectModel fromJson(Map<String, dynamic> json) =>
+      ProjectModel.fromJson(json);
+
+  ///
+  /// [fetchMetadata] makes an api call to retrieve the metadata fields
+  /// containing the link to the background image and caches it into
+  /// [_backgroundImage]
+  ///
+  Future fetchMetadata() async {
+    _backgroundImage = await ProjectRepository()
+        .getProjectMetadataByKey(projectId: _id, key: 'bgImage');
+  }
 
   ///
   /// [navigate] creates a MaterialNavigationRoute to the board page and passes

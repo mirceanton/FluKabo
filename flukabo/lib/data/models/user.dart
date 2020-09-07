@@ -1,6 +1,7 @@
 import 'package:flukabo/data/helpers/json_parser.dart';
+import 'package:flukabo/data/models/template_model.dart';
 
-class UserModel {
+class UserModel extends TemplateModel {
   int _id;
   String _username;
   String _password;
@@ -26,8 +27,9 @@ class UserModel {
   String _lockExpirationDate;
   String _filter;
 
+  // Constructors
   UserModel.empty();
-  UserModel.fromJson(Map<String, String> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     _id = parseToInt(json['id'].toString());
     _username = parseToString(json['username'].toString());
     _password = parseToString(json['password'].toString());
@@ -48,7 +50,7 @@ class UserModel {
     _failedLogins = parseToInt(json['nb_failed_login'].toString());
     _lockExpirationDate =
         parseToString(json['lock_expiration_date'].toString());
-    _gitlabId = json['gitlab_id'] == null ? 0 : int.parse(json['gitlab_id']);
+    _gitlabId = parseToInt(json['gitlab_id'].toString());
     _role = parseToString(json['role'].toString());
     _isActive = parseToBool(json['is_active'].toString());
     _avatar = parseToString(json['avatar_path'].toString());
@@ -81,4 +83,9 @@ class UserModel {
   String get apiToken => _apiToken;
   String get lockExpirationDate => _lockExpirationDate;
   String get filter => _filter;
+  @override
+  String get type => 'user';
+
+  @override
+  UserModel fromJson(Map<String, dynamic> json) => UserModel.fromJson(json);
 }

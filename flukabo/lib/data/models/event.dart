@@ -1,10 +1,11 @@
 import 'package:flukabo/data/helpers/json_parser.dart';
 import 'package:flukabo/data/models/project.dart';
+import 'package:flukabo/data/models/template_model.dart';
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/repository/project_repository.dart';
 import 'package:flukabo/data/repository/user_repository.dart';
 
-class EventModel {
+class EventModel extends TemplateModel {
   int _id;
   int _taskId;
   int _projectId;
@@ -12,6 +13,7 @@ class EventModel {
   double _date;
   String _title;
 
+  // Constructors
   EventModel.empty();
   EventModel.fromJson(Map<String, dynamic> json) {
     _id = parseToInt(json['id'].toString());
@@ -33,4 +35,9 @@ class EventModel {
   Future<UserModel> get author async => UserRepository().getUserById(_authorId);
   double get date => _date;
   String get title => _title;
+  @override
+  String get type => 'event';
+
+  @override
+  EventModel fromJson(Map<String, dynamic> json) => EventModel.fromJson(json);
 }

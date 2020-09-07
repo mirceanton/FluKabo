@@ -1,21 +1,26 @@
-class GroupModel {
+import 'package:flukabo/data/helpers/json_parser.dart';
+import 'package:flukabo/data/models/template_model.dart';
+
+class GroupModel extends TemplateModel {
   int _id;
   int _eId;
   String _name;
 
-  GroupModel({String name, int id, int eId})
-      : _id = id,
-        _eId = eId,
-        _name = name;
-  GroupModel.fromJson(Map<String, dynamic> json)
-      : _id = int.parse(json['id'].toString()),
-        _eId = json['external_id'].toString().isEmpty
-            ? 0
-            : int.parse(json['external_id'].toString()),
-        _name = json['name'].toString();
+  // Constructors
   GroupModel.empty();
+  GroupModel.fromJson(Map<String, dynamic> json) {
+    _id = parseToInt(json['id'].toString());
+    _eId = parseToInt(json['external_id'].toString());
+    _name = parseToString(json['name'].toString());
+  }
 
+  // Getters for private fields
   int get id => _id;
   int get externalID => _eId;
   String get name => _name;
+  @override
+  String get type => 'group';
+
+  @override
+  GroupModel fromJson(Map<String, dynamic> json) => GroupModel.fromJson(json);
 }
