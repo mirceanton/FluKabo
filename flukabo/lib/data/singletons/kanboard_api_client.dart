@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flukabo/data/helpers/json_parser.dart';
+import 'package:flukabo/data/models/template_model.dart';
 import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -130,5 +132,104 @@ class KanboardAPI {
       params: params,
     );
     return response.body;
+  }
+
+  Future<bool> getBool({
+    @required String command,
+    @required Map<String, dynamic> params,
+  }) async {
+    final Response response = await _sendRequest(
+      url: UserPreferences().fullAddress,
+      user: UserPreferences().userName,
+      token: UserPreferences().token,
+      acceptCerts: UserPreferences().acceptAllCerts,
+      command: command,
+      params: params,
+    );
+    final String body = jsonDecode(response.body)['result'].toString();
+    if (body == 'false' || body == 'null' || body.isEmpty) {
+      print('Request failed.');
+      throw const Failure('Failed request for boolean value');
+    } else {
+      final bool value = parseToBool(body);
+      print('Request succeded. Fetched value: $value');
+      return value;
+    }
+  }
+
+  Future<int> getInt({
+    @required String command,
+    @required Map<String, dynamic> params,
+  }) async {
+    final Response response = await _sendRequest(
+      url: UserPreferences().fullAddress,
+      user: UserPreferences().userName,
+      token: UserPreferences().token,
+      acceptCerts: UserPreferences().acceptAllCerts,
+      command: command,
+      params: params,
+    );
+    final String body = jsonDecode(response.body)['result'].toString();
+    if (body == 'false' || body == 'null' || body.isEmpty) {
+      print('Request failed.');
+      throw const Failure('Failed request for integer value.');
+    } else {
+      final int statusCode = int.parse(body);
+      print('Request succeded. Fetched int value: $statusCode');
+      return statusCode;
+    }
+  }
+
+  Future<T> getObject<T extends TemplateModel>({
+    @required String command,
+    @required Map<String, dynamic> params,
+  }) async {
+    final Response response = await _sendRequest(
+      url: UserPreferences().fullAddress,
+      user: UserPreferences().userName,
+      token: UserPreferences().token,
+      acceptCerts: UserPreferences().acceptAllCerts,
+      command: command,
+      params: params,
+    );
+    T object;
+    final Map<String, dynamic> body =
+        jsonDecode(response.body)['result'] as Map<String, dynamic>;
+    if (body == null) {
+      print('Request failed.');
+      throw const Failure('Failed request to fetch object.');
+    } else {
+      object = (T as TemplateModel).fromJson(body) as T;
+      print('Successfully fetched ${object.type}');
+      return object;
+    }
+  }
+
+  Future<List<T>> getObjectList<T extends TemplateModel>({
+    @required String command,
+    @required Map<String, dynamic> params,
+  }) async {
+    final Response response = await _sendRequest(
+      url: UserPreferences().fullAddress,
+      user: UserPreferences().userName,
+      token: UserPreferences().token,
+      acceptCerts: UserPreferences().acceptAllCerts,
+      command: command,
+      params: params,
+    );
+    final List result = jsonDecode(response.body)['result'] as List;
+    if (result == null || result.isEmpty) {
+      print('Failed to fetch object list.');
+      throw const Failure('Failed to fetch object list.');
+    } else {
+      final List<T> objects = [];
+      for (int i = 0; i < result.length; i++) {
+        objects.add(
+          (T as TemplateModel).fromJson(result[i] as Map<String, dynamic>) as T,
+        );
+      }
+      print('Successfully fetched ${objects.length} ${objects[0].type}');
+      return objects;
+    }
   }
 }
