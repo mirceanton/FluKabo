@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/api_procedures/application_procedures.dart';
 import 'package:flukabo/res/kanboard/kanboard_colors.dart';
@@ -26,40 +24,26 @@ class KanboardRepository {
 
   /// [init] fetches and caches all the fields
   Future<void> init() async {
-    version =
-        await _parseString(kanboardCommands[ApplicationProcedures.version]);
-    timezone =
-        await _parseString(kanboardCommands[ApplicationProcedures.timezone]);
-    applicationRoles = await _parseMap(
-        kanboardCommands[ApplicationProcedures.applicationRoles]);
-    projectRoles =
-        await _parseMap(kanboardCommands[ApplicationProcedures.projectRoles]);
-    defaultTaskColor = defaultColors[await _parseString(
-        kanboardCommands[ApplicationProcedures.defaultTaskColor])];
-  }
-
-  ///
-  /// [_parseString] returns a single string parsed from the json output of the
-  /// given command
-  ///
-  Future<String> _parseString(String command) async {
-    final String json = await KanboardAPI().getJson(
-      command: command,
+    version = await KanboardAPI().getString(
+      command: kanboardCommands[ApplicationProcedures.version],
       params: {},
     );
-    return jsonDecode(json)['result'].toString();
-  }
-
-  ///
-  /// [_parseMap] returns a Map of strings parsed from the json output of the
-  /// given command
-  ///
-  Future<Map<String, String>> _parseMap(String command) async {
-    final String json = await KanboardAPI().getJson(
-      command: command,
+    timezone = await KanboardAPI().getString(
+      command: kanboardCommands[ApplicationProcedures.timezone],
       params: {},
     );
-    return Map.from(jsonDecode(json)['result'] as Map<String, dynamic>);
+    applicationRoles = await KanboardAPI().getMap<String, String>(
+      command: kanboardCommands[ApplicationProcedures.applicationRoles],
+      params: {},
+    );
+    projectRoles = await KanboardAPI().getMap<String, String>(
+      command: kanboardCommands[ApplicationProcedures.projectRoles],
+      params: {},
+    );
+    defaultTaskColor = defaultColors[await KanboardAPI().getString(
+      command: kanboardCommands[ApplicationProcedures.defaultTaskColor],
+      params: {},
+    )];
   }
 
   // todo DELETEME

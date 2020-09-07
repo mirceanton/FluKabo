@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flukabo/data/models/tag.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/api_procedures/tag_procedures.dart';
@@ -26,33 +24,25 @@ class TagRepository {
   TagRepository._constructor(); // empty constructor
 
   ///
-  /// [createTag] returns true if the tag was created successfully ot false
-  /// otherwise
+  /// [createTag] returns the id of the newly created tag if the creation was
+  /// successfull. If the creation failed, an instance of Failure is thrown
   ///
   /// all tags are linked to projects, so [projectId] is a required field
   /// Also, all tags are just a string of text, so the field [tagName] is also
   /// required
   ///
-  Future<bool> createTag({
+  Future<int> createTag({
     @required int projectId,
     @required String tagName,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final int statusCode = await KanboardAPI().getInt(
       command: tagCommands[TagProcedures.create],
       params: {
         'project_id': projectId.toString(),
         'tag': tagName,
       },
     );
-    final String response = jsonDecode(json)['result'].toString();
-    if (response == 'false' || response == 'null' || response.isEmpty) {
-      print('Failed to create tag');
-      return false;
-    } else {
-      final int statusCode = response == 'false' ? 0 : int.parse(response);
-      print('Tag created succesfully. ID: $statusCode');
-      return true;
-    }
+    return statusCode;
   }
 
   ///
@@ -60,24 +50,11 @@ class TagRepository {
   /// If the api call failed for some reason, an instance of Failure is thrown
   ///
   Future<List<TagModel>> getAllTags() async {
-    final List<TagModel> tags = [];
-    final String json = await KanboardAPI().getJson(
+    final List<TagModel> tags = await KanboardAPI().getObjectList<TagModel>(
       command: tagCommands[TagProcedures.getAll],
       params: {},
     );
-    final List result = jsonDecode(json)['result'] as List;
-    if (result != null) {
-      for (int i = 0; i < result.length; i++) {
-        tags.add(
-          TagModel.fromJson(Map.from(result[i] as Map<String, dynamic>)),
-        );
-      }
-      print('Succesfully fetched ${tags.length} tags.');
-      return tags;
-    } else {
-      print('Failed to fetch tags.');
-      throw const Failure('Failed to fetch tags.');
-    }
+    return tags;
   }
 
   ///
@@ -86,26 +63,11 @@ class TagRepository {
   /// If the api call failed for some reason, an instance of Failure is thrown
   ///
   Future<List<TagModel>> getTagsByProject(int projectId) async {
-    final List<TagModel> tags = [];
-    final String json = await KanboardAPI().getJson(
+    final List<TagModel> tags = await KanboardAPI().getObjectList<TagModel>(
       command: tagCommands[TagProcedures.getByProject],
       params: {'project_id': projectId.toString()},
     );
-    final List result = jsonDecode(json)['result'] as List;
-    if (result != null) {
-      for (int i = 0; i < result.length; i++) {
-        tags.add(
-          TagModel.fromJson(Map.from(result[i] as Map<String, dynamic>)),
-        );
-      }
-      print(
-        'Succesfully fetched ${tags.length} tags linked to the project $projectId.',
-      );
-      return tags;
-    } else {
-      print('Failed to fetch tags.');
-      throw const Failure('Failed to fetch tags.');
-    }
+    return tags;
   }
 
   ///
@@ -117,21 +79,14 @@ class TagRepository {
     @required int tagId,
     @required String tagName,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: tagCommands[TagProcedures.update],
       params: {
         'tag_id': tagId.toString(),
         'tag': tagName,
       },
     );
-    final String response = jsonDecode(json)['result'].toString();
-    if (response != 'false' && response != 'null' && response.isNotEmpty) {
-      print('Tag $tagId name changed to $tagName.');
-      return true;
-    } else {
-      print('Failed to update tag');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -140,20 +95,11 @@ class TagRepository {
   ///! This action cannot be undone
   ///
   Future<bool> removeTag(int tagId) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: tagCommands[TagProcedures.remove],
-      params: {
-        'tag_id': tagId.toString(),
-      },
+      params: {'tag_id': tagId.toString()},
     );
-    final String response = jsonDecode(json)['result'].toString();
-    if (response != 'false' && response != 'null' && response.isNotEmpty) {
-      print('Tag $tagId removed successfully.');
-      return true;
-    } else {
-      print('Failed to remove tag');
-      return false;
-    }
+    return status;
   }
 
   // TODO addTagToTask

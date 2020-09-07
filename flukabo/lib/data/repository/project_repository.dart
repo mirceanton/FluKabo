@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flukabo/data/models/event.dart';
 import 'package:flukabo/data/models/project.dart';
 import 'package:flukabo/data/models/user.dart';
-import 'package:flukabo/data/repository/user_repository.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/api_procedures/project_procedures.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +27,9 @@ class ProjectRepository {
   ProjectRepository._constructor(); // empty constructor
 
   ///
-  /// [createProject] returns true if the Project was succesfully created or
-  /// false otherwise.
+  /// [createProject] returns the id of the newly created project if the
+  /// creation was successfull. If the creation failed, an instance of Failure
+  /// is thrown
   ///
   /// [name] is required as all Projects must have a name
   /// [description], [ownerId] and [identifier] are optional parameters.
@@ -41,13 +39,13 @@ class ProjectRepository {
   /// the [id] of the newly created Project is the [statusCode] (as long as it
   /// is not 0. then if means there was an error)
   ///
-  Future<bool> createProject({
+  Future<int> createProject({
     @required String name,
     String description = '',
     int ownerId = 0,
     String identifier = '',
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final int statusCode = await KanboardAPI().getInt(
       command: projectCommands[ProjectProcedures.create],
       params: {
         'name': name,
@@ -56,15 +54,7 @@ class ProjectRepository {
         'identifier': identifier,
       },
     );
-    final String response = jsonDecode(json)['result'].toString();
-    final int statusCode = response == 'false' ? 0 : int.parse(response);
-    if (response == 'false') {
-      print('Failed to create Project');
-      return false;
-    } else {
-      print('Project created succesfully. ProjID: $statusCode');
-      return true;
-    }
+    return statusCode;
   }
 
   ///
@@ -72,18 +62,11 @@ class ProjectRepository {
   /// or throws a Failure otherwise
   ///
   Future<ProjectModel> getProjectById(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final ProjectModel project = await KanboardAPI().getObject<ProjectModel>(
       command: projectCommands[ProjectProcedures.getById],
       params: {'project_id': id.toString()},
     );
-    final Map<String, dynamic> result =
-        jsonDecode(json)['result'] as Map<String, dynamic>;
-    if (result != null) {
-      print('Successfully fetched project $id.');
-      return ProjectModel.fromJson(result);
-    } else {
-      throw const Failure('Failed to fetch project.');
-    }
+    return project;
   }
 
   ///
@@ -91,19 +74,11 @@ class ProjectRepository {
   /// or throws a Failure otherwise (also throws failure if name doesn't exist)
   ///
   Future<ProjectModel> getProjectByName(String name) async {
-    final String json = await KanboardAPI().getJson(
+    final ProjectModel project = await KanboardAPI().getObject<ProjectModel>(
       command: projectCommands[ProjectProcedures.getByName],
       params: {'name': name},
     );
-    final Map<String, dynamic> result =
-        jsonDecode(json)['result'] as Map<String, dynamic>;
-    if (result != null) {
-      print('Successfully fetched project $name.');
-      return ProjectModel.fromJson(result);
-    } else {
-      print('Failed to fetch user.');
-      throw const Failure('Failed to fetch user.');
-    }
+    return project;
   }
 
   ///
@@ -111,23 +86,12 @@ class ProjectRepository {
   /// or it throws a Failure if the api call failed for some reason
   ///
   Future<List<ProjectModel>> getAllProjects() async {
-    final List<ProjectModel> projects = [];
-    final String json = await KanboardAPI().getJson(
+    final List<ProjectModel> projects =
+        await KanboardAPI().getObjectList<ProjectModel>(
       command: projectCommands[ProjectProcedures.getAll],
       params: {},
     );
-    final List result = jsonDecode(json)['result'] as List;
-    if (result != null) {
-      for (int i = 0; i < result.length; i++) {
-        projects.add(
-            ProjectModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
-      }
-      print('Succesfully fetched ${projects.length} projects.');
-      return projects;
-    } else {
-      print('Failed to fetch projects.');
-      throw const Failure('Failed to fetch projects.');
-    }
+    return projects;
   }
 
   ///
@@ -147,14 +111,8 @@ class ProjectRepository {
     String description = '',
     String identifier = '',
   }) async {
-    ProjectModel project;
-    try {
-      project = await getProjectById(id);
-    } on Failure catch (f) {
-      print(f.message);
-      rethrow;
-    }
-    final String json = await KanboardAPI().getJson(
+    final ProjectModel project = await getProjectById(id);
+    final bool status = await KanboardAPI().getBool(
       command: projectCommands[ProjectProcedures.update],
       params: {
         'project_id': id.toString(),
@@ -165,14 +123,7 @@ class ProjectRepository {
         'identifier': identifier.isEmpty ? project.identifier : identifier,
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully updated project $id.');
-      return true;
-    } else {
-      print('Failed to fetch project.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -182,20 +133,13 @@ class ProjectRepository {
   ///! Be careful, as this action cannot be undone
   ///
   Future<bool> removeProject(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: projectCommands[ProjectProcedures.remove],
       params: {
         'project_id': id.toString(),
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully removed project $id.');
-      return true;
-    } else {
-      print('Failed to remove project.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -205,20 +149,11 @@ class ProjectRepository {
   /// This can be undone via the [enableProject] function
   ///
   Future<bool> disableProject(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: projectCommands[ProjectProcedures.disable],
-      params: {
-        'project_id': id.toString(),
-      },
+      params: {'project_id': id.toString()},
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully disabled project $id.');
-      return true;
-    } else {
-      print('Failed to disable project.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -228,20 +163,11 @@ class ProjectRepository {
   /// This can be undone via the [disableProject] function
   ///
   Future<bool> enableProject(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: projectCommands[ProjectProcedures.enable],
-      params: {
-        'project_id': id.toString(),
-      },
+      params: {'project_id': id.toString()},
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully enabled project $id.');
-      return true;
-    } else {
-      print('Failed to enable project.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -252,20 +178,11 @@ class ProjectRepository {
   /// This can be undone via the [enablePublicAccess] function
   ///
   Future<bool> disablePublicAccess(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: projectCommands[ProjectProcedures.disablePublicAccess],
-      params: {
-        'project_id': id.toString(),
-      },
+      params: {'project_id': id.toString()},
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully disabled public access for project $id.');
-      return true;
-    } else {
-      print('Failed to disable public access.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -275,20 +192,11 @@ class ProjectRepository {
   /// This can be undone via the [disablePublicAccess] function
   ///
   Future<bool> enablePublicAccess(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: projectCommands[ProjectProcedures.enablePublicAccess],
-      params: {
-        'project_id': id.toString(),
-      },
+      params: {'project_id': id.toString()},
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully enabled public access for project $id.');
-      return true;
-    } else {
-      print('Failed to enable public access.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -296,23 +204,12 @@ class ProjectRepository {
   /// or it throws a Failure if the api call failed for some reason
   ///
   Future<List<EventModel>> getFeed(int id) async {
-    final List<EventModel> events = [];
-    final String json = await KanboardAPI().getJson(
+    final List<EventModel> events =
+        await KanboardAPI().getObjectList<EventModel>(
       command: projectCommands[ProjectProcedures.getActivity],
       params: {'project_id': id.toString()},
     );
-    final List result = jsonDecode(json)['result'] as List;
-    if (result != null) {
-      for (int i = 0; i < result.length; i++) {
-        events.add(
-            EventModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
-      }
-      print('Succesfully fetched ${events.length} events.');
-      return events;
-    } else {
-      print('Failed to fetch events.');
-      throw const Failure('Failed to fetch events.');
-    }
+    return events;
   }
 
   ///
@@ -321,24 +218,11 @@ class ProjectRepository {
   /// reason
   ///
   Future<List<UserModel>> getProjectUsers(int id) async {
-    final List<UserModel> users = [];
-    final String json = await KanboardAPI().getJson(
+    final List<UserModel> users = await KanboardAPI().getObjectList<UserModel>(
       command: projectPermissionCommands[ProjectPermissionProcedures.getUsers],
       params: {'project_id': id.toString()},
     );
-    final Map<String, dynamic> result =
-        jsonDecode(json)['result'] as Map<String, dynamic>;
-    if (result != null) {
-      final List<String> ids = result.keys.toList();
-      for (int i = 0; i < ids.length; i++) {
-        users.add(await UserRepository().getUserById(int.parse(ids[i])));
-      }
-      print('Succesfully fetched ${users.length} users.');
-      return users;
-    } else {
-      print('Failed to fetch users.');
-      throw const Failure('Failed to fetch users.');
-    }
+    return users;
   }
 
   ///
@@ -347,25 +231,12 @@ class ProjectRepository {
   /// Failure if the api call failed for some reason
   ///
   Future<List<UserModel>> getAssignableUsers(int id) async {
-    final List<UserModel> users = [];
-    final String json = await KanboardAPI().getJson(
+    final List<UserModel> users = await KanboardAPI().getObjectList<UserModel>(
       command: projectPermissionCommands[
           ProjectPermissionProcedures.getAssignableUsers],
       params: {'project_id': id.toString()},
     );
-    final Map<String, dynamic> result =
-        jsonDecode(json)['result'] as Map<String, dynamic>;
-    if (result != null) {
-      final List<String> ids = result.keys.toList();
-      for (int i = 0; i < ids.length; i++) {
-        users.add(await UserRepository().getUserById(int.parse(ids[i])));
-      }
-      print('Succesfully fetched ${users.length} users.');
-      return users;
-    } else {
-      print('Failed to fetch users.');
-      throw const Failure('Failed to fetch users.');
-    }
+    return users;
   }
 
   ///
@@ -385,7 +256,7 @@ class ProjectRepository {
     @required int userId,
     String role = 'project-member',
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: projectPermissionCommands[ProjectPermissionProcedures.addUser],
       params: {
         'project_id': projectId.toString(),
@@ -393,15 +264,7 @@ class ProjectRepository {
         'role': role,
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print(
-          'Successfully added user $userId to project $projectId with the role of $role');
-      return true;
-    } else {
-      print('Failed to add user to project.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -421,7 +284,7 @@ class ProjectRepository {
     @required int groupId,
     String role = 'project-member',
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: projectPermissionCommands[ProjectPermissionProcedures.addGroup],
       params: {
         'project_id': projectId.toString(),
@@ -429,15 +292,7 @@ class ProjectRepository {
         'role': role,
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print(
-          'Successfully added group $groupId to project $projectId with the role of $role');
-      return true;
-    } else {
-      print('Failed to add group to project.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -450,7 +305,7 @@ class ProjectRepository {
     @required int projectId,
     @required int userId,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command:
           projectPermissionCommands[ProjectPermissionProcedures.removeUser],
       params: {
@@ -458,14 +313,7 @@ class ProjectRepository {
         'user_id': userId.toString(),
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully removed user $userId from project $projectId');
-      return true;
-    } else {
-      print('Failed to remove user from project.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -478,7 +326,7 @@ class ProjectRepository {
     @required int projectId,
     @required int groupId,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool result = await KanboardAPI().getBool(
       command:
           projectPermissionCommands[ProjectPermissionProcedures.removeGroup],
       params: {
@@ -486,14 +334,7 @@ class ProjectRepository {
         'group_id': groupId.toString(),
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully removed group $groupId from project $projectId');
-      return true;
-    } else {
-      print('Failed to remove group from project.');
-      return false;
-    }
+    return result;
   }
 
   ///
@@ -513,7 +354,7 @@ class ProjectRepository {
     @required int userId,
     String role = 'project-member',
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command:
           projectPermissionCommands[ProjectPermissionProcedures.changeUserRole],
       params: {
@@ -522,15 +363,7 @@ class ProjectRepository {
         'role': role,
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print(
-          'Successfully updated user $userId in project $projectId to the role of $role');
-      return true;
-    } else {
-      print('Failed to update user role in project.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -550,7 +383,7 @@ class ProjectRepository {
     @required int groupId,
     String role = 'project-member',
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: projectPermissionCommands[
           ProjectPermissionProcedures.changeGroupRole],
       params: {
@@ -559,15 +392,7 @@ class ProjectRepository {
         'role': role,
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print(
-          'Successfully updated group $groupId in project $projectId to the role of $role');
-      return true;
-    } else {
-      print('Failed to update group role in project.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -578,7 +403,7 @@ class ProjectRepository {
     @required int projectId,
     @required int userId,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final String value = await KanboardAPI().getString(
       command:
           projectPermissionCommands[ProjectPermissionProcedures.getUserRole],
       params: {
@@ -586,15 +411,7 @@ class ProjectRepository {
         'user_id': userId.toString(),
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print(
-          'Successfully fetched users $userId role within project $projectId');
-      return result;
-    } else {
-      print('Failed to fetch user role within project.');
-      return "";
-    }
+    return value;
   }
 
   ///
@@ -607,22 +424,14 @@ class ProjectRepository {
     @required String key,
     @required String value,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: projectMetadataCommands[ProjectMetadataProcedures.add],
       params: {
         'project_id': projectId.toString(),
         'values': {key: value},
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print(
-          'Succesfully added metadata pair {$key: $value} to project $projectId');
-      return true;
-    } else {
-      print('Failed to add project metadata.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -632,18 +441,12 @@ class ProjectRepository {
   Future<Map<String, String>> getProjectMetadata({
     @required int projectId,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final Map<String, String> metadata =
+        await KanboardAPI().getMap<String, String>(
       command: projectMetadataCommands[ProjectMetadataProcedures.getAll],
       params: {'project_id': projectId.toString()},
     );
-    final Map<String, dynamic> result =
-        jsonDecode(json)['result'] as Map<String, dynamic>;
-    if (result != null) {
-      return Map<String, String>.from(result);
-    } else {
-      print('Failed to fetch project metadata.');
-      return {};
-    }
+    return metadata;
   }
 
   ///
@@ -657,22 +460,14 @@ class ProjectRepository {
     @required int projectId,
     @required String key,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final String value = await KanboardAPI().getString(
       command: projectMetadataCommands[ProjectMetadataProcedures.getByKey],
       params: {
         'project_id': projectId.toString(),
         'name': key,
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print(
-          'Successfully fetched metadata value $result from project $projectId');
-      return result;
-    } else {
-      print('Failed to fetch metadata from project.');
-      return "";
-    }
+    return value;
   }
 
   ///
@@ -684,21 +479,13 @@ class ProjectRepository {
     @required int projectId,
     @required String key,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: projectMetadataCommands[ProjectMetadataProcedures.remove],
       params: {
         'project_id': projectId.toString(),
         'name': key,
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print(
-          'Succesfully removed metadata identified by key:$key from project $projectId');
-      return true;
-    } else {
-      print('Failed to remove project metadata.');
-      return false;
-    }
+    return status;
   }
 }

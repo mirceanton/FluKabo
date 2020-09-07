@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flukabo/data/models/group.dart';
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
@@ -30,34 +28,26 @@ class GroupRepository {
   GroupRepository._constructor(); // empty constructor
 
   ///
-  /// [createGroup] returns true if the group was succesfully created or false
-  /// otherwise.
+  /// [createGroup] returns the id of the newly created group if the creation
+  /// was successful. If the creation failed, it throws an instance of Failure
+  ///
   /// [name] is required as all groups must have a name
   /// [externalId] is an optional parameter. If no value is provided, the
   /// default is '0'
-  /// the [id] of the newly created group is the [statusCode] (as long as it is
-  /// not 0. then if means there was an error)
   ///
-  Future<bool> createGroup({
+  Future<int> createGroup({
     @required String name,
     int externalId = 0,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final int statusCode = await KanboardAPI().getInt(
       command: groupCommands[GroupProcedures.create],
       params: {
         'name': name,
         'external_id': externalId.toString(),
       },
     );
-    final String response = jsonDecode(json)['result'].toString();
-    final int statusCode = response == 'false' ? 0 : int.parse(response);
-    if (response == 'false' || response == 'null') {
-      print('Failed to create group');
-      return false;
-    } else {
-      print('Group created succesfully. GID: $statusCode');
-      return true;
-    }
+    print('Successfully fetched group $statusCode');
+    return statusCode;
   }
 
   ///
@@ -65,18 +55,11 @@ class GroupRepository {
   /// instance of failure otherwise
   ///
   Future<GroupModel> getGroup(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final GroupModel group = await KanboardAPI().getObject<GroupModel>(
       command: groupCommands[GroupProcedures.get],
       params: {'group_id': id.toString()},
     );
-    final Map<String, dynamic> result =
-        jsonDecode(json)['result'] as Map<String, dynamic>;
-    if (result != null) {
-      print('Successfully fetched group $id.');
-      return GroupModel.fromJson(result);
-    } else {
-      throw const Failure('Failed to fetch group.');
-    }
+    return group;
   }
 
   ///
@@ -84,23 +67,12 @@ class GroupRepository {
   /// throws an instance of  Failure if the api call failed for some reason
   ///
   Future<List<GroupModel>> getAllGroups() async {
-    final List<GroupModel> groups = [];
-    final String json = await KanboardAPI().getJson(
+    final List<GroupModel> groups =
+        await KanboardAPI().getObjectList<GroupModel>(
       command: groupCommands[GroupProcedures.getAll],
       params: {},
     );
-    final List result = jsonDecode(json)['result'] as List;
-    if (result != null) {
-      for (int i = 0; i < result.length; i++) {
-        groups.add(
-            GroupModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
-      }
-      print('Succesfully fetched ${groups.length} groups.');
-      return groups;
-    } else {
-      print('Failed to fetch groups.');
-      throw const Failure('Failed to fetch groups.');
-    }
+    return groups;
   }
 
   ///
@@ -117,14 +89,8 @@ class GroupRepository {
     String name = '',
     int externalId = -1,
   }) async {
-    GroupModel group;
-    try {
-      group = await getGroup(id);
-    } on Failure catch (f) {
-      print(f.message);
-      rethrow;
-    }
-    final String json = await KanboardAPI().getJson(
+    final GroupModel group = await getGroup(id);
+    final bool status = await KanboardAPI().getBool(
       command: groupCommands[GroupProcedures.update],
       params: {
         'group_id': id.toString(),
@@ -134,14 +100,7 @@ class GroupRepository {
             : externalId.toString(),
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully updated group $id.');
-      return true;
-    } else {
-      print('Failed to update group.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -152,20 +111,13 @@ class GroupRepository {
   ///! Be careful, as this action cannot be undone
   ///
   Future<bool> removeGroup(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: groupCommands[GroupProcedures.remove],
       params: {
         'group_id': id.toString(),
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully removed group $id.');
-      return true;
-    } else {
-      print('Failed to remove group.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -175,23 +127,11 @@ class GroupRepository {
   /// group
   ///
   Future<List<UserModel>> getMembersForGroup(int groupId) async {
-    final List<UserModel> users = [];
-    final String json = await KanboardAPI().getJson(
+    final List<UserModel> users = await KanboardAPI().getObjectList<UserModel>(
       command: membersCommands[MembersProcedures.getMembers],
       params: {'group_id': groupId.toString()},
     );
-    final List result = jsonDecode(json)['result'] as List;
-    if (result != null) {
-      for (int i = 0; i < result.length; i++) {
-        users.add(
-            UserModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
-      }
-      print('Succesfully fetched ${users.length} users.');
-      return users;
-    } else {
-      print('Failed to fetch users.');
-      throw const Failure('Failed to fetch users.');
-    }
+    return users;
   }
 
   ///
@@ -202,21 +142,14 @@ class GroupRepository {
     @required int userId,
     @required int groupId,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: membersCommands[MembersProcedures.addToGroup],
       params: {
         'group_id': groupId.toString(),
         'user_id': userId.toString(),
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully added user $userId to group $groupId.');
-      return true;
-    } else {
-      print('Failed to add user to group.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -227,21 +160,14 @@ class GroupRepository {
     @required int userId,
     @required int groupId,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: membersCommands[MembersProcedures.removeFromGroup],
       params: {
         'group_id': groupId.toString(),
         'user_id': userId.toString(),
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully removed user $userId from group $groupId.');
-      return true;
-    } else {
-      print('Failed to remove user from group.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -252,20 +178,13 @@ class GroupRepository {
     @required int userId,
     @required int groupId,
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: membersCommands[MembersProcedures.isInGroup],
       params: {
         'group_id': groupId.toString(),
         'user_id': userId.toString(),
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully fetched user $userId status in group $groupId.');
-      return true;
-    } else {
-      print('Failed to getch users group status.');
-      return false;
-    }
+    return status;
   }
 }

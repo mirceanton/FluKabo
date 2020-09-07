@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flukabo/data/models/group.dart';
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
@@ -27,8 +25,8 @@ class UserRepository {
   UserRepository._constructor(); // empty constructor
 
   ///
-  /// [createUser] returns true if the user was added successfully ot false
-  /// otherwise
+  /// [createUser] returns the id of the newly created user if the creation
+  /// was successfull. If the creation failed, an instance of Failure is thrown
   ///
   /// [username] and [password] are required, as all users have to have a way
   /// to log in
@@ -39,14 +37,14 @@ class UserRepository {
   /// In order to provide higher privileges for the user, make sure to specify
   /// the correct role, such as 'app-manager' or 'app-admin'
   ///
-  Future<bool> createUser({
+  Future<int> createUser({
     @required String username,
     @required String password,
     String name = '',
     String email = '',
     String role = 'app-user',
   }) async {
-    final String json = await KanboardAPI().getJson(
+    final int statusCode = await KanboardAPI().getInt(
       command: userCommands[UserProcedures.create],
       params: {
         'username': username,
@@ -56,15 +54,7 @@ class UserRepository {
         'role': role,
       },
     );
-    final String response = jsonDecode(json)['result'].toString();
-    final int statusCode = response == 'false' ? 0 : int.parse(response);
-    if (response == 'false' || response == 'null') {
-      print('Failed to add user');
-      return false;
-    } else {
-      print('User added succesfully. UID: $statusCode');
-      return true;
-    }
+    return statusCode;
   }
 
   ///
@@ -72,18 +62,11 @@ class UserRepository {
   /// or throws a Failure otherwise
   ///
   Future<UserModel> getUserById(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final UserModel user = await KanboardAPI().getObject<UserModel>(
       command: userCommands[UserProcedures.getById],
       params: {'user_id': id.toString()},
     );
-    final Map result = jsonDecode(json)['result'] as Map;
-    if (result != null) {
-      final Map<String, String> body = Map.from(result as Map<String, dynamic>);
-      print('Successfully fetched user $id.');
-      return UserModel.fromJson(body);
-    } else {
-      throw const Failure('Failed to fetch user.');
-    }
+    return user;
   }
 
   ///
@@ -91,20 +74,11 @@ class UserRepository {
   /// or throws a Failure otherwise (also throws failure if name doesn't exist)
   ///
   Future<UserModel> getUserByUsername(String name) async {
-    final String json = await KanboardAPI().getJson(
+    final UserModel user = await KanboardAPI().getObject<UserModel>(
       command: userCommands[UserProcedures.getByName],
       params: {'username': name},
     );
-    final Map<String, dynamic> result =
-        jsonDecode(json)['result'] as Map<String, dynamic>;
-    if (result != null) {
-      print('Successfully fetched user $name.');
-      final Map<String, String> body = Map.from(result);
-      return UserModel.fromJson(body);
-    } else {
-      print('Failed to fetch user.');
-      throw const Failure('Failed to fetch user.');
-    }
+    return user;
   }
 
   ///
@@ -112,23 +86,11 @@ class UserRepository {
   /// throws a Failure if the api call failed for some reason
   ///
   Future<List<UserModel>> getAllUsers() async {
-    final List<UserModel> users = [];
-    final String json = await KanboardAPI().getJson(
+    final List<UserModel> users = await KanboardAPI().getObjectList<UserModel>(
       command: userCommands[UserProcedures.getAll],
       params: {},
     );
-    final List result = jsonDecode(json)['result'] as List;
-    if (result != null) {
-      for (int i = 0; i < result.length; i++) {
-        users.add(
-            UserModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
-      }
-      print('Succesfully fetched ${users.length} users.');
-      return users;
-    } else {
-      print('Failed to fetch users.');
-      throw const Failure('Failed to fetch users.');
-    }
+    return users;
   }
 
   ///
@@ -147,14 +109,8 @@ class UserRepository {
     String email = '',
     String role = '',
   }) async {
-    UserModel user;
-    try {
-      user = await getUserById(id);
-    } on Failure catch (f) {
-      print(f.message);
-      rethrow;
-    }
-    final String json = await KanboardAPI().getJson(
+    final UserModel user = await getUserById(id);
+    final bool status = await KanboardAPI().getBool(
       command: userCommands[UserProcedures.update],
       params: {
         'id': id.toString(),
@@ -164,14 +120,7 @@ class UserRepository {
         'role': role.isEmpty ? user.role : role,
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully updated user $id.');
-      return true;
-    } else {
-      print('Failed to fetch user.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -181,20 +130,13 @@ class UserRepository {
   ///! Be careful, as this action cannot be undone
   ///
   Future<bool> removeUser(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: userCommands[UserProcedures.remove],
       params: {
         'user_id': id.toString(),
       },
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully removed user $id.');
-      return true;
-    } else {
-      print('Failed to remove user.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -204,20 +146,11 @@ class UserRepository {
   /// This can be undone via the [enableUser] function
   ///
   Future<bool> disableUser(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: userCommands[UserProcedures.disable],
-      params: {
-        'user_id': id.toString(),
-      },
+      params: {'user_id': id.toString()},
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully disabled user $id.');
-      return true;
-    } else {
-      print('Failed to disable user.');
-      return false;
-    }
+    return status;
   }
 
   ///
@@ -227,20 +160,11 @@ class UserRepository {
   /// This can be undone via the [disableUser] function
   ///
   Future<bool> enableUser(int id) async {
-    final String json = await KanboardAPI().getJson(
+    final bool status = await KanboardAPI().getBool(
       command: userCommands[UserProcedures.enable],
-      params: {
-        'user_id': id.toString(),
-      },
+      params: {'user_id': id.toString()},
     );
-    final String result = jsonDecode(json)['result'].toString();
-    if (result != 'null' && result != 'false' && result.isNotEmpty) {
-      print('Successfully enabled user $id.');
-      return true;
-    } else {
-      print('Failed to enable user.');
-      return false;
-    }
+    return status;
   }
 
   /// [isActiveUser] returns the user.isActive field
@@ -251,22 +175,11 @@ class UserRepository {
   /// [userId] user. (all the groups the user is a member in)
   ///
   Future<List<GroupModel>> getGroupsForUser(int userId) async {
-    final List<GroupModel> groups = [];
-    final String json = await KanboardAPI().getJson(
+    final List<GroupModel> groups =
+        await KanboardAPI().getObjectList<GroupModel>(
       command: membersCommands[MembersProcedures.getGroups],
       params: {'user_id': userId.toString()},
     );
-    final List result = jsonDecode(json)['result'] as List;
-    if (result != null) {
-      for (int i = 0; i < result.length; i++) {
-        groups.add(
-            GroupModel.fromJson(Map.from(result[i] as Map<String, dynamic>)));
-      }
-      print('Succesfully fetched ${groups.length} groups.');
-      return groups;
-    } else {
-      print('Failed to fetch groups.');
-      throw const Failure('Failed to fetch groups.');
-    }
+    return groups;
   }
 }

@@ -138,26 +138,21 @@ class KanboardAPI {
     @required String command,
     @required Map<String, dynamic> params,
   }) async {
-    final Response response = await _sendRequest(
-      url: UserPreferences().fullAddress,
-      user: UserPreferences().userName,
-      token: UserPreferences().token,
-      acceptCerts: UserPreferences().acceptAllCerts,
-      command: command,
-      params: params,
-    );
-    final String body = jsonDecode(response.body)['result'].toString();
-    if (body == 'false' || body == 'null' || body.isEmpty) {
-      print('Request failed.');
-      throw const Failure('Failed request for boolean value');
-    } else {
-      final bool value = parseToBool(body);
-      print('Request succeded. Fetched value: $value');
-      return value;
-    }
+    final String result = await getString(command: command, params: params);
+    final bool value = parseToBool(result);
+    return value;
   }
 
   Future<int> getInt({
+    @required String command,
+    @required Map<String, dynamic> params,
+  }) async {
+    final String result = await getString(command: command, params: params);
+    final int value = parseToInt(result);
+    return value;
+  }
+
+  Future<String> getString({
     @required String command,
     @required Map<String, dynamic> params,
   }) async {
@@ -174,9 +169,27 @@ class KanboardAPI {
       print('Request failed.');
       throw const Failure('Failed request for integer value.');
     } else {
-      final int value = int.parse(body);
-      print('Request succeded. Fetched int value: $value');
-      return value;
+      print('Request succeded.');
+      return body;
+    }
+  }
+
+  Future<Map<T1, T2>> getMap<T1, T2>({
+    @required String command,
+    @required Map<String, dynamic> params,
+  }) async {
+    final String json = await KanboardAPI().getJson(
+      command: command,
+      params: params,
+    );
+    final Map<dynamic, dynamic> result =
+        jsonDecode(json)['result'] as Map<dynamic, dynamic>;
+    if (result != null) {
+      print('Request succeded.');
+      return Map<T1, T2>.from(result);
+    } else {
+      print('Request failed.');
+      throw const Failure('Failed request for map');
     }
   }
 
