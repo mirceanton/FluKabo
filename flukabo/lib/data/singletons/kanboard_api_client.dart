@@ -174,9 +174,9 @@ class KanboardAPI {
       print('Request failed.');
       throw const Failure('Failed request for integer value.');
     } else {
-      final int statusCode = int.parse(body);
-      print('Request succeded. Fetched int value: $statusCode');
-      return statusCode;
+      final int value = int.parse(body);
+      print('Request succeded. Fetched int value: $value');
+      return value;
     }
   }
 
