@@ -2,7 +2,6 @@ import 'package:flukabo/data/models/abstract_model.dart';
 
 import '../helpers/json_parser.dart';
 import '../repository/project_repository.dart';
-import '../singletons/kanboard_api_client.dart';
 import 'project.dart';
 
 class SwimlaneModel extends AbstractDataModel {

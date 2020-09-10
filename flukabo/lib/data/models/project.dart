@@ -6,7 +6,6 @@ import 'package:flukabo/ui/pages/project/project_board_page.dart';
 
 import '../repository/user_repository.dart';
 import 'user.dart';
-import 'user.dart';
 
 class ProjectModel extends AbstractDataModel {
   int _id;
