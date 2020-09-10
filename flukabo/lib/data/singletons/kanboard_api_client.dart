@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flukabo/data/helpers/json_parser.dart';
 import 'package:flukabo/data/models/abstract_model.dart';
+import 'package:flukabo/data/models/comment.dart';
 import 'package:flukabo/data/models/swimlane.dart';
 import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/cupertino.dart';
@@ -161,6 +162,8 @@ class KanboardAPI {
         return TaskModel.fromJson(json) as T;
       case UserModel:
         return UserModel.fromJson(json) as T;
+      case CommentModel:
+        return CommentModel.fromJson(json) as T;
       default:
         return null;
     }
