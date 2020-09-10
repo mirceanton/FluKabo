@@ -1,8 +1,5 @@
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/api_procedures/application_procedures.dart';
-import 'package:flukabo/res/kanboard/kanboard_colors.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 ///
 /// This is a singleton meant to encapsulate all the data associated with the
@@ -15,8 +12,7 @@ import 'package:flutter/material.dart';
 ///
 class KanboardRepository {
   static final KanboardRepository _instance = KanboardRepository._constructor();
-  String version, timezone;
-  Color defaultTaskColor;
+  String version, timezone, defaultTaskColor;
   Map<String, String> applicationRoles, projectRoles;
 
   factory KanboardRepository() => _instance;
@@ -40,10 +36,10 @@ class KanboardRepository {
       command: kanboardCommands[ApplicationProcedures.projectRoles],
       params: {},
     );
-    defaultTaskColor = defaultColors[await KanboardAPI().getString(
+    defaultTaskColor = await KanboardAPI().getString(
       command: kanboardCommands[ApplicationProcedures.defaultTaskColor],
       params: {},
-    )];
+    );
   }
 
   // todo DELETEME
