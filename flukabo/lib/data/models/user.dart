@@ -1,7 +1,7 @@
 import 'package:flukabo/data/helpers/json_parser.dart';
-import 'package:flukabo/data/models/template_model.dart';
+import 'package:flukabo/data/models/abstract_model.dart';
 
-class UserModel extends TemplateModel {
+class UserModel extends AbstractDataModel {
   int _id;
   String _username;
   String _password;

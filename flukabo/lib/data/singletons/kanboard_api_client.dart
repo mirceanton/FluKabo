@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flukabo/data/helpers/json_parser.dart';
-import 'package:flukabo/data/models/template_model.dart';
+import 'package:flukabo/data/models/abstract_model.dart';
 import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -193,7 +193,7 @@ class KanboardAPI {
     }
   }
 
-  Future<T> getObject<T extends TemplateModel>({
+  Future<T> getObject<T extends AbstractDataModel>({
     @required String command,
     @required Map<String, dynamic> params,
   }) async {
@@ -212,13 +212,13 @@ class KanboardAPI {
       print('Request failed.');
       throw const Failure('Failed request to fetch object.');
     } else {
-      object = (T as TemplateModel).fromJson(body) as T;
+      object = (T as AbstractDataModel).fromJson(body) as T;
       print('Successfully fetched ${object.type}');
       return object;
     }
   }
 
-  Future<List<T>> getObjectList<T extends TemplateModel>({
+  Future<List<T>> getObjectList<T extends AbstractDataModel>({
     @required String command,
     @required Map<String, dynamic> params,
   }) async {
@@ -238,7 +238,8 @@ class KanboardAPI {
       final List<T> objects = [];
       for (int i = 0; i < result.length; i++) {
         objects.add(
-          (T as TemplateModel).fromJson(result[i] as Map<String, dynamic>) as T,
+          (T as AbstractDataModel).fromJson(result[i] as Map<String, dynamic>)
+              as T,
         );
       }
       print('Successfully fetched ${objects.length} ${objects[0].type}');

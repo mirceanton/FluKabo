@@ -1,4 +1,4 @@
-abstract class TemplateModel {
+abstract class AbstractDataModel {
   ///
   /// returns a String containing the class name
   /// For example, the class ColumnModel will return 'column'
