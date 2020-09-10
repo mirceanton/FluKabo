@@ -13,7 +13,7 @@ class TaskDetailsPage extends StatelessWidget {
         backgroundColor: _task.priorityColor,
       ),
       body: Center(
-        child: Text(_task.name),
+        child: Text(_task.title),
       ),
     );
   }
