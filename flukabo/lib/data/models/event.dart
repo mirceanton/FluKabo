@@ -1,15 +1,24 @@
 import 'package:flukabo/data/helpers/json_parser.dart';
 import 'package:flukabo/data/models/project.dart';
-import 'package:flukabo/data/models/template_model.dart';
+import 'package:flukabo/data/models/abstract_model.dart';
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/repository/project_repository.dart';
 import 'package:flukabo/data/repository/user_repository.dart';
 
-class EventModel extends TemplateModel {
+import '../repository/project_repository.dart';
+import '../repository/user_repository.dart';
+import 'project.dart';
+import 'task.dart';
+import 'user.dart';
+
+class EventModel extends AbstractDataModel {
   int _id;
   int _taskId;
+  TaskModel _task;
   int _projectId;
+  ProjectModel _project;
   int _authorId;
+  UserModel _author;
   double _date;
   String _title;
 
@@ -23,16 +32,20 @@ class EventModel extends TemplateModel {
     _date = parseToDouble(json['date_creation'].toString());
     _title = parseToString(json['event_title'].toString());
   }
+  Future init() async {
+    _project = await ProjectRepository().getProjectById(_projectId);
+    // TODO _task = await TaskReopsitory().getTaskById(_taskId);
+    _author = await UserRepository().getUserById(_authorId);
+  }
 
   // Getters
   int get id => _id;
   int get taskId => _taskId;
   // TODO Future<TaskModel> get task async => TaskRepository().getTaskById(_taskId);
   int get projectId => _projectId;
-  Future<ProjectModel> get project async =>
-      ProjectRepository().getProjectById(_projectId);
+  ProjectModel get project => _project;
   int get authorId => _authorId;
-  Future<UserModel> get author async => UserRepository().getUserById(_authorId);
+  UserModel get author => _author;
   double get date => _date;
   String get title => _title;
   @override
