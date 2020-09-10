@@ -47,7 +47,7 @@ class TaskModel extends AbstractDataModel {
   int _recurrenceTrigger;
   int _recurrenceFactor;
   int _recurrenceTimeframe;
-  int _recurrenceBaseDate;
+  int _recurrenceBasedate;
   int _priority;
   List<TagModel> _tags;
 
@@ -88,7 +88,7 @@ class TaskModel extends AbstractDataModel {
     _recurrenceTrigger = parseToInt(json['recurrence_trigger'].toString());
     _recurrenceFactor = parseToInt(json['recurrence_factor'].toString());
     _recurrenceTimeframe = parseToInt(json['recurrence_timeframe'].toString());
-    _recurrenceBaseDate = parseToInt(json['recurrence_basedate'].toString());
+    _recurrenceBasedate = parseToInt(json['recurrence_basedate'].toString());
     _priority = parseToInt(json['priority'].toString());
     _tags = null;
     _project = null;
@@ -139,7 +139,7 @@ class TaskModel extends AbstractDataModel {
   int get recurrenceTrigger => _recurrenceTrigger;
   int get recurrenceFactor => _recurrenceFactor;
   int get recurrenceTimeframe => _recurrenceTimeframe;
-  int get recurrenceBaseDate => _recurrenceBaseDate;
+  int get recurrenceBasedate => _recurrenceBasedate;
   int get priority => _priority;
   Color get priorityColor {
     final double threshold =
