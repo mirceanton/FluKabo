@@ -24,6 +24,7 @@ class ColumnModel extends AbstractDataModel {
     _taskLimit = parseToInt(json['task_limit'].toString());
     _title = parseToString(json['title'].toString());
     _description = parseToString(json['description'].toString());
+    _project = null;
   }
   Future init() async {
     _project = await ProjectRepository().getProjectById(_projectId);

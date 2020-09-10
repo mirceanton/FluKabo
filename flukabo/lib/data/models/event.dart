@@ -31,6 +31,9 @@ class EventModel extends AbstractDataModel {
     _authorId = parseToInt(json['creator_id'].toString());
     _date = parseToDouble(json['date_creation'].toString());
     _title = parseToString(json['event_title'].toString());
+    _task = null;
+    _project = null;
+    _author = null;
   }
   Future init() async {
     _project = await ProjectRepository().getProjectById(_projectId);
