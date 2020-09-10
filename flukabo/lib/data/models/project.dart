@@ -4,6 +4,10 @@ import 'package:flukabo/data/helpers/json_parser.dart';
 import 'package:flukabo/data/repository/project_repository.dart';
 import 'package:flukabo/ui/pages/project/project_board_page.dart';
 
+import '../repository/user_repository.dart';
+import 'user.dart';
+import 'user.dart';
+
 class ProjectModel extends AbstractDataModel {
   int _id;
   String _name;
@@ -17,6 +21,7 @@ class ProjectModel extends AbstractDataModel {
   String _identifier;
   double _startDate, _endDate;
   int _ownerID;
+  UserModel _owner;
   int _priorityStart, _priorityEnd, _priorityDefault;
   String _email;
   String _predefinedEmailSubjects;
@@ -66,6 +71,11 @@ class ProjectModel extends AbstractDataModel {
     _url = Map<String, String>.from(json['url'] as Map<String, dynamic>);
   }
 
+  Future init() async {
+    _owner = await UserRepository().getUserById(_ownerID);
+    await fetchMetadata();
+  }
+
   // Getters for private fields
   int get id => _id;
   String get name => _name;
@@ -82,6 +92,7 @@ class ProjectModel extends AbstractDataModel {
   double get startDate => _startDate;
   double get endDate => _endDate;
   int get ownerID => _ownerID;
+  UserModel get owner => _owner;
   int get priorityStart => _priorityStart;
   int get priorityEnd => _priorityEnd;
   int get priorityDefault => _priorityDefault;
