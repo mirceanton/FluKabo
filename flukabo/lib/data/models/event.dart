@@ -3,6 +3,7 @@ import 'package:flukabo/data/models/project.dart';
 import 'package:flukabo/data/models/abstract_model.dart';
 import 'package:flukabo/data/models/user.dart';
 import 'package:flukabo/data/repository/project_repository.dart';
+import 'package:flukabo/data/repository/task_repository.dart';
 import 'package:flukabo/data/repository/user_repository.dart';
 
 import '../repository/project_repository.dart';
@@ -37,14 +38,14 @@ class EventModel extends AbstractDataModel {
   }
   Future init() async {
     _project = await ProjectRepository().getProjectById(_projectId);
-    // TODO _task = await TaskReopsitory().getTaskById(_taskId);
+    _task = await TaskRepository().getTaskById(_taskId);
     _author = await UserRepository().getUserById(_authorId);
   }
 
   // Getters
   int get id => _id;
   int get taskId => _taskId;
-  // TODO Future<TaskModel> get task async => TaskRepository().getTaskById(_taskId);
+  TaskModel get task => _task;
   int get projectId => _projectId;
   ProjectModel get project => _project;
   int get authorId => _authorId;
