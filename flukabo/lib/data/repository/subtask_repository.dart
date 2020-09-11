@@ -91,4 +91,60 @@ class SubtaskRepository {
     );
     return status;
   }
+
+  Future<bool> hasSubtaskTimer({
+    @required int subtaskId,
+    @required int userId,
+  }) async {
+    final bool status = await KanboardAPI().getBool(
+      command: timeCommands[TimeProcedures.hasTimer],
+      params: {
+        'subtask_id': subtaskId,
+        'user_id': userId,
+      },
+    );
+    return status;
+  }
+
+  Future<bool> startSubtaskTimer({
+    @required int subtaskId,
+    @required int userId,
+  }) async {
+    final bool status = await KanboardAPI().getBool(
+      command: timeCommands[TimeProcedures.startTimer],
+      params: {
+        'subtask_id': subtaskId,
+        'user_id': userId,
+      },
+    );
+    return status;
+  }
+
+  Future<bool> stopSubtaskTimer({
+    @required int subtaskId,
+    @required int userId,
+  }) async {
+    final bool status = await KanboardAPI().getBool(
+      command: timeCommands[TimeProcedures.stopTimer],
+      params: {
+        'subtask_id': subtaskId,
+        'user_id': userId,
+      },
+    );
+    return status;
+  }
+
+  Future<int> getSubtaskTimeSpent({
+    @required int subtaskId,
+    @required int userId,
+  }) async {
+    final int hours = await KanboardAPI().getInt(
+      command: timeCommands[TimeProcedures.getTime],
+      params: {
+        'subtask_id': subtaskId,
+        'user_id': userId,
+      },
+    );
+    return hours;
+  }
 }
