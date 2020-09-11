@@ -1,5 +1,5 @@
 ///
-/// Group API Procedures
+/// Comment API Procedures
 /// doc: https://docs.kanboard.org/en/latest/api/comment_procedures.html
 ///
 /// [CommentProcedures] enum of all the used API methods
