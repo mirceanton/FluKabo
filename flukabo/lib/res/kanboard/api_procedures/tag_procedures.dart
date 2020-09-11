@@ -1,5 +1,5 @@
 ///
-/// Group API Procedures
+/// Tag API Procedures
 /// doc: https://docs.kanboard.org/en/latest/api/tags_procedures.html
 ///
 /// [TagProcedures] enum of all the used API methods
