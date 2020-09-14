@@ -4,21 +4,12 @@ import 'dart:io';
 
 import 'package:flukabo/data/helpers/json_parser.dart';
 import 'package:flukabo/data/models/abstract_model.dart';
-import 'package:flukabo/data/models/comment.dart';
-import 'package:flukabo/data/models/swimlane.dart';
+import 'package:flukabo/data/models/board.dart';
 import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
-
-import '../models/column.dart';
-import '../models/event.dart';
-import '../models/group.dart';
-import '../models/project.dart';
-import '../models/tag.dart';
-import '../models/task.dart';
-import '../models/user.dart';
 
 /// Custom Error class
 class Failure implements Exception {
@@ -144,31 +135,6 @@ class KanboardAPI {
     return response.body;
   }
 
-  T objectFromJson<T>(Map<String, dynamic> json) {
-    switch (T) {
-      case ColumnModel:
-        return ColumnModel.fromJson(json) as T;
-      case EventModel:
-        return EventModel.fromJson(json) as T;
-      case GroupModel:
-        return GroupModel.fromJson(json) as T;
-      case ProjectModel:
-        return ProjectModel.fromJson(json) as T;
-      case SwimlaneModel:
-        return SwimlaneModel.fromJson(json) as T;
-      case TagModel:
-        return TagModel.fromJson(json) as T;
-      case TaskModel:
-        return TaskModel.fromJson(json) as T;
-      case UserModel:
-        return UserModel.fromJson(json) as T;
-      case CommentModel:
-        return CommentModel.fromJson(json) as T;
-      default:
-        return null;
-    }
-  }
-
   Future<bool> getBool({
     @required String command,
     @required Map<String, dynamic> params,
@@ -241,12 +207,17 @@ class KanboardAPI {
       params: params,
     );
     final Map<String, dynamic> body =
-        jsonDecode(response.body)['result'] as Map<String, dynamic>;
-    if (body == null) {
+        jsonDecode(response.body) as Map<String, dynamic>;
+    if (body['result'] == null) {
       print('Request failed.');
       throw const Failure('Failed request to fetch object.');
     } else {
-      final T object = objectFromJson<T>(body);
+      T object;
+      if (T == BoardModel) {
+        object = parseToObject<T>(body);
+      } else {
+        object = parseToObject<T>(body['result'] as Map<String, dynamic>);
+      }
       print('Successfully fetched ${object.type}');
       return object;
     }
@@ -265,18 +236,18 @@ class KanboardAPI {
       params: params,
     );
     final List result = jsonDecode(response.body)['result'] as List;
-    if (result == null || result.isEmpty) {
+    if (result == null) {
       print('Failed to fetch object list.');
       throw const Failure('Failed to fetch object list.');
     } else {
-      final List<T> objects = [];
-      for (int i = 0; i < result.length; i++) {
-        objects.add(
-          objectFromJson<T>(result[i] as Map<String, dynamic>),
-        );
+      if (result.isEmpty) {
+        print('Successfully fetched an empty list.');
+        return [];
+      } else {
+        final List<T> objects = parseToList<T>(result);
+        print('Successfully fetched ${objects.length} ${objects[0].type}');
+        return objects;
       }
-      print('Successfully fetched ${objects.length} ${objects[0].type}');
-      return objects;
     }
   }
 }
