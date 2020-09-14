@@ -5,7 +5,7 @@ import 'package:flukabo/data/models/task.dart';
 import 'package:flukabo/data/repository/link_repository.dart';
 import 'package:flukabo/data/repository/task_repository.dart';
 
-class InternalLinkModel extends AbstractDataModel {
+class TaskLinkModel extends AbstractDataModel {
   int _taskId;
   TaskModel _task;
   int _oppositeTaskId;
@@ -14,8 +14,8 @@ class InternalLinkModel extends AbstractDataModel {
   LinkModel _link;
 
   // Constructor
-  InternalLinkModel.empty();
-  InternalLinkModel.fromJson(Map<String, dynamic> json) {
+  TaskLinkModel.empty();
+  TaskLinkModel.fromJson(Map<String, dynamic> json) {
     _taskId = parseToInt(json['task_id'].toString());
     _oppositeTaskId = parseToInt(json['opposite_task_id'].toString());
     _linkId = parseToInt(json['link_id'].toString());
@@ -41,6 +41,6 @@ class InternalLinkModel extends AbstractDataModel {
   String get type => 'internal_link';
 
   @override
-  InternalLinkModel fromJson(Map<String, dynamic> json) =>
-      InternalLinkModel.fromJson(json);
+  TaskLinkModel fromJson(Map<String, dynamic> json) =>
+      TaskLinkModel.fromJson(json);
 }
