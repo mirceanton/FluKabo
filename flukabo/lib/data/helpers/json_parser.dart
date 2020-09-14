@@ -1,3 +1,4 @@
+import 'package:flukabo/data/models/link.dart';
 import 'package:flukabo/data/models/models.dart';
 
 String parseToString(String json) => json == 'null' ? '' : json;
@@ -53,6 +54,8 @@ T parseToObject<T>(Map<String, dynamic> json) {
       return BoardModel.fromJson(json) as T;
     case CategoryModel:
       return CategoryModel.fromJson(json) as T;
+    case LinkModel:
+      return LinkModel.fromJson(json) as T;
     default:
       return null;
   }
