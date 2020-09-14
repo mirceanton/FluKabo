@@ -68,7 +68,7 @@ class CategoryRepository {
   Future<bool> removeCategory(int categoryId) async {
     final bool status = await KanboardAPI().getBool(
       command: categoryCommands[CategoryProcedures.remove],
-      params: {'id': categoryId},
+      params: {'category_id': categoryId},
     );
     return status;
   }
