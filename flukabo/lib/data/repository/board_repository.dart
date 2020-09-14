@@ -14,4 +14,12 @@ class BoardRepository {
 
   factory BoardRepository() => _instance;
   BoardRepository._constructor(); // empty constructor
+
+  Future<BoardModel> getBoardForProject(int projectId) async {
+    final BoardModel board = await KanboardAPI().getObject<BoardModel>(
+      command: boardCommands[BoardProcedures.getByProject],
+      params: {'project_id': projectId},
+    );
+    return board;
+  }
 }
