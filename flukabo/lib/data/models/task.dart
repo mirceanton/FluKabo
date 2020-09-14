@@ -1,4 +1,6 @@
+import 'package:flukabo/data/models/category.dart';
 import 'package:flukabo/data/models/swimlane.dart';
+import 'package:flukabo/data/repository/category_repository.dart';
 import 'package:flukabo/data/repository/swimlane_repository.dart';
 import 'package:flukabo/ui/pages/task/task_details_page.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +35,7 @@ class TaskModel extends AbstractDataModel {
   int _complexity; // the api calls it 'score'
   String _dateDue;
   int _categoryId;
+  CategoryModel _category;
   int _creatorId;
   UserModel _creator;
   String _dateModification;
@@ -66,7 +69,11 @@ class TaskModel extends AbstractDataModel {
     _title = parseToString(json['title'].toString());
     _description = parseToString(json['description'].toString());
     _dateCreation = parseToString(json['date_creation'].toString());
-    _colorId = parseToString(json['color']['name'].toString());
+    if (json['color'] == null) {
+      _colorId = parseToString(json['color_id'].toString());
+    } else {
+      _colorId = parseToString(json['color']['name'].toString());
+    }
     _projectId = parseToInt(json['project_id'].toString());
     _columnId = parseToInt(json['column_id'].toString());
     _ownerId = parseToInt(json['owner_id'].toString());
@@ -90,12 +97,18 @@ class TaskModel extends AbstractDataModel {
     _recurrenceTimeframe = parseToInt(json['recurrence_timeframe'].toString());
     _recurrenceBasedate = parseToInt(json['recurrence_basedate'].toString());
     _priority = parseToInt(json['priority'].toString());
-    _tags = null;
+
+    if (json['tags'] == null) {
+      _tags = null;
+    } else {
+      _tags = parseToList<TagModel>(json['tags'] as List);
+    }
     _project = null;
     _column = null;
     _owner = null;
     _creator = null;
     _swimlane = null;
+    _category = null;
   }
   Future init() async {
     _project = await ProjectRepository().getProjectById(_projectId);
@@ -103,6 +116,7 @@ class TaskModel extends AbstractDataModel {
     _creator = await UserRepository().getUserById(_creatorId);
     _column = await ColumnRepository().getColumnById(_columnId);
     _swimlane = await SwimlaneRepository().getSwimlaneById(_swimlaneId);
+    _category = await CategoryRepository().getCategoryById(_categoryId);
     // TODO _tags = await TagRepository().getTaskTags(_id);
   }
 
@@ -125,6 +139,7 @@ class TaskModel extends AbstractDataModel {
   int get complexity => _complexity;
   String get dateDue => _dateDue;
   int get categoryId => _categoryId;
+  CategoryModel get category => _category;
   int get creatorId => _creatorId;
   UserModel get creator => _creator;
   String get dateModification => _dateModification;
@@ -193,4 +208,48 @@ class TaskModel extends AbstractDataModel {
       ),
     );
   }
+}
+
+class ExtendedTaskModel extends TaskModel {
+  int _commentsCount;
+  int _filesCount;
+  int _subtasksCount;
+  int _linksCount;
+  int _completedSubtasksCount;
+  String _assigneeUsername;
+  UserModel _assignee;
+
+  // Constructors
+  ExtendedTaskModel.empty() : super.empty();
+  ExtendedTaskModel.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
+    _commentsCount = parseToInt(json['nb_comments'].toString());
+    _subtasksCount = parseToInt(json['nb_subtasks'].toString());
+    _linksCount = parseToInt(json['nb_links'].toString());
+    _completedSubtasksCount =
+        parseToInt(json['nb_completed_subtasks'].toString());
+    _filesCount = parseToInt(json['nb_files'].toString());
+    _assigneeUsername = parseToString(json['assignee_username'].toString());
+
+    _assignee = null;
+  }
+  @override
+  Future init() async {
+    await super.init();
+    _assignee = await UserRepository().getUserByUsername(_assigneeUsername);
+  }
+
+  // Getters
+  int get commentsCount => _commentsCount;
+  int get filesCount => _filesCount;
+  int get subtasksCount => _subtasksCount;
+  int get linksCount => _linksCount;
+  int get completedSubtasksCount => _completedSubtasksCount;
+  String get assigneeUsername => _assigneeUsername;
+  UserModel get assignee => _assignee;
+  @override
+  String get type => 'extended_task';
+
+  @override
+  ExtendedTaskModel fromJson(Map<String, dynamic> json) =>
+      ExtendedTaskModel.fromJson(json);
 }
