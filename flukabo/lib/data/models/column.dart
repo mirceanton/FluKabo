@@ -1,6 +1,7 @@
 import 'package:flukabo/data/helpers/json_parser.dart';
 import 'package:flukabo/data/models/project.dart';
 import 'package:flukabo/data/models/abstract_model.dart';
+import 'package:flukabo/data/models/task.dart';
 import 'package:flukabo/data/repository/project_repository.dart';
 
 import '../repository/project_repository.dart';
@@ -43,4 +44,36 @@ class ColumnModel extends AbstractDataModel {
 
   @override
   ColumnModel fromJson(Map<String, dynamic> json) => ColumnModel.fromJson(json);
+}
+
+class ExtendedColumnModel extends ColumnModel {
+  List<TaskModel> _tasks;
+  int _score;
+  int _openTasksCount;
+  int _closedTasksCount;
+  int _tasksCount;
+
+  // Constructor
+  ExtendedColumnModel.empty() : super.empty();
+  ExtendedColumnModel.fromJson(Map<String, dynamic> json)
+      : super.fromJson(json) {
+    _tasksCount = parseToInt(json['nb_tasks'].toString());
+    _openTasksCount = parseToInt(json['nb_open_tasks'].toString());
+    _closedTasksCount = parseToInt(json['nb_closed_tasks'].toString());
+    _score = parseToInt(json['score'].toString());
+    _tasks = parseToList<ExtendedTaskModel>(json['tasks'] as List);
+  }
+
+  // Getters
+  List<TaskModel> get tasks => _tasks;
+  int get tasksCount => _tasksCount;
+  int get openTasksCount => _openTasksCount;
+  int get closedTasksCount => _closedTasksCount;
+  int get score => _score;
+  @override
+  String get type => 'extended_column';
+
+  @override
+  ExtendedColumnModel fromJson(Map<String, dynamic> json) =>
+      ExtendedColumnModel.fromJson(json);
 }
