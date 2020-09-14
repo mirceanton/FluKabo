@@ -6,7 +6,7 @@ enum Prefs { BaseURL, Port, API, Certs, User, Token, Theme }
 
 Map<Prefs, dynamic> defaults = {
   Prefs.BaseURL: 'https://0.0.0.0',
-  Prefs.Port: '80',
+  Prefs.Port: '443',
   Prefs.API: '/jsonrpc.php',
   Prefs.Certs: false,
   Prefs.User: '',
