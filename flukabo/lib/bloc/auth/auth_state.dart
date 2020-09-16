@@ -35,7 +35,10 @@ class AuthSuccessState extends AuthState {
 class AuthErrorState extends AuthState {
   final int errno; // error number
   final String errmsg; // error message
-  const AuthErrorState({this.errno, @required this.errmsg});
+  const AuthErrorState({
+    this.errno,
+    @required this.errmsg,
+  });
 
   @override
   List<Object> get props => [errno, errmsg];

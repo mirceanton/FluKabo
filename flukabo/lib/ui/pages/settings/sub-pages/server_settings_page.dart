@@ -149,16 +149,18 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
   /// It simply sends an AuthEvent to the AuthBLoC
   ///
   void _save() {
-    context.bloc<AuthBloc>().add(AuthEvent(
-          url: _getURL(
-            base: _baseUrlController.text.trim(),
-            port: _portController.text.trim(),
-            apiPath: _apiController.text.trim(),
+    context.bloc<AuthBloc>().add(
+          AuthEvent(
+            url: _getURL(
+              base: _baseUrlController.text.trim(),
+              port: _portController.text.trim(),
+              apiPath: _apiController.text.trim(),
+            ),
+            username: _userController.text.trim(),
+            token: _tokenController.text.trim(),
+            acceptAllCerts: _allowCerts,
           ),
-          username: _userController.text.trim(),
-          token: _tokenController.text.trim(),
-          acceptAllCerts: _allowCerts,
-        ));
+        );
     print("Pressed the save button");
   }
 
