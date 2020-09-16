@@ -51,7 +51,7 @@ class UserRepository {
         'password': password,
         'name': name,
         'email': email,
-        'role': role,
+        'role': role.isEmpty ? 'app-user' : role,
       },
     );
     return statusCode;
