@@ -2,7 +2,7 @@ import 'package:flukabo/data/helpers/json_parser.dart';
 import 'package:flukabo/data/models/abstract_model.dart';
 
 class UserModel extends AbstractDataModel {
-  int _id;
+  int id;
   String _username;
   String _password;
   bool _isLdap;
@@ -30,7 +30,7 @@ class UserModel extends AbstractDataModel {
   // Constructors
   UserModel.empty();
   UserModel.fromJson(Map<String, dynamic> json) {
-    _id = parseToInt(json['id'].toString());
+    id = parseToInt(json['id'].toString());
     _username = parseToString(json['username'].toString());
     _password = parseToString(json['password'].toString());
     _isLdap = parseToBool(json['is_ldap_user'].toString());
@@ -59,7 +59,6 @@ class UserModel extends AbstractDataModel {
   }
 
   // Getters
-  int get id => _id;
   String get username => _username;
   String get password => _password;
   bool get isLdap => _isLdap;
