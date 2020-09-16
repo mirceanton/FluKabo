@@ -117,10 +117,10 @@ class KanboardAPI {
       );
 
   ///
-  /// [_getJson] embeds the [command] into the request and returns the raw json
+  /// [getJson] embeds the [command] into the request and returns the raw json
   /// response body
   ///
-  Future<String> _getJson({
+  Future<String> getJson({
     @required String command,
     @required Map<String, dynamic> params,
   }) async {
@@ -179,7 +179,7 @@ class KanboardAPI {
     @required String command,
     @required Map<String, dynamic> params,
   }) async {
-    final String json = await KanboardAPI()._getJson(
+    final String json = await KanboardAPI().getJson(
       command: command,
       params: params,
     );
