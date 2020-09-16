@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:flukabo/data/models/models.dart';
 import 'package:flukabo/data/models/tag.dart';
+import 'package:flukabo/data/repository/task_repository.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flukabo/res/kanboard/api_procedures/tag_procedures.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +61,31 @@ class TagRepository {
     return tags;
   }
 
+  Future<TagModel> getTagById(int tagId) async {
+    final List<TagModel> allTags = await getAllTags();
+    final int index = allTags.indexWhere((element) => element.id == tagId);
+    if (index == -1) {
+      print('No such tag found');
+      throw const Failure('No tag matches given id');
+    } else {
+      return allTags[index];
+    }
+  }
+
+  Future<TagModel> getTagByName({
+    @required String tagName,
+    @required int projectId,
+  }) async {
+    final List<TagModel> allTags = await getTagsByProject(projectId);
+    final int index = allTags.indexWhere((element) => element.name == tagName);
+    if (index == -1) {
+      print('No such tag found');
+      throw const Failure('No tag matches given name');
+    } else {
+      return allTags[index];
+    }
+  }
+
   ///
   /// [getTagsByProject] returns a list of all of the tags associated to the
   /// project identified by the [projectId]
@@ -102,7 +131,71 @@ class TagRepository {
     return status;
   }
 
-  // TODO addTagToTask
-  // TODO removeTagFromTask
-  // TODO getTaskTags
+  Future<List<String>> getTaskTagNames(int taskId) async {
+    final Map<String, dynamic> map = jsonDecode(await KanboardAPI().getJson(
+      command: tagCommands[TagProcedures.getByTask],
+      params: {'task_id': taskId},
+    ))['result'] as Map<String, dynamic>;
+    final List<String> tags = [];
+    map.forEach((key, value) {
+      tags.add(value.toString());
+    });
+    return tags;
+  }
+
+  Future<List<TagModel>> getTaskTags(int taskId) async {
+    final Map<String, dynamic> map = jsonDecode(await KanboardAPI().getJson(
+      command: tagCommands[TagProcedures.getByTask],
+      params: {'task_id': taskId},
+    ))['result'] as Map<String, dynamic>;
+    final List<int> ids = [];
+    final List<TagModel> tags = [];
+    map.forEach((key, value) {
+      ids.add(int.parse(key.toString()));
+    });
+    for (int i = 0; i < ids.length; i++) {
+      tags.add(await getTagById(ids[i]));
+    }
+    return tags;
+  }
+
+  Future<bool> setTaskTags({
+    @required int projectId,
+    @required int taskId,
+    @required List<String> tagNames,
+  }) async {
+    final bool status = await KanboardAPI().getBool(
+      command: tagCommands[TagProcedures.assign],
+      params: {
+        'project_id': projectId,
+        'task_id': taskId,
+        'tags': tagNames,
+      },
+    );
+    return status;
+  }
+
+  Future<bool> addTagToTask(int taskId, String tagName) async {
+    final List<String> tags = await getTaskTagNames(taskId);
+    final TaskModel task = await TaskRepository().getTaskById(taskId);
+    tags.add(tagName);
+    final bool status = await setTaskTags(
+      projectId: task.projectId,
+      taskId: taskId,
+      tagNames: tags,
+    );
+    return status;
+  }
+
+  Future<bool> removeTagFromTask(int taskId, String tagName) async {
+    final List<String> tags = await getTaskTagNames(taskId);
+    final TaskModel task = await TaskRepository().getTaskById(taskId);
+    tags.remove(tagName);
+    final bool status = await setTaskTags(
+      projectId: task.projectId,
+      taskId: taskId,
+      tagNames: tags,
+    );
+    return status;
+  }
 }
