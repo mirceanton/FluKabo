@@ -1,4 +1,4 @@
-import '../user_bloc.dart';
+import '../users_bloc.dart';
 
 class InitialState extends UserState {
   const InitialState();

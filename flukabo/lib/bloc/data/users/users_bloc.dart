@@ -5,14 +5,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flukabo/data/models/models.dart';
 import 'package:flukabo/data/repository/user_repository.dart';
 import 'package:flukabo/data/singletons/kanboard_api_client.dart';
-import './events/events.dart';
-import './states/states.dart';
+import 'events/events.dart';
+import 'states/states.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
 
-class UserBloc extends Bloc<UserEvent, UserState> {
-  UserBloc() : super(const InitialState());
+class UsersBloc extends Bloc<UserEvent, UserState> {
+  UsersBloc() : super(const InitialState());
 
   @override
   Stream<UserState> mapEventToState(UserEvent event) async* {

@@ -1,4 +1,4 @@
-import '../user_bloc.dart';
+import '../users_bloc.dart';
 
 class DeleteEvent extends UserEvent {
   final int userId;

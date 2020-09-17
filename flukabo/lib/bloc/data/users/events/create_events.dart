@@ -1,5 +1,5 @@
 import 'package:flukabo/data/models/user.dart';
-import '../user_bloc.dart';
+import '../users_bloc.dart';
 
 class CreateEvent extends UserEvent {
   final UserModel newUser;

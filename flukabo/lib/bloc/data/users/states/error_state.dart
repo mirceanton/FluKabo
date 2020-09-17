@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../user_bloc.dart';
+import '../users_bloc.dart';
 
 class ErrorState extends UserState {
   final int errno; // error number

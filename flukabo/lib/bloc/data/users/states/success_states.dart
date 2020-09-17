@@ -1,7 +1,7 @@
 import 'package:flukabo/data/models/group.dart';
 import 'package:flukabo/data/models/user.dart';
 
-import '../user_bloc.dart';
+import '../users_bloc.dart';
 
 abstract class SuccessState extends UserState {
   const SuccessState();
