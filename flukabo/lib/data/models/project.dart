@@ -8,7 +8,7 @@ import '../repository/user_repository.dart';
 import 'user.dart';
 
 class ProjectModel extends AbstractDataModel {
-  int _id;
+  int id;
   String _name;
   String _backgroundImage;
   bool _isActive;
@@ -32,20 +32,19 @@ class ProjectModel extends AbstractDataModel {
   // Constructors
   // TODO this is a dummy constructor made for testing. DELETEME
   ProjectModel({
-    int id,
+    this.id,
     String name,
     String description,
     String backgroundImage = "https://source.unsplash.com/random",
     bool isPrivate,
-  })  : _id = id,
-        _name = name,
+  })  : _name = name,
         _description = description,
         _backgroundImage = backgroundImage,
         _isPrivate = isPrivate;
 
   ProjectModel.empty();
   ProjectModel.fromJson(Map<String, dynamic> json) {
-    _id = parseToInt(json['id'].toString());
+    id = parseToInt(json['id'].toString());
     _name = parseToString(json['name'].toString());
     _isActive = parseToBool(json['is_active'].toString());
     _token = parseToString(json['token'].toString());
@@ -76,7 +75,6 @@ class ProjectModel extends AbstractDataModel {
   }
 
   // Getters for private fields
-  int get id => _id;
   String get name => _name;
   String get backgroundImage => _backgroundImage;
   bool get isPrivate => _isPrivate;
@@ -115,7 +113,7 @@ class ProjectModel extends AbstractDataModel {
   ///
   Future fetchMetadata() async {
     _backgroundImage = await ProjectRepository()
-        .getProjectMetadataByKey(projectId: _id, key: 'bgImage');
+        .getProjectMetadataByKey(projectId: id, key: 'bgImage');
   }
 
   ///
