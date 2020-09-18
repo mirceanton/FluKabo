@@ -10,6 +10,9 @@ abstract class SuccessState extends UserState {
   List<Object> get props => [];
 }
 
+///
+/// ---- SUCCES STATES FOR CREATE EVENTS ----
+///
 /// The SuccessState associated to [CreateEvent]
 class UserCreatedState extends SuccessState {
   final UserModel user;
@@ -20,6 +23,9 @@ class UserCreatedState extends SuccessState {
   List<Object> get props => [user];
 }
 
+///
+/// ---- SUCCES STATES FOR FETCH EVENTS ----
+///
 /// The SuccessState associated to [FetchByIdEvent], [FetchByUsernameEvent]
 class UserFetchedState extends SuccessState {
   final UserModel user;
@@ -50,6 +56,9 @@ class GroupsFetchedState extends SuccessState {
   List<Object> get props => [groups];
 }
 
+///
+/// ---- SUCCES STATES FOR UPDATE EVENTS ----
+///
 /// The SuccessState associated to [UpdateEvent], [EnableEvent], [DisableEvent]
 class UserUpdatedState extends SuccessState {
   final bool wasSuccessful;
@@ -60,6 +69,9 @@ class UserUpdatedState extends SuccessState {
   List<Object> get props => [wasSuccessful];
 }
 
+///
+/// ---- SUCCES STATES FOR DELETE EVENTS ----
+///
 /// The SuccessState associated to [RemoveEvent]
 class UserRemovedState extends SuccessState {
   final bool wasSuccessful;
