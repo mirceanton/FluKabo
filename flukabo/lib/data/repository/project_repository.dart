@@ -352,7 +352,7 @@ class ProjectRepository {
   Future<bool> changeUserRole({
     @required int projectId,
     @required int userId,
-    String role = 'project-member',
+    @required String role,
   }) async {
     final bool status = await KanboardAPI().getBool(
       command:
@@ -381,7 +381,7 @@ class ProjectRepository {
   Future<bool> changeGroupRole({
     @required int projectId,
     @required int groupId,
-    String role = 'project-member',
+    @required String role,
   }) async {
     final bool status = await KanboardAPI().getBool(
       command: projectPermissionCommands[
