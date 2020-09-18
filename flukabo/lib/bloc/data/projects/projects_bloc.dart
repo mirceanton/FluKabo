@@ -54,7 +54,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
             for (int i = 0; i < projects.length; i++) {
               await projects[i].init();
             }
-            yield ProjectsFetchedState(projects: projects);
+            yield ProjectListFetchedState(projects: projects);
             break;
           case FetchFeedEvent:
             yield FeedFetchedState(
@@ -64,14 +64,14 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
             );
             break;
           case FetchUsersEvent:
-            yield UsersFetchedState(
+            yield UserListFetchedState(
               users: await ProjectRepository().getProjectUsers(
                 (event as FetchUsersEvent).projectId,
               ),
             );
             break;
           case FetchAssignableUsersEvent:
-            yield UsersFetchedState(
+            yield UserListFetchedState(
               users: await ProjectRepository().getAssignableUsers(
                 (event as FetchAssignableUsersEvent).projectId,
               ),

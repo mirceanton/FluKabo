@@ -38,10 +38,10 @@ class ProjectFetchedState extends SuccessState {
 }
 
 /// The SuccessState associated to [FetchAllEvent]
-class ProjectsFetchedState extends SuccessState {
+class ProjectListFetchedState extends SuccessState {
   final List<ProjectModel> projects;
 
-  const ProjectsFetchedState({this.projects});
+  const ProjectListFetchedState({this.projects});
 
   @override
   List<Object> get props => [projects];
@@ -58,10 +58,10 @@ class FeedFetchedState extends SuccessState {
 }
 
 /// The SuccessState associated to [FetchUsersEvent], [FetchAssignableUsersEvent]
-class UsersFetchedState extends SuccessState {
+class UserListFetchedState extends SuccessState {
   final List<UserModel> users;
 
-  const UsersFetchedState({this.users});
+  const UserListFetchedState({this.users});
 
   @override
   List<Object> get props => [users];
