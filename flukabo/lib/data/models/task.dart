@@ -18,7 +18,7 @@ import 'tag.dart';
 import 'user.dart';
 
 class TaskModel extends AbstractDataModel {
-  int _id;
+  int id;
   String _title;
   String _description;
   String _dateCreation;
@@ -65,7 +65,7 @@ class TaskModel extends AbstractDataModel {
         _complexity = difficulty;
   TaskModel.empty();
   TaskModel.fromJson(Map<String, dynamic> json) {
-    _id = parseToInt(json['id'].toString());
+    id = parseToInt(json['id'].toString());
     _title = parseToString(json['title'].toString());
     _description = parseToString(json['description'].toString());
     _dateCreation = parseToString(json['date_creation'].toString());
@@ -121,7 +121,6 @@ class TaskModel extends AbstractDataModel {
   }
 
   // Getters
-  int get id => _id;
   String get title => _title;
   String get description => _description;
   String get dateCreation => _dateCreation;
@@ -169,6 +168,14 @@ class TaskModel extends AbstractDataModel {
   }
 
   List<TagModel> get tags => _tags;
+  List<String> get tagNames {
+    final List<String> names = [];
+    for (int i = 0; i < _tags.length; i++) {
+      names.add(_tags[i].name);
+    }
+    return names;
+  }
+
   @override
   String get type => 'task';
 
