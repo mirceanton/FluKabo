@@ -1,5 +1,5 @@
-import 'package:flukabo/data/models/abstract_model.dart';
-import 'package:flukabo/data/models/column.dart';
+import '../../data/models/abstract_model.dart';
+import '../../data/models/column.dart';
 
 import '../helpers/json_parser.dart';
 import '../repository/project_repository.dart';

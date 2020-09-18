@@ -1,9 +1,9 @@
-import 'package:flukabo/data/models/group.dart';
-import 'package:flukabo/data/models/user.dart';
-import 'package:flukabo/data/singletons/kanboard_api_client.dart';
-import 'package:flukabo/res/kanboard/api_procedures/members_procedures.dart';
-import 'package:flukabo/res/kanboard/api_procedures/user_procedures.dart';
 import 'package:flutter/material.dart';
+import '../../data/models/group.dart';
+import '../../data/models/user.dart';
+import '../../data/singletons/kanboard_api_client.dart';
+import '../../res/kanboard/api_procedures/members_procedures.dart';
+import '../../res/kanboard/api_procedures/user_procedures.dart';
 
 ///
 /// This is a singleton meant to encapsulate all the methods associated with

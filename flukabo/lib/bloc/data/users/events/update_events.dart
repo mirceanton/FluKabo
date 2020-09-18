@@ -1,4 +1,4 @@
-import 'package:flukabo/data/models/user.dart';
+import '../../../../data/models/user.dart';
 import '../users_bloc.dart';
 
 abstract class UpdateEvent extends UserEvent {

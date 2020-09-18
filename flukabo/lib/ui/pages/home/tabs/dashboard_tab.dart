@@ -1,8 +1,8 @@
-import 'package:flukabo/data/models/project.dart';
-import 'package:flukabo/data/models/task.dart';
-import 'package:flukabo/ui/templates/project/project_list_view.dart';
-import 'package:flukabo/ui/templates/task/task_list_view.dart';
 import 'package:flutter/material.dart';
+import '../../../../data/models/project.dart';
+import '../../../../data/models/task.dart';
+import '../../../../ui/templates/project/project_list_view.dart';
+import '../../../../ui/templates/task/task_list_view.dart';
 
 import 'abstract_tab_class.dart';
 

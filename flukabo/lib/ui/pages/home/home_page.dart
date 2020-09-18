@@ -1,8 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flukabo/data/models/project.dart';
-import 'package:flukabo/data/models/task.dart';
 import 'package:flutter/material.dart';
-
+import '../../../data/models/project.dart';
+import '../../../data/models/task.dart';
 import 'home.dart';
 import 'tabs/abstract_tab_class.dart';
 

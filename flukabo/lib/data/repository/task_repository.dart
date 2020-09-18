@@ -1,6 +1,6 @@
-import 'package:flukabo/res/kanboard/api_procedures/task_procedures.dart';
 import 'package:flutter/material.dart';
 
+import '../../res/kanboard/api_procedures/task_procedures.dart';
 import '../models/task.dart';
 import '../singletons/kanboard_api_client.dart';
 import 'kanboard_repository.dart';

@@ -1,6 +1,6 @@
-import 'package:flukabo/data/models/event.dart';
-import 'package:flukabo/data/models/models.dart';
-import 'package:flukabo/data/models/project.dart';
+import '../../../../data/models/event.dart';
+import '../../../../data/models/models.dart';
+import '../../../../data/models/project.dart';
 
 import '../projects_bloc.dart';
 

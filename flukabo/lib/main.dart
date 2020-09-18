@@ -1,10 +1,9 @@
-import 'package:flukabo/bloc/auth/auth_bloc.dart';
-import 'package:flukabo/res/app_themes.dart';
-import 'package:flukabo/data/singletons/user_preferences.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter/material.dart';
+import 'bloc/auth/auth_bloc.dart';
 import 'bloc/theme/theme.dart';
+import 'data/singletons/user_preferences.dart';
+import 'res/app_themes.dart';
 import 'ui/pages/home/home.dart';
 import 'ui/pages/search/search.dart';
 import 'ui/pages/settings/settings.dart';

@@ -1,5 +1,5 @@
-import 'package:flukabo/data/helpers/json_parser.dart';
-import 'package:flukabo/data/models/abstract_model.dart';
+import '../../data/helpers/json_parser.dart';
+import '../../data/models/abstract_model.dart';
 
 class UserModel extends AbstractDataModel {
   int id;

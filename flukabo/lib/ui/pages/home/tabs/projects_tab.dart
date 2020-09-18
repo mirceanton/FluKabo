@@ -1,8 +1,7 @@
-import 'package:flukabo/data/models/project.dart';
-import 'package:flukabo/ui/templates/project/project_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
+import '../../../../data/models/project.dart';
+import '../../../../ui/templates/project/project_list_view.dart';
 import 'abstract_tab_class.dart';
 
 class ProjectsTab extends HomeTab {

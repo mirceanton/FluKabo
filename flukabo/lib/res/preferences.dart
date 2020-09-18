@@ -1,5 +1,5 @@
 // ignore: constant_identifier_names
-import 'package:flukabo/res/app_themes.dart';
+import '../res/app_themes.dart';
 
 // ignore: constant_identifier_names
 enum Prefs { BaseURL, Port, API, Certs, User, Token, Theme }

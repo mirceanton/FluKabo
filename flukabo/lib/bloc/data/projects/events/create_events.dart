@@ -1,5 +1,4 @@
-import 'package:flukabo/data/models/models.dart';
-
+import '../../../../data/models/models.dart';
 import '../projects_bloc.dart';
 
 class CreateEvent extends ProjectsEvent {

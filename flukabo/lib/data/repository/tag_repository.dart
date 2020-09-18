@@ -1,11 +1,11 @@
 import 'dart:convert';
-
-import 'package:flukabo/data/models/models.dart';
-import 'package:flukabo/data/models/tag.dart';
-import 'package:flukabo/data/repository/task_repository.dart';
-import 'package:flukabo/data/singletons/kanboard_api_client.dart';
-import 'package:flukabo/res/kanboard/api_procedures/tag_procedures.dart';
 import 'package:flutter/material.dart';
+
+import '../../data/models/models.dart';
+import '../../data/models/tag.dart';
+import '../../data/repository/task_repository.dart';
+import '../../data/singletons/kanboard_api_client.dart';
+import '../../res/kanboard/api_procedures/tag_procedures.dart';
 
 ///
 /// This is a singleton meant to encapsulate all the methods associated with

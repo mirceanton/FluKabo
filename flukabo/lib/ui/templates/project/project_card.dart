@@ -1,6 +1,6 @@
-import 'package:flukabo/data/models/project.dart';
-import 'package:flukabo/res/dimensions.dart';
 import 'package:flutter/material.dart';
+import '../../../data/models/project.dart';
+import '../../../res/dimensions.dart';
 
 ///
 /// A Caard used to showcase a project

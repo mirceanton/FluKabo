@@ -1,5 +1,5 @@
-import 'package:flukabo/data/models/project.dart';
 import 'package:flutter/material.dart';
+import '../../../data/models/project.dart';
 
 // FIXME
 

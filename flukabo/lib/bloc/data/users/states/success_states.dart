@@ -1,5 +1,5 @@
-import 'package:flukabo/data/models/group.dart';
-import 'package:flukabo/data/models/user.dart';
+import '../../../../data/models/group.dart';
+import '../../../../data/models/user.dart';
 
 import '../users_bloc.dart';
 

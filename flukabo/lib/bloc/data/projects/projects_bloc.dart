@@ -1,10 +1,10 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flukabo/data/models/models.dart';
-import 'package:flukabo/data/repository/project_repository.dart';
-import 'package:flukabo/data/singletons/kanboard_api_client.dart';
+
+import '../../../data/models/models.dart';
+import '../../../data/repository/project_repository.dart';
+import '../../../data/singletons/kanboard_api_client.dart';
 import './events/events.dart';
 import './states/states.dart';
 

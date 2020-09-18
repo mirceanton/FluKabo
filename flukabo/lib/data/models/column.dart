@@ -1,9 +1,8 @@
-import 'package:flukabo/data/helpers/json_parser.dart';
-import 'package:flukabo/data/models/project.dart';
-import 'package:flukabo/data/models/abstract_model.dart';
-import 'package:flukabo/data/models/task.dart';
-import 'package:flukabo/data/repository/project_repository.dart';
-
+import '../../data/helpers/json_parser.dart';
+import '../../data/models/abstract_model.dart';
+import '../../data/models/project.dart';
+import '../../data/models/task.dart';
+import '../../data/repository/project_repository.dart';
 import '../repository/project_repository.dart';
 import 'project.dart';
 

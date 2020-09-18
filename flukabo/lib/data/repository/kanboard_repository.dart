@@ -1,5 +1,5 @@
-import 'package:flukabo/data/singletons/kanboard_api_client.dart';
-import 'package:flukabo/res/kanboard/api_procedures/application_procedures.dart';
+import '../../data/singletons/kanboard_api_client.dart';
+import '../../res/kanboard/api_procedures/application_procedures.dart';
 
 ///
 /// This is a singleton meant to encapsulate all the data associated with the
