@@ -28,6 +28,19 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
     _tabController = TabController(length: 2, vsync: this);
   }
 
+  Widget _buildProjectListView(List<ProjectModel> projects) {
+    if (projects.isEmpty) {
+      return const Center(child: Text('No projects to show'));
+    } else {
+      return ProjectListView(
+        height: double.infinity,
+        width: double.infinity,
+        projects: projects,
+        showCards: false,
+      );
+    }
+  }
+
   Widget _builder(BuildContext context, ProjectsState state) {
     if (state is LoadingState) {
       return buildLoadingIndicator();
@@ -35,53 +48,17 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
       return buildErrorIndicator(context);
     } else if (state is SuccessState) {
       if (state is ProjectListFetchedState) {
-        final List<ProjectModel> projects = state.projects;
-        if (projects.isEmpty) {
-          return const Center(
-            child: Icon(Icons.hourglass_empty),
-          );
-        } else {
-          final List<Widget> tabs = [];
-          List<ProjectModel> buffer =
-              projects.where((element) => element.isPrivate).toList();
-          if (buffer.isEmpty) {
-            tabs.add(
-              const Center(
-                child: Text('No private projects'),
-              ),
-            );
-          } else {
-            tabs.add(
-              ProjectListView(
-                projects: buffer,
-                width: double.infinity,
-                height: double.infinity,
-                showCards: false,
-              ),
-            );
-          }
-          buffer = projects.where((element) => !element.isPrivate).toList();
-          if (buffer.isEmpty) {
-            tabs.add(
-              const Center(
-                child: Text('No public projects'),
-              ),
-            );
-          } else {
-            tabs.add(
-              ProjectListView(
-                projects: buffer,
-                width: double.infinity,
-                height: double.infinity,
-                showCards: false,
-              ),
-            );
-          }
-          return TabBarView(
-            controller: _tabController,
-            children: tabs,
-          );
-        }
+        return TabBarView(
+          controller: _tabController,
+          children: [
+            _buildProjectListView(
+              state.projects.where((element) => element.isPrivate).toList(),
+            ),
+            _buildProjectListView(
+              state.projects.where((element) => !element.isPrivate).toList(),
+            ),
+          ],
+        );
       }
     }
     // if the state is InitState, attempt a Fetch Event
