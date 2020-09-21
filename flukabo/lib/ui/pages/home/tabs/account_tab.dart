@@ -3,19 +3,15 @@ import 'package:flutter/material.dart';
 import 'abstract_tab_class.dart';
 
 class AccountTab extends HomeTab {
-  const AccountTab();
+  AccountTab();
 
   @override
-  String getName() => 'Account';
+  String get name => 'Account';
   @override
-  IconData getIcon() => MdiIcons.account;
+  IconData get icon => MdiIcons.account;
 
   @override
-  Future<void> refresh() async {
-    //TODO
-  }
-
-  // TODO
-  @override
-  Widget buildSelf() => Center(child: Text(getName()));
+  HomeTabState createState() => _AccountTabState();
 }
+
+class _AccountTabState extends HomeTabState {}

@@ -16,101 +16,64 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 ///  - allows us to reuse UI elements, such as the Loading screen, the Error
 ///    Screen and the initial, empty screen
 ///
-abstract class HomeTab {
-  const HomeTab();
+abstract class HomeTab extends StatefulWidget {
+  // Getters
+  String get name; // the name associated to the tab (for app bar title)
+  IconData get icon; // the icon associated to the tab (for bottom tab bar)
 
-  ///
-  /// [getName] will return the name associated to this tab.
-  /// Having this method allows us to skip creating a list of String to hold
-  /// the tab names in the HomePage
-  ///
-  String getName();
+  @override
+  // ignore: no_logic_in_create_state
+  HomeTabState createState();
+}
 
+abstract class HomeTabState extends State<HomeTab> {
   ///
-  /// [getIcon] will return the icon associated to this tab.
-  /// Having this method allows us to skip creating a list of IconData to pass
-  /// to the BottomNavBar
-  ///
-  IconData getIcon();
-
-  // TODO not sure if this is actually needed
-  Future<void> refresh();
-
-  ///
-  /// [buildSelf] will return the actual UI of this tab, assuming the AuthState
-  /// is AuthSuccessState
-  /// This layout will be unique to each tab and should be overriden in every
-  /// implementation
-  ///
-  Widget buildSelf();
-
-  ///
-  /// [_mainBuilder] is the builder function called by the BlocConsumer which
-  /// constitutes the body of a HomeTab
+  /// [_mainBuilder] is the builder function called by the BlocConsumer
   /// It handles building the appropriate Layout for each state:
-  ///   - AuthLoadingState => _buildLoadingIndicator()
-  ///   - AuthSuccessState => buildSelf()
-  ///   - AuthErrorState => _buildError()
-  ///   - AuthInitialState => _buildInitPage()
+  ///   - AuthLoadingState => [_buildLoadingIndicator]
+  ///   - AuthSuccessState => [buildContent]
+  ///   - AuthErrorState => [_buildError]
+  ///   - AuthInitialState => [_buildInitPage]
   ///
   Widget _mainBuilder(BuildContext context, AuthState state) {
     switch (state.runtimeType) {
       case AuthLoadingState:
-        print('Loading data...');
-        return _buildLoadingIndicator();
+        print('Loading auth data...');
+        return buildLoadingIndicator();
       case AuthSuccessState:
         print('Authentication successful');
-        return buildSelf();
+        return buildContent();
       case AuthErrorState:
         print('Authentication failed');
-        return _buildErrorIndicator(context);
+        return buildErrorIndicator(context);
       default: // this includes the [AuthInitialState]
-        print("Initial state");
-        return _buildInitPage();
+        print("Initial auth state");
+        return buildInitPage();
     }
   }
 
   ///
-  /// [getBody] returns the 'state-aware content'.
-  /// In other words, whenever a HomeTab is implemented, the UI will come from
-  /// this function, not from buildSelf(), as this one is able to respond
-  /// to the states created by the AuthBloc.
-  ///
-  Widget getBody() {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (_, __) {},
-      builder: _mainBuilder,
-    );
-  }
-
-  ///
-  /// [_showSnackbar] is self explanatory. It will display the given [content]
+  /// [showSnackbar] is self explanatory. It will display the given [content]
   /// in a custom snackbar
   ///
-  void _showSnackbar({BuildContext context, String content}) {
+  void showSnackbar({BuildContext context, String content}) {
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(content),
     ));
   }
 
-  ///
-  /// [_buildLoadingIndicator] simply returns a centered loading bar
-  ///
-  Widget _buildLoadingIndicator() =>
+  /// [buildLoadingIndicator] simply returns a centered loading bar
+  Widget buildLoadingIndicator() =>
       const Center(child: CircularProgressIndicator());
 
   ///
-  /// [_buildInitPage] returns an empty container.
-  /// This is the layout that will get displayed in the time between starting
-  /// the app, and the AuthEvent getting registered. From there, the loading
-  /// layout is next, followed by the success or error layouts
+  /// [buildInitPage] returns an empty container, a placeholder widget while
+  ///  the event is getting sent to the bloc
   ///
-  Widget _buildInitPage() => Container();
+  Widget buildInitPage() => Container();
 
-  ///FIXME
-  /// [_buildErrorIndicator] returns a centered icon-text pair
-  ///
-  Widget _buildErrorIndicator(BuildContext context) {
+  /// [buildErrorIndicator] returns a centered icon-text pair
+  Widget buildErrorIndicator(BuildContext context) {
     return Column(children: [
       Expanded(child: Container()),
       Icon(
@@ -128,5 +91,21 @@ abstract class HomeTab {
       ),
       Expanded(child: Container()),
     ]);
+  }
+
+  ///
+  /// [buildContent] will return the actual UI of this tab, assuming the
+  /// AuthState is AuthSuccessState
+  /// This layout will be unique to each tab and should be overriden in every
+  /// implementation
+  ///
+  Widget buildContent() => Container();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (_, __) {},
+      builder: _mainBuilder,
+    );
   }
 }

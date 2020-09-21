@@ -1,38 +1,25 @@
-import 'package:flukabo/data/models/project.dart';
-import 'package:flukabo/ui/templates/project/project_list_view.dart';
-import 'package:flutter/material.dart';
+import 'package:flukabo/bloc/data/projects/states/loading_state.dart';
+import 'package:flukabo/bloc/data/projects/states/states.dart';
+import 'package:flukabo/data/models/models.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flukabo/bloc/data/projects/events/events.dart';
+import 'package:flukabo/bloc/data/projects/projects_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
+import 'package:flutter/material.dart';
+import '../../../../ui/templates/project/project_list_view.dart';
 import 'abstract_tab_class.dart';
 
 class ProjectsTab extends HomeTab {
-  final List<ProjectModel> _projects;
-  const ProjectsTab(this._projects);
+  // Constructor
+  ProjectsTab();
 
   @override
-  String getName() => 'Projects';
+  String get name => 'Projects';
   @override
-  IconData getIcon() => MdiIcons.bulletinBoard;
+  IconData get icon => MdiIcons.bulletinBoard;
 
   @override
-  Future<void> refresh() async {
-    //TODO
-  }
-
-  ///
-  /// [buildSelf] returns the unique layout of the ProjectsTab
-  /// this is simply a List showcasing all of the projects in the List Tile view
-  ///
-  @override
-  Widget buildSelf() {
-    return RefreshIndicator(
-      onRefresh: refresh,
-      child: ProjectListView(
-        width: double.infinity,
-        height: double.infinity,
-        projects: _projects,
-        showCards: false,
-      ),
-    );
-  }
+  HomeTabState createState() => _ProjectsTabState();
 }
+
+class _ProjectsTabState extends HomeTabState {}
