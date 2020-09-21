@@ -1,6 +1,4 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flukabo/data/models/project.dart';
-import 'package:flukabo/data/models/task.dart';
 import 'package:flutter/material.dart';
 
 import 'home.dart';
@@ -162,7 +160,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<Widget> _getBottomNavItems() {
     final List<Widget> _items = [];
     for (int i = 0; i < _tabs.length; i++) {
-      _items.add(Icon(_tabs[i].getIcon()));
+      _items.add(Icon(_tabs[i].icon));
     }
     return _items;
   }
@@ -178,7 +176,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<Widget> _getPages() {
     final List<Widget> _items = [];
     for (int i = 0; i < _tabs.length; i++) {
-      _items.add(_tabs[i].getBody());
+      _items.add(_tabs[i]);
     }
     return _items;
   }
@@ -324,35 +322,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   /// [CONSTRUCTOR]: populates the [_tabs] list with the appropriate items
   ///
   _HomePageState() {
-    _tabs.add(DashboardTab(
-      projects: _getDummyProjects(),
-      tasks: _getDummyTasks(),
-    ));
-    _tabs.add(ProjectsTab(_getDummyProjects()));
-    _tabs.add(TasksTab(_getDummyTasks()));
-    _tabs.add(const AccountTab());
-  }
-
-  PreferredSizeWidget buildTabBar() {
-    if (_currentTab == 1) {
-      return TabBar(
-        controller: TabController(length: 2, vsync: this),
-        tabs: const [
-          Tab(text: 'Personal'),
-          Tab(text: 'Public'),
-        ],
-      );
-    }
-    return null;
+    _tabs.add(DashboardTab());
+    _tabs.add(ProjectsTab());
+    _tabs.add(TasksTab());
+    _tabs.add(AccountTab());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_tabs[_currentTab].getName()),
+        title: Text(_tabs[_currentTab].name),
         actions: _getActions(),
-        bottom: buildTabBar(),
+        elevation: (_currentTab == 1) ? 0 : 8,
       ),
       body: PageView(
         controller: _pageController,
@@ -370,30 +352,5 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         animationCurve: Curves.linearToEaseOut,
       ),
     );
-  }
-
-  List<ProjectModel> _getDummyProjects() {
-    final List<ProjectModel> projects = [];
-    for (int i = 0; i < 50; i++) {
-      projects.add(ProjectModel(
-        id: i + 1,
-        name: "Project ${i + 1}",
-        description: "Description lorem ipsum",
-        isPrivate: i % 19 == 7,
-      ));
-    }
-    return projects;
-  }
-
-  List<TaskModel> _getDummyTasks() {
-    final List<TaskModel> _tasks = [];
-    for (int i = 0; i < 100; i++) {
-      _tasks.add(TaskModel(
-        name: "task ${i + 1}",
-        description: "Description lorem ipsum",
-        priority: i * 73 % 4,
-      ));
-    }
-    return _tasks;
   }
 }

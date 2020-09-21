@@ -2,6 +2,7 @@ import 'package:flukabo/data/models/category.dart';
 import 'package:flukabo/data/models/swimlane.dart';
 import 'package:flukabo/data/repository/category_repository.dart';
 import 'package:flukabo/data/repository/swimlane_repository.dart';
+import 'package:flukabo/data/repository/tag_repository.dart';
 import 'package:flukabo/ui/pages/task/task_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -54,15 +55,7 @@ class TaskModel extends AbstractDataModel {
   int _priority;
   List<TagModel> _tags;
 
-  TaskModel({
-    String name = "",
-    String description = "",
-    int priority = 0,
-    int difficulty = 0,
-  })  : _title = name,
-        _description = description,
-        _priority = priority,
-        _complexity = difficulty;
+  // Constructors
   TaskModel.empty();
   TaskModel.fromJson(Map<String, dynamic> json) {
     _id = parseToInt(json['id'].toString());
@@ -117,7 +110,7 @@ class TaskModel extends AbstractDataModel {
     _column = await ColumnRepository().getColumnById(_columnId);
     _swimlane = await SwimlaneRepository().getSwimlaneById(_swimlaneId);
     _category = await CategoryRepository().getCategoryById(_categoryId);
-    // TODO _tags = await TagRepository().getTaskTags(_id);
+    _tags = await TagRepository().getTaskTags(_id);
   }
 
   // Getters

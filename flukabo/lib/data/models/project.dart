@@ -30,18 +30,6 @@ class ProjectModel extends AbstractDataModel {
   Map<String, String> _url;
 
   // Constructors
-  // TODO this is a dummy constructor made for testing. DELETEME
-  ProjectModel({
-    this.id,
-    String name,
-    String description,
-    String backgroundImage = "https://source.unsplash.com/random",
-    bool isPrivate,
-  })  : _name = name,
-        _description = description,
-        _backgroundImage = backgroundImage,
-        _isPrivate = isPrivate;
-
   ProjectModel.empty();
   ProjectModel.fromJson(Map<String, dynamic> json) {
     id = parseToInt(json['id'].toString());
@@ -114,6 +102,9 @@ class ProjectModel extends AbstractDataModel {
   Future fetchMetadata() async {
     _backgroundImage = await ProjectRepository()
         .getProjectMetadataByKey(projectId: id, key: 'bgImage');
+
+    //TODO deleteme
+    //_backgroundImage = 'https://picsum.photos/200'; dummy bg image
   }
 
   ///
