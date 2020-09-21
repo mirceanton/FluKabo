@@ -256,11 +256,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
 
     // Actually scroll to page
-    _pageController.animateToPage(
-      index,
-      duration: animDurationSlow,
-      curve: Curves.easeOut,
-    );
+    _pageController.jumpToPage(index);
     _currentTab = index; // update current tab
   }
 
