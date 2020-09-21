@@ -333,11 +333,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _tabs.add(const AccountTab());
   }
 
+  PreferredSizeWidget buildTabBar() {
+    if (_currentTab == 1) {
+      return TabBar(
+        controller: TabController(length: 2, vsync: this),
+        tabs: const [
+          Tab(text: 'Personal'),
+          Tab(text: 'Public'),
+        ],
+      );
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(_tabs[_currentTab].getName()), actions: _getActions()),
+        title: Text(_tabs[_currentTab].getName()),
+        actions: _getActions(),
+        bottom: buildTabBar(),
+      ),
       body: PageView(
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
