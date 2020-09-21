@@ -1,8 +1,8 @@
-import 'package:flukabo/bloc/auth/auth_bloc.dart';
-import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import '../../../../bloc/auth/auth_bloc.dart';
+import '../../../../data/singletons/user_preferences.dart';
 
 ///
 /// A template class that is used to generate the fields via Lists

@@ -1,11 +1,11 @@
-import 'package:flukabo/bloc/data/projects/states/loading_state.dart';
-import 'package:flukabo/bloc/data/projects/states/states.dart';
-import 'package:flukabo/data/models/models.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flukabo/bloc/data/projects/events/events.dart';
 import 'package:flukabo/bloc/data/projects/projects_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:flukabo/bloc/data/projects/states/states.dart';
+import 'package:flukabo/data/models/project.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../ui/templates/project/project_list_view.dart';
 import 'abstract_tab_class.dart';
 
@@ -34,7 +34,7 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
     } else if (state is ErrorState) {
       return buildErrorIndicator(context);
     } else if (state is SuccessState) {
-      if (state is ProjectsFetchedState) {
+      if (state is ProjectListFetchedState) {
         final List<ProjectModel> projects = state.projects;
         if (projects.isEmpty) {
           return const Center(

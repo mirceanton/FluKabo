@@ -1,7 +1,6 @@
-import 'package:flukabo/data/models/swimlane.dart';
-import 'package:flukabo/res/kanboard/api_procedures/swimlane_procedures.dart';
 import 'package:flutter/material.dart';
-
+import '../../data/models/swimlane.dart';
+import '../../res/kanboard/api_procedures/swimlane_procedures.dart';
 import '../singletons/kanboard_api_client.dart';
 
 ///

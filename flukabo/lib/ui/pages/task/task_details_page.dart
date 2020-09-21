@@ -1,5 +1,5 @@
-import 'package:flukabo/data/models/task.dart';
 import 'package:flutter/material.dart';
+import '../../../data/models/task.dart';
 
 // TODO implement me
 class TaskDetailsPage extends StatelessWidget {

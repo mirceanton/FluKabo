@@ -1,5 +1,4 @@
-import 'package:flukabo/data/models/link.dart';
-import 'package:flukabo/data/models/models.dart';
+import '../../data/models/models.dart';
 
 String parseToString(String json) => json == 'null' ? '' : json;
 

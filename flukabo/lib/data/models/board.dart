@@ -1,6 +1,6 @@
-import 'package:flukabo/data/helpers/json_parser.dart';
-import 'package:flukabo/data/models/abstract_model.dart';
-import 'package:flukabo/data/models/swimlane.dart';
+import '../../data/helpers/json_parser.dart';
+import '../../data/models/abstract_model.dart';
+import '../../data/models/swimlane.dart';
 
 class BoardModel extends AbstractDataModel {
   List<ExtendedSwimlaneModel> _swimlanes;

@@ -1,15 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:flukabo/data/helpers/json_parser.dart';
-import 'package:flukabo/data/models/abstract_model.dart';
-import 'package:flukabo/data/models/board.dart';
-import 'package:flukabo/data/singletons/user_preferences.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:http/io_client.dart';
+import 'package:http/http.dart';
+import 'package:flutter/material.dart';
+
+import '../../data/helpers/json_parser.dart';
+import '../../data/models/abstract_model.dart';
+import '../../data/models/board.dart';
+import '../../data/singletons/user_preferences.dart';
 
 /// Custom Error class
 class Failure implements Exception {

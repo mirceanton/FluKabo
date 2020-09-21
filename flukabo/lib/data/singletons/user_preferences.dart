@@ -1,7 +1,7 @@
-import 'package:flukabo/res/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../bloc/theme/theme.dart';
+import '../../res/preferences.dart';
 
 /// A singleton made to simplify interacting with the Shared Preferences
 class UserPreferences {

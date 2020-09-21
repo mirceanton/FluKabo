@@ -1,8 +1,8 @@
-import 'package:flukabo/data/models/abstract_model.dart';
-import 'package:flukabo/data/repository/task_repository.dart';
-
+import '../../data/models/abstract_model.dart';
+import '../../data/repository/task_repository.dart';
 import '../helpers/json_parser.dart';
 import '../repository/user_repository.dart';
+
 import 'task.dart';
 import 'user.dart';
 

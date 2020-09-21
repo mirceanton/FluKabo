@@ -1,7 +1,7 @@
-import 'package:flukabo/data/models/project.dart';
-import 'package:flukabo/ui/templates/project/project_card.dart';
-import 'package:flukabo/ui/templates/project/project_tile.dart';
 import 'package:flutter/material.dart';
+import '../../../data/models/project.dart';
+import '../../../ui/templates/project/project_card.dart';
+import '../../../ui/templates/project/project_tile.dart';
 
 ///
 /// A custom list view that can handle displaying the Projects in 2 fashions:

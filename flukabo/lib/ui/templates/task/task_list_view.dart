@@ -1,6 +1,6 @@
-import 'package:flukabo/data/models/task.dart';
-import 'package:flukabo/ui/templates/task/task_tile.dart';
 import 'package:flutter/material.dart';
+import '../../../data/models/task.dart';
+import '../../../ui/templates/task/task_tile.dart';
 
 ///
 /// A basic LisView.separated with a custom [width] and [height]

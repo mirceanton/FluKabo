@@ -1,9 +1,9 @@
-import 'package:flukabo/data/helpers/json_parser.dart';
-import 'package:flukabo/data/models/abstract_model.dart';
-import 'package:flukabo/data/models/link.dart';
-import 'package:flukabo/data/models/task.dart';
-import 'package:flukabo/data/repository/link_repository.dart';
-import 'package:flukabo/data/repository/task_repository.dart';
+import '../../data/helpers/json_parser.dart';
+import '../../data/models/abstract_model.dart';
+import '../../data/models/link.dart';
+import '../../data/models/task.dart';
+import '../../data/repository/link_repository.dart';
+import '../../data/repository/task_repository.dart';
 
 class TaskLinkModel extends AbstractDataModel {
   int _taskId;

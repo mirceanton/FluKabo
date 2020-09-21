@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
-import 'package:flukabo/data/singletons/kanboard_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
+
+import '../../data/singletons/kanboard_api_client.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

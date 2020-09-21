@@ -1,13 +1,13 @@
-import 'package:flukabo/data/models/category.dart';
-import 'package:flukabo/data/models/swimlane.dart';
-import 'package:flukabo/data/repository/category_repository.dart';
-import 'package:flukabo/data/repository/swimlane_repository.dart';
 import 'package:flukabo/data/repository/tag_repository.dart';
-import 'package:flukabo/ui/pages/task/task_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../../data/models/category.dart';
+import '../../data/models/swimlane.dart';
+import '../../data/repository/category_repository.dart';
+import '../../data/repository/swimlane_repository.dart';
 import '../../res/kanboard/kanboard_colors.dart';
+import '../../ui/pages/task/task_details_page.dart';
 import '../helpers/json_parser.dart';
 import '../repository/column_repository.dart';
 import '../repository/project_repository.dart';
@@ -19,7 +19,7 @@ import 'tag.dart';
 import 'user.dart';
 
 class TaskModel extends AbstractDataModel {
-  int _id;
+  int id;
   String _title;
   String _description;
   String _dateCreation;
@@ -58,7 +58,7 @@ class TaskModel extends AbstractDataModel {
   // Constructors
   TaskModel.empty();
   TaskModel.fromJson(Map<String, dynamic> json) {
-    _id = parseToInt(json['id'].toString());
+    id = parseToInt(json['id'].toString());
     _title = parseToString(json['title'].toString());
     _description = parseToString(json['description'].toString());
     _dateCreation = parseToString(json['date_creation'].toString());
@@ -110,11 +110,10 @@ class TaskModel extends AbstractDataModel {
     _column = await ColumnRepository().getColumnById(_columnId);
     _swimlane = await SwimlaneRepository().getSwimlaneById(_swimlaneId);
     _category = await CategoryRepository().getCategoryById(_categoryId);
-    _tags = await TagRepository().getTaskTags(_id);
+    _tags = await TagRepository().getTaskTags(id);
   }
 
   // Getters
-  int get id => _id;
   String get title => _title;
   String get description => _description;
   String get dateCreation => _dateCreation;
@@ -162,6 +161,14 @@ class TaskModel extends AbstractDataModel {
   }
 
   List<TagModel> get tags => _tags;
+  List<String> get tagNames {
+    final List<String> names = [];
+    for (int i = 0; i < _tags.length; i++) {
+      names.add(_tags[i].name);
+    }
+    return names;
+  }
+
   @override
   String get type => 'task';
 

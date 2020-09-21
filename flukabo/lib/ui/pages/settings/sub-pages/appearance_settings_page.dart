@@ -1,8 +1,8 @@
-import 'package:flukabo/bloc/theme/theme.dart';
-import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import '../../../../bloc/theme/theme.dart';
+import '../../../../data/singletons/user_preferences.dart';
 
 /// Template widget for theme showcase
 ///  A page with a custom background color and a text widget
