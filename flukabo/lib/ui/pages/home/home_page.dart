@@ -210,54 +210,62 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   /// see the expected behaviour explained up top, near the declarations
   ///
   void _onBottomNavTap(int index) {
-    // Rotate settings icon in increments of 60 * no_of_tabs_scrolled degrees
-    _settingsRotationController =
-        AnimationController(vsync: this, duration: animDurationSlow);
-    final int _delta = index - _currentTab; // number of tabs jumped
-    _settingsRotationController.addListener(() {
-      setState(() {
-        _settingsAngle =
-            _settingsRotationController.value * _delta * 60 / 360 * 2 * 3.1415;
+    if (index == _currentTab) {
+      //todo find a way to refresh the page
+    } else {
+      // Rotate settings icon in increments of 60 * no_of_tabs_scrolled degrees
+      _settingsRotationController =
+          AnimationController(vsync: this, duration: animDurationSlow);
+      final int _delta = index - _currentTab; // number of tabs jumped
+      _settingsRotationController.addListener(() {
+        setState(() {
+          _settingsAngle = _settingsRotationController.value *
+              _delta *
+              60 /
+              360 *
+              2 *
+              3.1415;
+        });
       });
-    });
-    _settingsRotationController.forward(); // animate
+      _settingsRotationController.forward(); // animate
 
-    switch (index) {
-      case 1: // if we switched to projects tab
-        if (_searchGrowAnim.status == AnimationStatus.dismissed) {
-          _searchGrowController.forward();
-        }
-        if (_currentTab == 2) {
-          _searchRotateDirection = -1; // change direction
-          // note the forward.then => reverse, hence the rocking back and forth
-          _searchRotationController
-              .forward()
-              .then((_) => _searchRotationController.reverse());
-        }
-        break;
-      case 2: // if we switched to tasks tab
-        if (_searchGrowAnim.status == AnimationStatus.dismissed) {
-          _searchGrowController.forward();
-        }
-        if (_currentTab == 1) {
-          _searchRotateDirection = 1; // change direction
-          // note the forward.then => reverse, hence the rocking back and forth
-          _searchRotationController
-              .forward()
-              .then((_) => _searchRotationController.reverse());
-        }
-        break;
+      switch (index) {
+        case 1: // if we switched to projects tab
+          if (_searchGrowAnim.status == AnimationStatus.dismissed) {
+            _searchGrowController.forward();
+          }
+          if (_currentTab == 2) {
+            _searchRotateDirection = -1; // change direction
+            // note the forward.then => reverse, hence the rocking back and forth
+            _searchRotationController
+                .forward()
+                .then((_) => _searchRotationController.reverse());
+          }
+          break;
+        case 2: // if we switched to tasks tab
+          if (_searchGrowAnim.status == AnimationStatus.dismissed) {
+            _searchGrowController.forward();
+          }
+          if (_currentTab == 1) {
+            _searchRotateDirection = 1; // change direction
+            // note the forward.then => reverse, hence the rocking back and forth
+            _searchRotationController
+                .forward()
+                .then((_) => _searchRotationController.reverse());
+          }
+          break;
 
-      default: // if we switched to dashboard or account tab, hide both icons
-        if (_searchGrowAnim.status == AnimationStatus.completed) {
-          _searchGrowController.reverse();
-        }
-        break;
+        default: // if we switched to dashboard or account tab, hide both icons
+          if (_searchGrowAnim.status == AnimationStatus.completed) {
+            _searchGrowController.reverse();
+          }
+          break;
+      }
+
+      // Actually scroll to page
+      _pageController.jumpToPage(index);
+      _currentTab = index; // update current tab
     }
-
-    // Actually scroll to page
-    _pageController.jumpToPage(index);
-    _currentTab = index; // update current tab
   }
 
   /// [initState] initializes the AnimationControllers and Animation fields
