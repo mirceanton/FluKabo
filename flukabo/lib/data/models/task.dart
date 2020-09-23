@@ -104,13 +104,16 @@ class TaskModel extends AbstractDataModel {
     _category = null;
   }
   Future init() async {
-    _project = await ProjectRepository().getProjectById(_projectId);
-    _owner = await UserRepository().getUserById(_ownerId);
-    _creator = await UserRepository().getUserById(_creatorId);
-    _column = await ColumnRepository().getColumnById(_columnId);
-    _swimlane = await SwimlaneRepository().getSwimlaneById(_swimlaneId);
-    _category = await CategoryRepository().getCategoryById(_categoryId);
-    _tags = await TagRepository().getTaskTags(id);
+    //FIXME
+    // _project = await ProjectRepository().getProjectById(_projectId);
+    // _owner = await UserRepository().getUserById(_ownerId);
+    // _creator = await UserRepository().getUserById(_creatorId);
+    // _column = await ColumnRepository().getColumnById(_columnId);
+    // _swimlane = await SwimlaneRepository().getSwimlaneById(_swimlaneId);
+    // if (_categoryId > 0) {
+    //   _category = await CategoryRepository().getCategoryById(_categoryId);
+    // }
+    // _tags = await TagRepository().getTaskTags(id);
   }
 
   // Getters
@@ -149,8 +152,8 @@ class TaskModel extends AbstractDataModel {
   int get recurrenceBasedate => _recurrenceBasedate;
   int get priority => _priority;
   Color get priorityColor {
-    final double threshold =
-        (_project.priorityEnd - _project.priorityStart) / 3;
+    const double threshold = 1;
+    // (_project.priorityEnd - _project.priorityStart) / 3;
     if (priority < threshold.toInt()) {
       return Colors.green;
     }
