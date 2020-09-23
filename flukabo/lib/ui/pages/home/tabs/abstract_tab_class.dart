@@ -66,16 +66,6 @@ abstract class HomeTabState extends State<HomeTab> {
     }
   }
 
-  ///
-  /// [showSnackbar] is self explanatory. It will display the given [content]
-  /// in a custom snackbar
-  ///
-  void showSnackbar({BuildContext context, String content}) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(content),
-    ));
-  }
-
   /// [buildLoadingIndicator] simply returns a centered loading bar
   Widget buildLoadingIndicator() =>
       const Center(child: CircularProgressIndicator());

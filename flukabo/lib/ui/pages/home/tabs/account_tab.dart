@@ -5,6 +5,7 @@ import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import '../../../commons.dart';
 import 'abstract_tab_class.dart';
 
 class AccountTab extends HomeTab {
@@ -27,7 +28,7 @@ class _AccountTabState extends HomeTabState {
       return buildConnectionErrorIndicator(context);
     } else if (state is SuccessState) {
       if (state is UserFetchedState) {
-        return Center(child: Text(state.user.name + " - " + state.user.email));
+        return Center(child: Text("${state.user.name} - ${state.user.email}"));
       }
     }
     // if the state is InitState, attempt a Fetch Event
