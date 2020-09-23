@@ -21,6 +21,7 @@ class ProjectTile extends StatelessWidget {
         leading: project.buildBgImage(
           width: tileSize,
           height: tileSize,
+          radius: 8.0,
         ),
         title: Row(
           children: [

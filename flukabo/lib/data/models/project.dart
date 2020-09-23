@@ -1,7 +1,7 @@
+import 'package:flukabo/data/models/models.dart';
 import 'package:flutter/material.dart';
 import '../../data/helpers/json_parser.dart';
 import '../../data/models/abstract_model.dart';
-import '../../data/repository/project_repository.dart';
 import '../../ui/pages/project/project_board_page.dart';
 import '../repository/user_repository.dart';
 import 'user.dart';
@@ -58,7 +58,7 @@ class ProjectModel extends AbstractDataModel {
 
   Future init() async {
     _owner = await UserRepository().getUserById(_ownerID);
-    await fetchMetadata();
+    if (_backgroundImage == null) await fetchMetadata();
   }
 
   // Getters for private fields
@@ -99,11 +99,11 @@ class ProjectModel extends AbstractDataModel {
   /// [_backgroundImage]
   ///
   Future fetchMetadata() async {
-    _backgroundImage = await ProjectRepository()
-        .getProjectMetadataByKey(projectId: id, key: 'bgImage');
+    // _backgroundImage = await ProjectRepository()
+    //     .getProjectMetadataByKey(projectId: id, key: 'bgImage');
 
     //TODO deleteme
-    //_backgroundImage = 'https://picsum.photos/200'; dummy bg image
+    _backgroundImage = 'https://source.unsplash.com/random';
   }
 
   ///
@@ -123,9 +123,13 @@ class ProjectModel extends AbstractDataModel {
   }
 
   // Widget Generating methods
-  Widget buildBgImage({@required double width, @required double height}) {
+  Widget buildBgImage({
+    @required double width,
+    @required double height,
+    @required double radius,
+  }) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(8.0),
+      borderRadius: BorderRadius.circular(radius),
       child: Hero(
         tag: "${_name}_img",
         child: Image.network(

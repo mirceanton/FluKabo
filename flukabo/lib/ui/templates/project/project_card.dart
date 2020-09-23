@@ -23,6 +23,7 @@ class ProjectCard extends StatelessWidget {
           project.buildBgImage(
             width: cardWidth,
             height: cardHeight,
+            radius: 8.0,
           ),
           Content(project),
           ClickArea(project),
