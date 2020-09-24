@@ -51,16 +51,17 @@ class Content extends StatelessWidget {
         children: <Widget>[
           Expanded(flex: 3, child: Container()),
           Container(
-              padding: const EdgeInsets.all(8.0),
-              color: Colors.black45,
-              width: 200,
-              child: Column(
-                children: [
-                  project.buildTitle(context),
-                  const SizedBox(height: 4.0),
-                  Icon(project.privacyIcon),
-                ],
-              )),
+            padding: const EdgeInsets.all(8.0),
+            color: Colors.black45,
+            width: 200,
+            child: Column(
+              children: [
+                project.buildTitle(context),
+                const SizedBox(height: 4.0),
+                Icon(project.privacyIcon),
+              ],
+            ),
+          ),
           Expanded(child: Container()),
         ],
       ),

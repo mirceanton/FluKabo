@@ -39,14 +39,16 @@ class _ProjectBoardPageState extends State<ProjectBoardPage>
           tabs: tabs,
         ),
       ),
-      body: Stack(children: [
-        project.buildBgImage(width: double.infinity, height: double.infinity),
-        TabBarView(
-          controller: _swimlaneController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: pages,
-        ),
-      ]),
+      body: Stack(
+        children: [
+          project.buildBgImage(width: double.infinity, height: double.infinity),
+          TabBarView(
+            controller: _swimlaneController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: pages,
+          ),
+        ],
+      ),
     );
   }
 }
