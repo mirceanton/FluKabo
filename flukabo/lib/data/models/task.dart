@@ -101,7 +101,8 @@ class TaskModel extends AbstractDataModel {
   Future init() async {
     //FIXME
     // _project = await ProjectRepository().getProjectById(_projectId);
-    // _owner = await UserRepository().getUserById(_ownerId);
+    _owner =
+        _ownerId != 0 ? await UserRepository().getUserById(_ownerId) : null;
     // _creator = await UserRepository().getUserById(_creatorId);
     // _column = await ColumnRepository().getColumnById(_columnId);
     // _swimlane = await SwimlaneRepository().getSwimlaneById(_swimlaneId);
@@ -233,7 +234,11 @@ class ExtendedTaskModel extends TaskModel {
   @override
   Future init() async {
     await super.init();
-    _assignee = await UserRepository().getUserByUsername(_assigneeUsername);
+    if (_assigneeUsername == null || _assigneeUsername.isEmpty) {
+      _assignee = null;
+    } else {
+      _assignee = await UserRepository().getUserByUsername(_assigneeUsername);
+    }
   }
 
   // Getters
