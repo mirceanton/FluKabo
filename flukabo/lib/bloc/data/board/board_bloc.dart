@@ -19,9 +19,16 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
     yield const BoardLoading();
     try {
       if (event is FetchBoard) {
-        yield BoardLoaded(
-          board: await BoardRepository().getBoardForProject(event.projectId),
-        );
+        final BoardModel board =
+            await BoardRepository().getBoardForProject(event.projectId);
+        for (int i = 0; i < board.swimlanes.length; i++) {
+          for (int j = 0; j < board.swimlanes[i].columnsCount; j++) {
+            for (int k = 0; k < board.swimlanes[i].columns[j].tasksCount; k++) {
+              await board.swimlanes[i].columns[j].tasks[k].init();
+            }
+          }
+        }
+        yield BoardLoaded(board: board);
       }
     } on Failure catch (f) {
       yield BoardError(message: f.message);
