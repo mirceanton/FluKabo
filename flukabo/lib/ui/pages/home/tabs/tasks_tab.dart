@@ -5,6 +5,7 @@ import 'package:flukabo/ui/templates/task/task_list_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import '../../../commons.dart';
 import 'abstract_tab_class.dart';
 
 class TasksTab extends HomeTab {
@@ -22,10 +23,15 @@ class TasksTab extends HomeTab {
 class _TasksTabState extends HomeTabState {
   Widget _builder(BuildContext context, TasksState state) {
     if (state is LoadingState) {
-      return buildLoadingIndicator();
+      return buildLoading();
     }
     if (state is ErrorState) {
-      return buildConnectionErrorIndicator(context);
+      return buildError(
+        context,
+        icon: MdiIcons.accessPointNetworkOff,
+        message: 'Connection failed',
+        onButtonPress: () => retryAuth(context),
+      );
     }
     if (state is SuccessState) {
       if (state is TaskListFetchedState) {
@@ -39,7 +45,7 @@ class _TasksTabState extends HomeTabState {
     context
         .bloc<TasksBloc>()
         .add(const FetchAllForProjectEvent(projectId: 1, isActive: true));
-    return buildInitPage();
+    return buildInitial();
   }
 
   void _listener(BuildContext context, TasksState state) {}

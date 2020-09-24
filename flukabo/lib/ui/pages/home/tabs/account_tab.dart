@@ -23,9 +23,14 @@ class AccountTab extends HomeTab {
 class _AccountTabState extends HomeTabState {
   Widget _builder(BuildContext context, UserState state) {
     if (state is LoadingState) {
-      return buildLoadingIndicator();
+      return buildLoading();
     } else if (state is ErrorState) {
-      return buildConnectionErrorIndicator(context);
+      return buildError(
+        context,
+        icon: MdiIcons.accessPointNetworkOff,
+        message: 'Connection failed',
+        onButtonPress: () => retryAuth(context),
+      );
     } else if (state is SuccessState) {
       if (state is UserFetchedState) {
         return Center(child: Text("${state.user.name} - ${state.user.email}"));
@@ -37,7 +42,7 @@ class _AccountTabState extends HomeTabState {
             username: UserPreferences().userName,
           ),
         );
-    return buildInitPage();
+    return buildInitial();
   }
 
   void _listener(BuildContext context, UserState state) {

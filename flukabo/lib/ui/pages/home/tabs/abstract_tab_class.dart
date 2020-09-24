@@ -1,4 +1,5 @@
 import 'package:flukabo/data/singletons/user_preferences.dart';
+import 'package:flukabo/ui/commons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +30,7 @@ abstract class HomeTab extends StatefulWidget {
 
 abstract class HomeTabState extends State<HomeTab> {
   // Send an auth event with the fields from UserPreferences()
-  void _retryAuth(BuildContext context) {
+  void retryAuth(BuildContext context) {
     context.bloc<AuthBloc>().add(
           AuthEvent(
             url: UserPreferences().fullAddress,
@@ -52,45 +53,23 @@ abstract class HomeTabState extends State<HomeTab> {
     switch (state.runtimeType) {
       case AuthLoadingState:
         print('Loading auth data...');
-        return buildLoadingIndicator();
+        return buildLoading();
       case AuthSuccessState:
         print('Authentication successful');
         return buildContent();
       case AuthErrorState:
         print('Authentication failed');
-        return buildConnectionErrorIndicator(context);
+        return buildError(
+          context,
+          icon: MdiIcons.accessPointNetworkOff,
+          message: 'Connection failed',
+          onButtonPress: () => retryAuth(context),
+        );
       default: // this includes the [AuthInitialState]
         print("Initial auth state");
-        _retryAuth(context);
-        return buildInitPage();
+        retryAuth(context);
+        return buildInitial();
     }
-  }
-
-  /// [buildLoadingIndicator] simply returns a centered loading bar
-  Widget buildLoadingIndicator() =>
-      const Center(child: CircularProgressIndicator());
-
-  ///
-  /// [buildInitPage] returns an empty container, a placeholder widget while
-  ///  the event is getting sent to the bloc
-  ///
-  Widget buildInitPage() => Container();
-
-  /// [buildConnectionErrorIndicator] returns a centered icon-text pair
-  Widget buildConnectionErrorIndicator(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Icon(MdiIcons.accessPointNetworkOff, size: 128.0),
-        const SizedBox(height: 16.0),
-        const Text('Connection failed', style: TextStyle(letterSpacing: 1.25)),
-        const SizedBox(height: 16.0),
-        OutlineButton(
-          onPressed: () => _retryAuth(context),
-          child: const Text('Retry', style: TextStyle(letterSpacing: 1.15)),
-        ),
-      ],
-    );
   }
 
   ///

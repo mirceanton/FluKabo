@@ -7,10 +7,12 @@ import 'package:flukabo/bloc/data/tasks/events/events.dart' as task_events;
 import 'package:flukabo/bloc/data/tasks/states/states.dart' as task_states;
 import 'package:flukabo/bloc/data/tasks/tasks_bloc.dart';
 import 'package:flukabo/res/dimensions.dart';
+import 'package:flukabo/ui/commons.dart';
 import 'package:flukabo/ui/templates/project/project_list_view.dart';
 import 'package:flukabo/ui/templates/task/task_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'abstract_tab_class.dart';
 
@@ -29,9 +31,14 @@ class DashboardTab extends HomeTab {
 class _DashboardTabState extends HomeTabState {
   Widget _projectsBuilder(BuildContext context, ProjectsState state) {
     if (state is project_states.LoadingState) {
-      return buildLoadingIndicator();
+      return buildLoading();
     } else if (state is project_states.ErrorState) {
-      return buildConnectionErrorIndicator(context);
+      return buildError(
+        context,
+        icon: MdiIcons.accessPointNetworkOff,
+        message: 'Connection failed',
+        onButtonPress: () => retryAuth(context),
+      );
     } else if (state is project_states.SuccessState) {
       if (state is project_states.ProjectListFetchedState) {
         if (state.projects.isEmpty) {
@@ -50,15 +57,20 @@ class _DashboardTabState extends HomeTabState {
     }
     // if the state is InitState, attempt a Fetch Event
     context.bloc<ProjectsBloc>().add(const project_events.FetchAllEvent());
-    return buildInitPage();
+    return buildInitial();
   }
 
   Widget _tasksBuilder(BuildContext context, TasksState state) {
     if (state is task_states.LoadingState) {
-      return buildLoadingIndicator();
+      return buildLoading();
     }
     if (state is task_states.ErrorState) {
-      return buildConnectionErrorIndicator(context);
+      return buildError(
+        context,
+        icon: MdiIcons.accessPointNetworkOff,
+        message: 'Connection failed',
+        onButtonPress: () => retryAuth(context),
+      );
     }
     if (state is task_states.SuccessState) {
       if (state is task_states.TaskListFetchedState) {
@@ -75,7 +87,7 @@ class _DashboardTabState extends HomeTabState {
             isActive: true,
           ),
         );
-    return buildInitPage();
+    return buildInitial();
   }
 
   @override

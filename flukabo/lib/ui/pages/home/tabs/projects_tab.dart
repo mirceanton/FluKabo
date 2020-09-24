@@ -44,9 +44,14 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
 
   Widget _builder(BuildContext context, ProjectsState state) {
     if (state is LoadingState) {
-      return buildLoadingIndicator();
+      return buildLoading();
     } else if (state is ErrorState) {
-      return buildConnectionErrorIndicator(context);
+      return buildError(
+        context,
+        icon: MdiIcons.accessPointNetworkOff,
+        message: 'Connection failed',
+        onButtonPress: () => retryAuth(context),
+      );
     } else if (state is SuccessState) {
       if (state is ProjectListFetchedState) {
         return TabBarView(
@@ -64,7 +69,7 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
     }
     // if the state is InitState, attempt a Fetch Event
     context.bloc<ProjectsBloc>().add(const FetchAllEvent());
-    return buildInitPage();
+    return buildInitial();
   }
 
   void _listener(BuildContext context, ProjectsState state) {
