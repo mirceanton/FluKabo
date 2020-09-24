@@ -58,7 +58,7 @@ abstract class HomeTabState extends State<HomeTab> {
         return buildContent();
       case AuthErrorState:
         print('Authentication failed');
-        return buildErrorIndicator(context);
+        return buildConnectionErrorIndicator(context);
       default: // this includes the [AuthInitialState]
         print("Initial auth state");
         _retryAuth(context);
@@ -86,8 +86,8 @@ abstract class HomeTabState extends State<HomeTab> {
   ///
   Widget buildInitPage() => Container();
 
-  /// [buildErrorIndicator] returns a centered icon-text pair
-  Widget buildErrorIndicator(BuildContext context) {
+  /// [buildConnectionErrorIndicator] returns a centered icon-text pair
+  Widget buildConnectionErrorIndicator(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

@@ -45,7 +45,7 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
     if (state is LoadingState) {
       return buildLoadingIndicator();
     } else if (state is ErrorState) {
-      return buildErrorIndicator(context);
+      return buildConnectionErrorIndicator(context);
     } else if (state is SuccessState) {
       if (state is ProjectListFetchedState) {
         return TabBarView(

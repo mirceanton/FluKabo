@@ -31,7 +31,7 @@ class _DashboardTabState extends HomeTabState {
     if (state is project_states.LoadingState) {
       return buildLoadingIndicator();
     } else if (state is project_states.ErrorState) {
-      return buildErrorIndicator(context);
+      return buildConnectionErrorIndicator(context);
     } else if (state is project_states.SuccessState) {
       if (state is project_states.ProjectListFetchedState) {
         if (state.projects.isEmpty) {
@@ -58,7 +58,7 @@ class _DashboardTabState extends HomeTabState {
       return buildLoadingIndicator();
     }
     if (state is task_states.ErrorState) {
-      return buildErrorIndicator(context);
+      return buildConnectionErrorIndicator(context);
     }
     if (state is task_states.SuccessState) {
       if (state is task_states.TaskListFetchedState) {

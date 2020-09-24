@@ -24,7 +24,7 @@ class _AccountTabState extends HomeTabState {
     if (state is LoadingState) {
       return buildLoadingIndicator();
     } else if (state is ErrorState) {
-      return buildErrorIndicator(context);
+      return buildConnectionErrorIndicator(context);
     } else if (state is SuccessState) {
       if (state is UserFetchedState) {
         return Center(child: Text(state.user.name + " - " + state.user.email));

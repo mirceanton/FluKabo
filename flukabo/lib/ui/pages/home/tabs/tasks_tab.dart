@@ -25,7 +25,7 @@ class _TasksTabState extends HomeTabState {
       return buildLoadingIndicator();
     }
     if (state is ErrorState) {
-      return buildErrorIndicator(context);
+      return buildConnectionErrorIndicator(context);
     }
     if (state is SuccessState) {
       if (state is TaskListFetchedState) {
