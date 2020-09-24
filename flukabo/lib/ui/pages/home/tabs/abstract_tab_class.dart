@@ -1,3 +1,4 @@
+import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,18 @@ abstract class HomeTab extends StatefulWidget {
 }
 
 abstract class HomeTabState extends State<HomeTab> {
+  // Send an auth event with the fields from UserPreferences()
+  void _retryAuth(BuildContext context) {
+    context.bloc<AuthBloc>().add(
+          AuthEvent(
+            url: UserPreferences().fullAddress,
+            username: UserPreferences().userName,
+            token: UserPreferences().token,
+            acceptAllCerts: UserPreferences().acceptAllCerts,
+          ),
+        );
+  }
+
   ///
   /// [_mainBuilder] is the builder function called by the BlocConsumer
   /// It handles building the appropriate Layout for each state:
@@ -48,6 +61,7 @@ abstract class HomeTabState extends State<HomeTab> {
         return buildErrorIndicator(context);
       default: // this includes the [AuthInitialState]
         print("Initial auth state");
+        _retryAuth(context);
         return buildInitPage();
     }
   }
@@ -74,23 +88,19 @@ abstract class HomeTabState extends State<HomeTab> {
 
   /// [buildErrorIndicator] returns a centered icon-text pair
   Widget buildErrorIndicator(BuildContext context) {
-    return Column(children: [
-      Expanded(child: Container()),
-      Icon(
-        MdiIcons.lanDisconnect,
-        size: 128.0,
-        color: Theme.of(context).primaryColorLight,
-      ),
-      const SizedBox(height: 32.0),
-      Text(
-        'Connection failed',
-        style: TextStyle(
-          letterSpacing: 1.25,
-          color: Theme.of(context).primaryColorLight,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(MdiIcons.accessPointNetworkOff, size: 128.0),
+        const SizedBox(height: 16.0),
+        const Text('Connection failed', style: TextStyle(letterSpacing: 1.25)),
+        const SizedBox(height: 16.0),
+        OutlineButton(
+          onPressed: () => _retryAuth(context),
+          child: const Text('Retry', style: TextStyle(letterSpacing: 1.15)),
         ),
-      ),
-      Expanded(child: Container()),
-    ]);
+      ],
+    );
   }
 
   ///
