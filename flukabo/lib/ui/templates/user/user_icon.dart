@@ -4,7 +4,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class UserIcon extends StatelessWidget {
   final UserModel user;
-  const UserIcon({this.user});
+  const UserIcon(this.user);
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +16,17 @@ class UserIcon extends StatelessWidget {
       return Stack(
         alignment: Alignment.center,
         children: [
-          const Icon(MdiIcons.circle, size: 32),
+          Icon(
+            MdiIcons.circle,
+            size: 40,
+            color: Theme.of(context).accentColor,
+          ),
           Text(
             init.toUpperCase(),
-            style: const TextStyle(color: Colors.black),
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+            ),
           ),
         ],
       );
