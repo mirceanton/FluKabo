@@ -1,4 +1,5 @@
 import 'package:flukabo/data/models/models.dart';
+import 'package:flukabo/ui/templates/tag/tag_chip.dart';
 import 'package:flutter/material.dart';
 
 class TagList extends StatelessWidget {
@@ -15,11 +16,7 @@ class TagList extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemCount: tags.length,
           separatorBuilder: (context, index) => const SizedBox(width: 8.0),
-          itemBuilder: (context, index) => Chip(
-            label: Text(tags[index].name),
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            backgroundColor: tags[index].color,
-          ),
+          itemBuilder: (context, index) => TagChip(tags[index]),
         ),
       );
     }
