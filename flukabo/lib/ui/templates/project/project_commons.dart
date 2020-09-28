@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ProjectBackground extends StatelessWidget {
+  final int objectId;
   final String title;
   final double radius;
   final double width, height;
   final String image;
   const ProjectBackground({
+    @required this.objectId,
     @required this.title,
     @required this.radius,
     @required this.height,
@@ -18,7 +20,7 @@ class ProjectBackground extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius),
       child: Hero(
-        tag: "${title}_img",
+        tag: "$title-$objectId-img",
         child: Image.network(
           image,
           width: width,

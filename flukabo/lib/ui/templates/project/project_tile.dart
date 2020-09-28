@@ -20,6 +20,7 @@ class ProjectTile extends StatelessWidget {
       onTap: () => project.navigate(context),
       contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
       leading: ProjectBackground(
+        objectId: project.id,
         width: tileSize,
         height: tileSize,
         radius: 8.0,
