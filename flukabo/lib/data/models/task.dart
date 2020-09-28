@@ -147,17 +147,6 @@ class TaskModel extends AbstractDataModel {
   int get recurrenceTimeframe => _recurrenceTimeframe;
   int get recurrenceBasedate => _recurrenceBasedate;
   int get priority => _priority;
-  Color get priorityColor {
-    const double threshold = 1;
-    // (_project.priorityEnd - _project.priorityStart) / 3;
-    if (priority < threshold.toInt()) {
-      return Colors.green;
-    }
-    if (priority < 2 * threshold.toInt()) {
-      return Colors.yellow;
-    }
-    return Colors.red;
-  }
 
   List<TagModel> get tags => _tags;
   List<String> get tagNames {
@@ -185,27 +174,6 @@ class TaskModel extends AbstractDataModel {
         ),
       )
     };
-  }
-
-  Widget buildIcon() => Icon(
-        MdiIcons.circle,
-        size: 48.0,
-        color: priorityColor,
-      );
-  Widget buildTitle() {
-    return Hero(
-      tag: "${_title}_title",
-      child: Material(
-        color: Colors.transparent,
-        child: Text(
-          _title,
-          style: const TextStyle(
-            fontSize: 16,
-            letterSpacing: 1.1,
-          ),
-        ),
-      ),
-    );
   }
 }
 
