@@ -1,43 +1,5 @@
 import 'package:flutter/material.dart';
 
-class ProjectTitle extends StatelessWidget {
-  final String text;
-  final Color color;
-  const ProjectTitle({
-    @required this.text,
-    @required this.color,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return Hero(
-      tag: "${text}_title",
-      child: Material(
-        color: Colors.transparent,
-        child: Text(
-          text,
-          style: TextStyle(
-            letterSpacing: 1.1,
-            color: color,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ProjectSubtitle extends StatelessWidget {
-  final String subtitle;
-  const ProjectSubtitle({@required this.subtitle});
-  @override
-  Widget build(BuildContext context) {
-    String content = subtitle;
-    if (subtitle.length > 100) {
-      content = '${subtitle.substring(0, 97)}...';
-    }
-    return Text(content);
-  }
-}
-
 class ProjectBackground extends StatelessWidget {
   final String title;
   final double radius;

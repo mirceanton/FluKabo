@@ -2,6 +2,7 @@ import 'package:flukabo/ui/templates/project/project_commons.dart';
 import 'package:flutter/material.dart';
 import '../../../data/models/project.dart';
 import '../../../res/dimensions.dart';
+import '../template_commons.dart';
 
 ///
 /// A Caard used to showcase a project
@@ -59,7 +60,7 @@ class Content extends StatelessWidget {
             color: Colors.black38,
             width: 200,
             child: Center(
-              child: ProjectTitle(
+              child: TitleTemplate(
                 text: project.name,
                 color: Colors.white,
               ),

@@ -2,6 +2,7 @@ import 'package:flukabo/ui/templates/project/project_commons.dart';
 import 'package:flutter/material.dart';
 import '../../../data/models/project.dart';
 import '../../../res/dimensions.dart';
+import '../template_commons.dart';
 
 ///
 /// A basic List tile showcasing a project
@@ -25,11 +26,11 @@ class ProjectTile extends StatelessWidget {
         image: project.backgroundImage,
         title: project.name,
       ),
-      title: ProjectTitle(
+      title: TitleTemplate(
         text: project.name,
         color: Theme.of(context).textTheme.headline6.color,
       ),
-      subtitle: ProjectSubtitle(subtitle: project.description),
+      subtitle: SubtitleTemplate(subtitle: project.description),
       trailing: ProjectStarIcon(isStarred: project.isStarred),
     );
   }
