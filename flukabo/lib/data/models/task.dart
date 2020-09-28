@@ -1,3 +1,5 @@
+import 'package:flukabo/data/repository/tag_repository.dart';
+import 'package:flukabo/ui/templates/task/task_commons.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -109,7 +111,7 @@ class TaskModel extends AbstractDataModel {
     // if (_categoryId > 0) {
     //   _category = await CategoryRepository().getCategoryById(_categoryId);
     // }
-    // _tags = await TagRepository().getTaskTags(id);
+    _tags = await TagRepository().getTaskTags(id);
   }
 
   // Getters
@@ -155,6 +157,23 @@ class TaskModel extends AbstractDataModel {
       names.add(_tags[i].name);
     }
     return names;
+  }
+
+  List<Widget> get modifierIcons {
+    final List<Widget> icons = [];
+    if (_description != null && _description.isNotEmpty) {
+      icons.add(Icon(
+        MdiIcons.text,
+        size: 12,
+        color: Colors.blueGrey[200],
+      ));
+      icons.add(ModifierIconsDivider());
+    }
+    icons.add(TextIcon('P$priority'));
+    icons.add(ModifierIconsDivider());
+    icons.add(TextIcon('C$complexity'));
+
+    return icons;
   }
 
   @override
