@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 
 class TagList extends StatelessWidget {
   final List<TagModel> tags;
-  const TagList({this.tags});
+  const TagList(this.tags);
   @override
   Widget build(BuildContext context) {
-    if (tags.isEmpty) {
-      return const SizedBox();
+    if (tags == null || tags.isEmpty) {
+      return const SizedBox(width: 1, height: 1);
     } else {
       return Container(
-        height: 36.0,
+        height: 20.0,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemCount: tags.length,
