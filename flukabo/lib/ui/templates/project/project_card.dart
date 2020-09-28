@@ -23,8 +23,8 @@ class ProjectCard extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           ProjectBackground(
-            width: double.infinity,
-            height: double.infinity,
+            width: cardWidth,
+            height: cardHeight,
             radius: 0,
             image: project.backgroundImage,
             title: project.name,
