@@ -4,7 +4,7 @@ import '../projects_bloc.dart';
 class CreateEvent extends ProjectsEvent {
   final ProjectModel project;
 
-  const CreateEvent({this.project});
+  const CreateEvent(this.project);
 
   @override
   List<Object> get props => [project];

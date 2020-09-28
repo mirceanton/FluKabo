@@ -15,7 +15,7 @@ abstract class SuccessState extends TasksState {
 class TaskCreatedState extends SuccessState {
   final TaskModel task;
 
-  const TaskCreatedState({this.task});
+  const TaskCreatedState(this.task);
 
   @override
   List<Object> get props => [task];
@@ -28,7 +28,7 @@ class TaskCreatedState extends SuccessState {
 class TaskFetchedState extends SuccessState {
   final TaskModel task;
 
-  const TaskFetchedState({this.task});
+  const TaskFetchedState(this.task);
 
   @override
   List<Object> get props => [task];
@@ -44,7 +44,7 @@ class TaskFetchedState extends SuccessState {
 class TaskListFetchedState extends SuccessState {
   final List<TaskModel> tasks;
 
-  const TaskListFetchedState({this.tasks});
+  const TaskListFetchedState(this.tasks);
 
   @override
   List<Object> get props => [tasks];
@@ -64,7 +64,8 @@ class TaskListFetchedState extends SuccessState {
 class TaskUpdatedState extends SuccessState {
   final bool wasSuccessful;
 
-  const TaskUpdatedState({this.wasSuccessful});
+  // ignore: avoid_positional_boolean_parameters
+  const TaskUpdatedState(this.wasSuccessful);
 
   @override
   List<Object> get props => [wasSuccessful];
@@ -78,7 +79,8 @@ class TaskUpdatedState extends SuccessState {
 class TaskDeletedState extends SuccessState {
   final bool wasSuccessful;
 
-  const TaskDeletedState({this.wasSuccessful});
+  // ignore: avoid_positional_boolean_parameters
+  const TaskDeletedState(this.wasSuccessful);
 
   @override
   List<Object> get props => [wasSuccessful];

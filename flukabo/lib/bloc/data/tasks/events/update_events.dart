@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../../../bloc/data/tasks/tasks_bloc.dart';
 import '../../../../data/models/task.dart';
 
@@ -11,7 +13,7 @@ abstract class UpdateEvent extends TasksEvent {
 class UpdateTaskEvent extends UpdateEvent {
   final TaskModel task;
 
-  const UpdateTaskEvent({this.task});
+  const UpdateTaskEvent(this.task);
 
   @override
   List<Object> get props => [task];
@@ -20,7 +22,7 @@ class UpdateTaskEvent extends UpdateEvent {
 class OpenTaskEvent extends UpdateEvent {
   final int taskId;
 
-  const OpenTaskEvent({this.taskId});
+  const OpenTaskEvent(this.taskId);
 
   @override
   List<Object> get props => [taskId];
@@ -29,7 +31,7 @@ class OpenTaskEvent extends UpdateEvent {
 class CloseTaskEvent extends UpdateEvent {
   final int taskId;
 
-  const CloseTaskEvent({this.taskId});
+  const CloseTaskEvent(this.taskId);
 
   @override
   List<Object> get props => [taskId];
@@ -39,11 +41,11 @@ class MoveTaskWithinProjectEvent extends UpdateEvent {
   final int projectId, taskId, columnId, swimlaneId, position;
 
   const MoveTaskWithinProjectEvent({
-    this.projectId,
-    this.taskId,
-    this.columnId,
-    this.swimlaneId,
-    this.position,
+    @required this.projectId,
+    @required this.taskId,
+    @required this.columnId,
+    @required this.swimlaneId,
+    @required this.position,
   });
 
   @override
@@ -54,12 +56,12 @@ class MoveTaskToProjectEvent extends UpdateEvent {
   final int projectId, taskId, swimlaneId, columnId, categoryId, ownerId;
 
   const MoveTaskToProjectEvent({
-    this.projectId,
-    this.taskId,
-    this.swimlaneId,
-    this.columnId,
-    this.categoryId,
-    this.ownerId,
+    @required this.projectId,
+    @required this.taskId,
+    @required this.swimlaneId,
+    @required this.columnId,
+    @required this.categoryId,
+    @required this.ownerId,
   });
 
   @override
@@ -71,12 +73,12 @@ class CloneTaskToProjectEvent extends UpdateEvent {
   final int projectId, taskId, swimlaneId, columnId, categoryId, ownerId;
 
   const CloneTaskToProjectEvent({
-    this.projectId,
-    this.taskId,
-    this.swimlaneId,
-    this.columnId,
-    this.categoryId,
-    this.ownerId,
+    @required this.projectId,
+    @required this.taskId,
+    @required this.swimlaneId,
+    @required this.columnId,
+    @required this.categoryId,
+    @required this.ownerId,
   });
 
   @override

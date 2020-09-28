@@ -18,7 +18,7 @@ abstract class SuccessState extends ProjectsState {
 class ProjectCreatedState extends SuccessState {
   final ProjectModel project;
 
-  const ProjectCreatedState({this.project});
+  const ProjectCreatedState(this.project);
 
   @override
   List<Object> get props => [project];
@@ -31,7 +31,7 @@ class ProjectCreatedState extends SuccessState {
 class ProjectFetchedState extends SuccessState {
   final ProjectModel project;
 
-  const ProjectFetchedState({this.project});
+  const ProjectFetchedState(this.project);
 
   @override
   List<Object> get props => [project];
@@ -41,7 +41,7 @@ class ProjectFetchedState extends SuccessState {
 class ProjectListFetchedState extends SuccessState {
   final List<ProjectModel> projects;
 
-  const ProjectListFetchedState({this.projects});
+  const ProjectListFetchedState(this.projects);
 
   @override
   List<Object> get props => [projects];
@@ -51,7 +51,7 @@ class ProjectListFetchedState extends SuccessState {
 class FeedFetchedState extends SuccessState {
   final List<EventModel> feed;
 
-  const FeedFetchedState({this.feed});
+  const FeedFetchedState(this.feed);
 
   @override
   List<Object> get props => [feed];
@@ -61,7 +61,7 @@ class FeedFetchedState extends SuccessState {
 class UserListFetchedState extends SuccessState {
   final List<UserModel> users;
 
-  const UserListFetchedState({this.users});
+  const UserListFetchedState(this.users);
 
   @override
   List<Object> get props => [users];
@@ -71,7 +71,7 @@ class UserListFetchedState extends SuccessState {
 class UserRoleFetchedState extends SuccessState {
   final String role;
 
-  const UserRoleFetchedState({this.role});
+  const UserRoleFetchedState(this.role);
 
   @override
   List<Object> get props => [role];
@@ -81,7 +81,7 @@ class UserRoleFetchedState extends SuccessState {
 class MetadataFetchedByKeyState extends SuccessState {
   final String value;
 
-  const MetadataFetchedByKeyState({this.value});
+  const MetadataFetchedByKeyState(this.value);
 
   @override
   List<Object> get props => [value];
@@ -91,7 +91,7 @@ class MetadataFetchedByKeyState extends SuccessState {
 class MetadataFetchedState extends SuccessState {
   final Map<String, String> metadata;
 
-  const MetadataFetchedState({this.metadata});
+  const MetadataFetchedState(this.metadata);
 
   @override
   List<Object> get props => [metadata];
@@ -118,7 +118,8 @@ class MetadataFetchedState extends SuccessState {
 class ProjectUpdatedState extends SuccessState {
   final bool wasSuccessful;
 
-  const ProjectUpdatedState({this.wasSuccessful});
+  // ignore: avoid_positional_boolean_parameters
+  const ProjectUpdatedState(this.wasSuccessful);
 
   @override
   List<Object> get props => [wasSuccessful];
@@ -131,7 +132,8 @@ class ProjectUpdatedState extends SuccessState {
 class ProjectRemovedState extends SuccessState {
   final bool wasSuccessful;
 
-  const ProjectRemovedState({this.wasSuccessful});
+  // ignore: avoid_positional_boolean_parameters
+  const ProjectRemovedState(this.wasSuccessful);
 
   @override
   List<Object> get props => [wasSuccessful];
