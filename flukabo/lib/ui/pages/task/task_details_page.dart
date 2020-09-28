@@ -11,6 +11,7 @@ class TaskDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: TitleTemplate(
+          objectId: task.id,
           title: task.title,
           color: Colors.white,
         ),

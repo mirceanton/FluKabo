@@ -27,6 +27,7 @@ class ProjectTile extends StatelessWidget {
         title: project.name,
       ),
       title: TitleTemplate(
+        objectId: project.id,
         title: project.name,
         color: Theme.of(context).textTheme.headline6.color,
       ),
