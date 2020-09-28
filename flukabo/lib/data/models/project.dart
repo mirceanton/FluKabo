@@ -68,7 +68,7 @@ class ProjectModel extends AbstractDataModel {
 
   // Getters for private fields
   String get name => _name;
-  String get backgroundImage => _backgroundImage;
+  String get backgroundImage => _backgroundImage ?? '';
   bool get isPrivate => _isPrivate;
   IconData get privacyIcon => _isPrivate ? Icons.lock_outline : Icons.lock_open;
   bool get isActive => _isActive;
@@ -76,7 +76,7 @@ class ProjectModel extends AbstractDataModel {
   double get lastModified => _lastModified;
   bool get isPublic => _isPublic;
   IconData get publicIcon => _isPublic ? Icons.group : Icons.person;
-  bool get isStarred => _isStarred;
+  bool get isStarred => _isStarred ?? false;
   String get description => _description;
   String get identifier => _identifier;
   double get startDate => _startDate;
