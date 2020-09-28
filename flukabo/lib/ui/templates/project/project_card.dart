@@ -26,7 +26,7 @@ class ProjectCard extends StatelessWidget {
             objectId: project.id,
             width: cardWidth,
             height: cardHeight,
-            radius: 0,
+            radius: 8.0,
             image: project.backgroundImage,
             title: project.name,
           ),
