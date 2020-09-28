@@ -18,7 +18,7 @@ class ProjectModel extends AbstractDataModel {
   bool _isPublic;
   bool _isPrivate;
 
-  /// [_isStarred] is a custom values, implemented via project metadata
+  /// [_isStarred] is a proprietary value to this app, implemented via metadata
   bool _isStarred;
   String _description;
   String _identifier;
@@ -68,7 +68,7 @@ class ProjectModel extends AbstractDataModel {
 
   // Getters for private fields
   String get name => _name;
-  String get backgroundImage => _backgroundImage ?? '';
+  String get backgroundImage => _backgroundImage;
   bool get isPrivate => _isPrivate;
   IconData get privacyIcon => _isPrivate ? Icons.lock_outline : Icons.lock_open;
   bool get isActive => _isActive;
@@ -76,9 +76,8 @@ class ProjectModel extends AbstractDataModel {
   double get lastModified => _lastModified;
   bool get isPublic => _isPublic;
   IconData get publicIcon => _isPublic ? Icons.group : Icons.person;
-  bool get isStarred => _isStarred ?? false;
+  bool get isStarred => _isStarred;
   String get description => _description;
-  bool get hasDescription => _description.isNotEmpty;
   String get identifier => _identifier;
   double get startDate => _startDate;
   double get endDate => _endDate;
@@ -102,9 +101,9 @@ class ProjectModel extends AbstractDataModel {
 
   ///
   /// [fetchMetadata] makes an api call to retrieve the metadata fields
-  /// containing the link to the background image and caches it into
-  /// [_backgroundImage], and whether or not the project is to be displayed in
-  /// the dashboard tab via [_isStarred]
+  /// containing the link to the background image and cache it into
+  /// [_backgroundImage] and whether or not the project should appear into the
+  /// dashboard tab and cache it into [_isStarred]
   ///
   Future fetchMetadata() async {
     // _backgroundImage = await ProjectRepository()
@@ -126,9 +125,7 @@ class ProjectModel extends AbstractDataModel {
     return {
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => ProjectBoardPage(this),
-        ),
+        MaterialPageRoute(builder: (context) => ProjectBoardPage(this)),
       )
     };
   }
