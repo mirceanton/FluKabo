@@ -31,3 +31,31 @@ class TaskIcon extends StatelessWidget {
     );
   }
 }
+
+class TextIcon extends StatelessWidget {
+  final String text;
+  const TextIcon(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 12,
+        color: Colors.blueGrey[200],
+      ),
+    );
+  }
+}
+
+class ModifierIconsDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 16,
+      width: 1,
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      color: Theme.of(context).dividerColor,
+    );
+  }
+}
