@@ -1,10 +1,11 @@
+import 'package:flukabo/ui/templates/project/project_commons.dart';
 import 'package:flutter/material.dart';
 import '../../../data/models/project.dart';
 import '../../../res/dimensions.dart';
 
 ///
 /// A basic List tile showcasing a project
-/// The [title] is the project name, the [subtitle] is the project description
+/// The [subtitle] is the project name, the [subtitle] is the project description
 /// The [leading] widget is a 48px wide square image of the project.bgimage
 /// [onTap] navigates to the ProjectBoardPage of the project
 ///
@@ -14,24 +15,22 @@ class ProjectTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return ListTile(
       onTap: () => project.navigate(context),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-        leading: project.buildBgImage(
-          width: tileSize,
-          height: tileSize,
-          radius: 8.0,
-        ),
-        title: Row(
-          children: [
-            project.buildTitle(context),
-            const SizedBox(width: 6.0),
-            Icon(project.privacyIcon)
-          ],
-        ),
-        subtitle: Text(project.description),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+      leading: ProjectBackground(
+        width: tileSize,
+        height: tileSize,
+        radius: 8.0,
+        image: project.backgroundImage,
+        title: project.name,
       ),
+      title: ProjectTitle(
+        text: project.name,
+        color: Theme.of(context).textTheme.headline6.color,
+      ),
+      subtitle: ProjectSubtitle(subtitle: project.description),
+      trailing: ProjectStarIcon(isStarred: project.isStarred),
     );
   }
 }

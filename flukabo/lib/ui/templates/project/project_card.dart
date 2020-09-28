@@ -1,3 +1,4 @@
+import 'package:flukabo/ui/templates/project/project_commons.dart';
 import 'package:flutter/material.dart';
 import '../../../data/models/project.dart';
 import '../../../res/dimensions.dart';
@@ -20,10 +21,12 @@ class ProjectCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       child: Stack(
         children: <Widget>[
-          project.buildBgImage(
-            width: cardWidth,
-            height: cardHeight,
-            radius: 8.0,
+          ProjectBackground(
+            width: double.infinity,
+            height: double.infinity,
+            radius: 0,
+            image: project.backgroundImage,
+            title: project.name,
           ),
           Content(project),
           ClickArea(project),
@@ -53,14 +56,13 @@ class Content extends StatelessWidget {
           Expanded(flex: 3, child: Container()),
           Container(
             padding: const EdgeInsets.all(8.0),
-            color: Colors.black45,
+            color: Colors.black38,
             width: 200,
-            child: Column(
-              children: [
-                project.buildTitle(context),
-                const SizedBox(height: 4.0),
-                Icon(project.privacyIcon),
-              ],
+            child: Center(
+              child: ProjectTitle(
+                text: project.name,
+                color: Colors.white,
+              ),
             ),
           ),
           Expanded(child: Container()),
@@ -85,9 +87,7 @@ class ClickArea extends StatelessWidget {
         color: Colors.transparent,
         width: cardWidth,
         height: cardHeight,
-        child: InkWell(
-          onTap: () => project.navigate(context),
-        ),
+        child: InkWell(onTap: () => project.navigate(context)),
       ),
     );
   }
