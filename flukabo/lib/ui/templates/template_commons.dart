@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class TitleTemplate extends StatelessWidget {
+  final int objectId;
   final String title;
   final Color color;
   const TitleTemplate({
+    @required this.objectId,
     @required this.title,
     @required this.color,
   });
@@ -14,7 +16,7 @@ class TitleTemplate extends StatelessWidget {
       content = '${title.substring(0, 57)}...';
     }
     return Hero(
-      tag: "${title}_title",
+      tag: "$title-$objectId-title",
       child: Material(
         color: Colors.transparent,
         child: Text(
