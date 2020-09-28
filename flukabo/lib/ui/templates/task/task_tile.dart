@@ -25,7 +25,7 @@ class TaskTile extends StatelessWidget {
         priorityEnd: task.project == null ? 0 : task.project.priorityEnd,
       ),
       title: TitleTemplate(
-        text: task.title,
+        title: task.title,
         color: Theme.of(context).textTheme.headline6.color,
       ),
       subtitle: SubtitleTemplate(subtitle: task.description),

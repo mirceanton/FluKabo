@@ -61,7 +61,7 @@ class Content extends StatelessWidget {
             width: 200,
             child: Center(
               child: TitleTemplate(
-                text: project.name,
+                title: project.name,
                 color: Colors.white,
               ),
             ),

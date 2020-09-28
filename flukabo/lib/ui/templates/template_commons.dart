@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 
 class TitleTemplate extends StatelessWidget {
-  final String text;
+  final String title;
   final Color color;
   const TitleTemplate({
-    @required this.text,
+    @required this.title,
     @required this.color,
   });
   @override
   Widget build(BuildContext context) {
+    String content = title;
+    if (title.length > 60) {
+      content = '${title.substring(0, 57)}...';
+    }
     return Hero(
-      tag: "${text}_title",
+      tag: "${title}_title",
       child: Material(
         color: Colors.transparent,
         child: Text(
-          text,
+          content,
           style: TextStyle(
             letterSpacing: 1.1,
             color: color,
