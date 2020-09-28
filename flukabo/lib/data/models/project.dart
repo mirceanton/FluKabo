@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flukabo/data/models/models.dart';
 import 'package:flutter/material.dart';
 import '../../data/helpers/json_parser.dart';
@@ -15,6 +17,9 @@ class ProjectModel extends AbstractDataModel {
   double _lastModified;
   bool _isPublic;
   bool _isPrivate;
+
+  /// [_isStarred] is a custom values, implemented via project metadata
+  bool _isStarred;
   String _description;
   String _identifier;
   double _startDate, _endDate;
@@ -58,12 +63,12 @@ class ProjectModel extends AbstractDataModel {
 
   Future init() async {
     _owner = await UserRepository().getUserById(_ownerID);
-    if (_backgroundImage == null) await fetchMetadata();
+    if (_backgroundImage == null || _isStarred == null) await fetchMetadata();
   }
 
   // Getters for private fields
   String get name => _name;
-  String get backgroundImage => _backgroundImage;
+  String get backgroundImage => _backgroundImage ?? '';
   bool get isPrivate => _isPrivate;
   IconData get privacyIcon => _isPrivate ? Icons.lock_outline : Icons.lock_open;
   bool get isActive => _isActive;
@@ -71,7 +76,9 @@ class ProjectModel extends AbstractDataModel {
   double get lastModified => _lastModified;
   bool get isPublic => _isPublic;
   IconData get publicIcon => _isPublic ? Icons.group : Icons.person;
+  bool get isStarred => _isStarred ?? false;
   String get description => _description;
+  bool get hasDescription => _description.isNotEmpty;
   String get identifier => _identifier;
   double get startDate => _startDate;
   double get endDate => _endDate;
@@ -96,14 +103,18 @@ class ProjectModel extends AbstractDataModel {
   ///
   /// [fetchMetadata] makes an api call to retrieve the metadata fields
   /// containing the link to the background image and caches it into
-  /// [_backgroundImage]
+  /// [_backgroundImage], and whether or not the project is to be displayed in
+  /// the dashboard tab via [_isStarred]
   ///
   Future fetchMetadata() async {
     // _backgroundImage = await ProjectRepository()
     //     .getProjectMetadataByKey(projectId: id, key: 'bgImage');
+    // _isStarred = await ProjectRepository()
+    //     .getProjectMetadataByKey(projectId: id, key: 'isStarred');
 
     //TODO deleteme
     _backgroundImage = 'https://source.unsplash.com/random';
+    _isStarred = Random().nextBool();
   }
 
   ///
@@ -120,42 +131,5 @@ class ProjectModel extends AbstractDataModel {
         ),
       )
     };
-  }
-
-  // Widget Generating methods
-  Widget buildBgImage({
-    @required double width,
-    @required double height,
-    @required double radius,
-  }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
-      child: Hero(
-        tag: "${_name}_img",
-        child: Image.network(
-          _backgroundImage,
-          width: width,
-          height: height,
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-
-  Widget buildTitle(BuildContext context) {
-    return Hero(
-      tag: "${_name}_title",
-      child: Material(
-        color: Colors.transparent,
-        child: Text(
-          _name,
-          style: TextStyle(
-            fontSize: 16,
-            letterSpacing: 1.1,
-            color: Theme.of(context).primaryTextTheme.bodyText1.color,
-          ),
-        ),
-      ),
-    );
   }
 }
