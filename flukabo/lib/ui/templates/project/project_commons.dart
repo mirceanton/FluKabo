@@ -5,7 +5,9 @@ class ProjectBackground extends StatelessWidget {
   final double radius;
   final double width, height;
   final String image;
+  final int projectId;
   const ProjectBackground({
+    @required this.projectId,
     @required this.title,
     @required this.radius,
     @required this.height,
@@ -18,7 +20,7 @@ class ProjectBackground extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius),
       child: Hero(
-        tag: "${title}_img",
+        tag: "$title-$projectId-image",
         child: Image.network(
           image,
           width: width,
