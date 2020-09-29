@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../ui/commons.dart';
 import '../../../ui/templates/bloc_widgets/bloc_commons.dart';
 import '../../../ui/templates/bloc_widgets/projects_bloc_widgets.dart';
-import '../../../ui/templates/project/project_list_view.dart';
 
 import './events/events.dart';
 import './projects_bloc.dart';
@@ -21,8 +20,7 @@ Widget builder(
   BuildContext context,
   ProjectsState state, {
   @required ReadEvent defaultEvent,
-  Widget emptyContentWidget = const Center(child: Text('Nothing to see here')),
-  bool showCards = false,
+  @required Widget Function(BuildContext, ProjectsState) successBuilder,
 }) {
   if (state is LoadingState) {
     print('Projects loading...');
@@ -35,18 +33,7 @@ Widget builder(
     );
   }
   if (state is SuccessState) {
-    if (state is ProjectListFetchedState) {
-      if (state.projects.isEmpty) {
-        return emptyContentWidget;
-      } else {
-        return ProjectListView(
-          width: double.infinity,
-          height: showCards ? 200 : double.infinity,
-          showCards: showCards,
-          projects: state.projects,
-        );
-      }
-    }
+    return successBuilder(context, state);
   }
 
   // if the state is InitState, attempt a Fetch Event

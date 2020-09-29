@@ -1,4 +1,7 @@
+import 'package:flukabo/bloc/data/projects/states/states.dart';
+import 'package:flukabo/ui/templates/bloc_widgets/projects_bloc_widgets.dart';
 import 'package:flukabo/ui/templates/bloc_widgets/task_bloc_widgets.dart';
+import 'package:flukabo/ui/templates/project/project_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,6 +43,22 @@ class SectionTitle extends StatelessWidget {
 
 /// A horizontal scrolling list with starred projects in the CardLayout
 class StarredProjectsSection extends StatelessWidget {
+  Widget _successBuilder(BuildContext context, ProjectsState state) {
+    if (state is ProjectListFetchedState) {
+      if (state.projects.isEmpty) {
+        return const ProjectBlocEmptyContentWidget();
+      } else {
+        return ProjectListView(
+          height: cardHeight,
+          width: double.infinity,
+          projects: state.projects,
+          showCards: true,
+        );
+      }
+    }
+    return const SizedBox(width: 0, height: 0);
+  }
+
   const StarredProjectsSection();
   @override
   Widget build(BuildContext context) {
@@ -52,7 +71,7 @@ class StarredProjectsSection extends StatelessWidget {
           context,
           state,
           defaultEvent: const FetchAllEvent(),
-          showCards: true,
+          successBuilder: _successBuilder,
         ),
       ),
     );

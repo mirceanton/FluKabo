@@ -1,3 +1,5 @@
+import 'package:flukabo/bloc/data/projects/states/states.dart';
+import 'package:flukabo/ui/templates/bloc_widgets/projects_bloc_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -5,8 +7,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../../../../bloc/data/projects/events/events.dart';
 import '../../../../bloc/data/projects/functions.dart';
 import '../../../../bloc/data/projects/projects_bloc.dart';
-
-import '../../../../data/models/project.dart';
 
 import '../../../../ui/templates/project/project_list_view.dart';
 
@@ -31,17 +31,20 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
     _tabController = TabController(length: 2, vsync: this);
   }
 
-  Widget _buildProjectListView(List<ProjectModel> projects) {
-    if (projects.isEmpty) {
-      return const Center(child: Text('No projects to show'));
-    } else {
-      return ProjectListView(
-        height: double.infinity,
-        width: double.infinity,
-        projects: projects,
-        showCards: false,
-      );
+  Widget _successBuilder(BuildContext context, ProjectsState state) {
+    if (state is ProjectListFetchedState) {
+      if (state.projects.isEmpty) {
+        return const ProjectBlocEmptyContentWidget();
+      } else {
+        return ProjectListView(
+          height: double.infinity,
+          width: double.infinity,
+          projects: state.projects,
+          showCards: false,
+        );
+      }
     }
+    return const SizedBox(height: 0, width: 0);
   }
 
   @override
@@ -72,7 +75,7 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
                 context,
                 state,
                 defaultEvent: const FetchAllEvent(),
-                // showCards: false,
+                successBuilder: _successBuilder,
               ),
             ),
           )
