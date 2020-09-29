@@ -23,42 +23,42 @@ class UpdateProject extends UpdateProjectEvent {
 /// ---- Project Enable/Disable ----
 ///
 class DisableProject extends UpdateProjectEvent {
-  final int projectId;
+  final int id;
 
-  const DisableProject(this.projectId);
+  const DisableProject(this.id);
 
   @override
-  List<Object> get props => [projectId];
+  List<Object> get props => [id];
 }
 
 class EnableProject extends UpdateProjectEvent {
-  final int projectId;
+  final int id;
 
-  const EnableProject(this.projectId);
+  const EnableProject(this.id);
 
   @override
-  List<Object> get props => [projectId];
+  List<Object> get props => [id];
 }
 
 ///
 /// ---- Project PUBLIC ACCESS ----
 ///
 class EnablePublicAccess extends UpdateProjectEvent {
-  final int projectId;
+  final int id;
 
-  const EnablePublicAccess(this.projectId);
+  const EnablePublicAccess(this.id);
 
   @override
-  List<Object> get props => [projectId];
+  List<Object> get props => [id];
 }
 
 class DisablePublicAccess extends UpdateProjectEvent {
-  final int projectId;
+  final int id;
 
-  const DisablePublicAccess(this.projectId);
+  const DisablePublicAccess(this.id);
 
   @override
-  List<Object> get props => [projectId];
+  List<Object> get props => [id];
 }
 
 ///
