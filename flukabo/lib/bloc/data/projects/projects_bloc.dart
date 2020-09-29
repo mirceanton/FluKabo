@@ -115,27 +115,6 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
           yield MetadataFetched(metadata);
           return;
         }
-
-        switch (event.runtimeType) {
-          case FetchMetadataByKey:
-            yield MetadataFetchedByKey(
-              await ProjectRepository().getProjectMetadataByKey(
-                projectId: (event as FetchMetadataByKey).id,
-                key: (event as FetchMetadataByKey).key,
-              ),
-            );
-            break;
-          case FetchAllMetadata:
-            yield MetadataFetched(
-              await ProjectRepository().getProjectMetadata(
-                projectId: (event as FetchAllMetadata).id,
-              ),
-            );
-            break;
-          default:
-            yield const ProjectError('Unknown fetch event');
-            break;
-        }
       }
 
       if (event is UpdateProjectEvent) {
