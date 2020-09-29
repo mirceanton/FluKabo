@@ -223,11 +223,11 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
   ///
   Widget _builder(BuildContext context, AuthState state) {
     switch (state.runtimeType) {
-      case AuthLoadingState:
+      case AuthLoading:
         return _buildLoading(context);
-      case AuthSuccessState:
+      case AuthSuccess:
         return _buildSuccess(context);
-      case AuthErrorState:
+      case AuthError:
         return _buildError(context);
       default:
         return _buildInitial(context);
@@ -241,10 +241,10 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
   /// providing some  context to the user
   ///
   void _listener(BuildContext context, AuthState state) {
-    if (state is AuthErrorState) {
+    if (state is AuthError) {
       print('Error STATE');
       _showSnack(buildContext: context, message: state.errmsg);
-    } else if (state is AuthSuccessState) {
+    } else if (state is AuthSuccess) {
       _updatePreferences();
       _showSnack(buildContext: context, message: 'Preferences Updated');
     }
