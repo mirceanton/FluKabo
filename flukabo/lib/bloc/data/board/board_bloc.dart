@@ -28,10 +28,10 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
             }
           }
         }
-        yield BoardLoaded(board: board);
+        yield BoardLoaded(board);
       }
     } on Failure catch (f) {
-      yield BoardError(message: f.message);
+      yield BoardError(f.message);
     }
   }
 }
