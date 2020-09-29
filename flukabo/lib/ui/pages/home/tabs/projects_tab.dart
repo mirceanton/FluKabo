@@ -1,12 +1,34 @@
+import 'package:flukabo/ui/templates/project/project_list_consumer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../../../../bloc/data/projects/events/events.dart';
-import '../../../../bloc/data/projects/functions.dart';
 import '../../../../bloc/data/projects/projects_bloc.dart';
 
 import 'abstract_tab_class.dart';
+
+class FakeTabBar extends StatelessWidget {
+  final TabController controller;
+  const FakeTabBar({this.controller});
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          color: Theme.of(context).primaryColor,
+          height: 48,
+        ),
+        TabBar(
+          controller: controller,
+          tabs: const [
+            Tab(text: 'Personal'),
+            Tab(text: 'Public'),
+          ],
+        ),
+      ],
+    );
+  }
+}
 
 class ProjectsTab extends HomeTab {
   // Constructor
@@ -33,32 +55,8 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
       create: (context) => ProjectsBloc(),
       child: Column(
         children: [
-          Stack(
-            children: [
-              Container(
-                color: Theme.of(context).primaryColor,
-                height: 48,
-              ),
-              TabBar(
-                controller: _tabController,
-                tabs: const [
-                  Tab(text: 'Personal'),
-                  Tab(text: 'Public'),
-                ],
-              ),
-            ],
-          ),
-          Expanded(
-            child: BlocConsumer<ProjectsBloc, ProjectsState>(
-              listener: listener,
-              builder: (context, state) => builder(
-                context,
-                state,
-                defaultEvent: const FetchAllProjects(),
-                successBuilder: tileListBuilder,
-              ),
-            ),
-          )
+          FakeTabBar(controller: _tabController),
+          const ProjectTileListBlocConsumer(),
         ],
       ),
     );

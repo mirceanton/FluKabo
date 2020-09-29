@@ -1,15 +1,12 @@
+import 'package:flukabo/ui/templates/project/project_list_consumer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../bloc/data/projects/events/events.dart';
-import '../../../../bloc/data/projects/functions.dart' as project;
 import '../../../../bloc/data/projects/projects_bloc.dart';
 
 import '../../../../bloc/data/tasks/events/events.dart';
 import '../../../../bloc/data/tasks/functions.dart' as task;
 import '../../../../bloc/data/tasks/tasks_bloc.dart';
-
-import '../../../../res/dimensions.dart';
 
 import 'abstract_tab_class.dart';
 
@@ -29,27 +26,6 @@ class SectionTitle extends StatelessWidget {
         style: const TextStyle(
           letterSpacing: 1.2,
           fontSize: 16,
-        ),
-      ),
-    );
-  }
-}
-
-/// A horizontal scrolling list with starred projects in the CardLayout
-class StarredProjectsSection extends StatelessWidget {
-  const StarredProjectsSection();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: cardHeight,
-      margin: const EdgeInsets.only(bottom: 8.0),
-      child: BlocConsumer<ProjectsBloc, ProjectsState>(
-        listener: project.listener,
-        builder: (context, state) => project.builder(
-          context,
-          state,
-          defaultEvent: const FetchAllProjects(),
-          successBuilder: project.cardListBuilder,
         ),
       ),
     );
@@ -104,7 +80,7 @@ class _DashboardTabState extends HomeTabState {
       child: Column(
         children: const [
           SectionTitle(title: 'Starred Projects'),
-          StarredProjectsSection(),
+          ProjectCardListBlocConsumer(),
           Divider(height: 0.5),
           SectionTitle(title: 'Your Tasks'),
           YourTasksSection(),
