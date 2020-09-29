@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import '../../../../data/models/models.dart';
 import '../projects_bloc.dart';
 
-abstract class UpdateEvent extends ProjectsEvent {
-  const UpdateEvent();
+abstract class UpdateProjectEvent extends ProjectsEvent {
+  const UpdateProjectEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class UpdateProjectEvent extends UpdateEvent {
+class UpdateProject extends UpdateProjectEvent {
   final ProjectModel project;
 
-  const UpdateProjectEvent(this.project);
+  const UpdateProject(this.project);
 
   @override
   List<Object> get props => [project];
@@ -22,19 +22,19 @@ class UpdateProjectEvent extends UpdateEvent {
 ///
 /// ---- Project Enable/Disable ----
 ///
-class DisableProjectEvent extends UpdateEvent {
+class DisableProject extends UpdateProjectEvent {
   final int projectId;
 
-  const DisableProjectEvent(this.projectId);
+  const DisableProject(this.projectId);
 
   @override
   List<Object> get props => [projectId];
 }
 
-class EnableProjectEvent extends UpdateEvent {
+class EnableProject extends UpdateProjectEvent {
   final int projectId;
 
-  const EnableProjectEvent(this.projectId);
+  const EnableProject(this.projectId);
 
   @override
   List<Object> get props => [projectId];
@@ -43,19 +43,19 @@ class EnableProjectEvent extends UpdateEvent {
 ///
 /// ---- Project PUBLIC ACCESS ----
 ///
-class EnablePublicAccessEvent extends UpdateEvent {
+class EnablePublicAccess extends UpdateProjectEvent {
   final int projectId;
 
-  const EnablePublicAccessEvent(this.projectId);
+  const EnablePublicAccess(this.projectId);
 
   @override
   List<Object> get props => [projectId];
 }
 
-class DisablePublicAccessEvent extends UpdateEvent {
+class DisablePublicAccess extends UpdateProjectEvent {
   final int projectId;
 
-  const DisablePublicAccessEvent(this.projectId);
+  const DisablePublicAccess(this.projectId);
 
   @override
   List<Object> get props => [projectId];
@@ -64,12 +64,12 @@ class DisablePublicAccessEvent extends UpdateEvent {
 ///
 /// ---- Project USERS ----
 ///
-class AddUserToProjectEvent extends UpdateEvent {
+class AddUserToProject extends UpdateProjectEvent {
   final int projectId;
   final int userId;
   final String userRole;
 
-  const AddUserToProjectEvent({
+  const AddUserToProject({
     @required this.projectId,
     @required this.userId,
     @required this.userRole,
@@ -79,12 +79,12 @@ class AddUserToProjectEvent extends UpdateEvent {
   List<Object> get props => [projectId, userId, userRole];
 }
 
-class ChangeUserRoleEvent extends UpdateEvent {
+class ChangeUserRole extends UpdateProjectEvent {
   final int projectId;
   final int userId;
   final String userRole;
 
-  const ChangeUserRoleEvent({
+  const ChangeUserRole({
     @required this.projectId,
     @required this.userId,
     @required this.userRole,
@@ -94,11 +94,11 @@ class ChangeUserRoleEvent extends UpdateEvent {
   List<Object> get props => [projectId, userId, userRole];
 }
 
-class RemoveUserFromProjectEvent extends UpdateEvent {
+class RemoveUserFromProject extends UpdateProjectEvent {
   final int projectId;
   final int userId;
 
-  const RemoveUserFromProjectEvent({
+  const RemoveUserFromProject({
     @required this.projectId,
     @required this.userId,
   });
@@ -110,12 +110,12 @@ class RemoveUserFromProjectEvent extends UpdateEvent {
 ///
 /// ---- Project GROUPS ----
 ///
-class AddGroupToProjectEvent extends UpdateEvent {
+class AddGroupToProject extends UpdateProjectEvent {
   final int projectId;
   final int groupId;
   final String groupRole;
 
-  const AddGroupToProjectEvent({
+  const AddGroupToProject({
     @required this.projectId,
     @required this.groupId,
     @required this.groupRole,
@@ -125,12 +125,12 @@ class AddGroupToProjectEvent extends UpdateEvent {
   List<Object> get props => [projectId, groupId, groupRole];
 }
 
-class ChangeGroupRoleEvent extends UpdateEvent {
+class ChangeGroupRole extends UpdateProjectEvent {
   final int projectId;
   final int groupId;
   final String groupRole;
 
-  const ChangeGroupRoleEvent({
+  const ChangeGroupRole({
     @required this.projectId,
     @required this.groupId,
     @required this.groupRole,
@@ -140,11 +140,11 @@ class ChangeGroupRoleEvent extends UpdateEvent {
   List<Object> get props => [projectId, groupId, groupRole];
 }
 
-class RemoveGroupFromProjectEvent extends UpdateEvent {
+class RemoveGroupFromProject extends UpdateProjectEvent {
   final int projectId;
   final int groupId;
 
-  const RemoveGroupFromProjectEvent({
+  const RemoveGroupFromProject({
     @required this.projectId,
     @required this.groupId,
   });
@@ -157,12 +157,12 @@ class RemoveGroupFromProjectEvent extends UpdateEvent {
 /// ---- Project METADATA ----
 /// ---- Project METADATA ----
 ///
-class AddMetadataEvent extends UpdateEvent {
+class AddMetadata extends UpdateProjectEvent {
   final int projectId;
   final String key;
   final String value;
 
-  const AddMetadataEvent({
+  const AddMetadata({
     @required this.projectId,
     @required this.key,
     @required this.value,
@@ -172,11 +172,11 @@ class AddMetadataEvent extends UpdateEvent {
   List<Object> get props => [projectId, key, value];
 }
 
-class RemoveMetadataEvent extends UpdateEvent {
+class RemoveMetadata extends UpdateProjectEvent {
   final int projectId;
   final String key;
 
-  const RemoveMetadataEvent({
+  const RemoveMetadata({
     @required this.projectId,
     @required this.key,
   });

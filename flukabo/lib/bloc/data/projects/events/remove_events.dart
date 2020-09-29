@@ -1,9 +1,9 @@
 import '../projects_bloc.dart';
 
-class DeleteEvent extends ProjectsEvent {
+class DeleteProjectEvent extends ProjectsEvent {
   final int projectId;
 
-  const DeleteEvent(this.projectId);
+  const DeleteProjectEvent(this.projectId);
 
   @override
   List<Object> get props => [projectId];

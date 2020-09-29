@@ -20,7 +20,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
   ) async* {
     yield const ProjectLoading();
     try {
-      if (event is CreateEvent) {
+      if (event is CreateProject) {
         final ProjectModel project = event.project;
         project.id = await ProjectRepository().createProject(
           name: project.name,
@@ -30,25 +30,25 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         );
         await project.init();
         yield ProjectCreated(project);
-      } else if (event is ReadEvent) {
+      } else if (event is ReadProjectEvent) {
         switch (event.runtimeType) {
-          case FetchByIdEvent:
+          case FetchProjectById:
             final ProjectModel project =
                 await ProjectRepository().getProjectById(
-              (event as FetchByIdEvent).projectId,
+              (event as FetchProjectById).projectId,
             );
             await project.init();
             yield ProjectFetched(project);
             break;
-          case FetchByNameEvent:
+          case FethchProjectByName:
             final ProjectModel project =
                 await ProjectRepository().getProjectByName(
-              (event as FetchByNameEvent).projectName,
+              (event as FethchProjectByName).projectName,
             );
             await project.init();
             yield ProjectFetched(project);
             break;
-          case FetchAllEvent:
+          case FetchAllProjects:
             final List<ProjectModel> projects =
                 await ProjectRepository().getAllProjects();
             for (int i = 0; i < projects.length; i++) {
@@ -56,45 +56,45 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
             }
             yield ProjectListFetched(projects);
             break;
-          case FetchFeedEvent:
+          case FetchFeedForProject:
             yield FeedFetched(
               await ProjectRepository()
-                  .getFeed((event as FetchFeedEvent).projectId),
+                  .getFeed((event as FetchFeedForProject).projectId),
             );
             break;
-          case FetchUsersEvent:
+          case FetchProjectUsers:
             yield UserListFetched(
               await ProjectRepository()
-                  .getProjectUsers((event as FetchUsersEvent).projectId),
+                  .getProjectUsers((event as FetchProjectUsers).projectId),
             );
             break;
-          case FetchAssignableUsersEvent:
+          case FetchAssignableUsers:
             yield UserListFetched(
               await ProjectRepository().getAssignableUsers(
-                (event as FetchAssignableUsersEvent).projectId,
+                (event as FetchAssignableUsers).projectId,
               ),
             );
             break;
-          case FetchUserRoleEvent:
+          case FetchUserRole:
             yield UserRoleFetched(
               await ProjectRepository().getUserRole(
-                projectId: (event as FetchUserRoleEvent).projectId,
-                userId: (event as FetchUserRoleEvent).userId,
+                projectId: (event as FetchUserRole).projectId,
+                userId: (event as FetchUserRole).userId,
               ),
             );
             break;
-          case FetchMetadataByKeyEvent:
+          case FetchMetadataByKey:
             yield MetadataFetchedByKey(
               await ProjectRepository().getProjectMetadataByKey(
-                projectId: (event as FetchMetadataByKeyEvent).projectId,
-                key: (event as FetchMetadataByKeyEvent).key,
+                projectId: (event as FetchMetadataByKey).projectId,
+                key: (event as FetchMetadataByKey).key,
               ),
             );
             break;
-          case FetchAllMetadataEvent:
+          case FetchAllMetadata:
             yield MetadataFetched(
               await ProjectRepository().getProjectMetadata(
-                projectId: (event as FetchAllMetadataEvent).projectId,
+                projectId: (event as FetchAllMetadata).projectId,
               ),
             );
             break;
@@ -102,10 +102,10 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
             yield const ProjectError('Unknown fetch event');
             break;
         }
-      } else if (event is UpdateEvent) {
+      } else if (event is UpdateProjectEvent) {
         switch (event.runtimeType) {
-          case UpdateProjectEvent:
-            final ProjectModel project = (event as UpdateProjectEvent).project;
+          case UpdateProject:
+            final ProjectModel project = (event as UpdateProject).project;
             yield ProjectUpdated(
               await ProjectRepository().updateProject(
                 id: project.id,
@@ -116,98 +116,98 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
               ),
             );
             break;
-          case DisableProjectEvent:
+          case DisableProject:
             yield ProjectUpdated(
               await ProjectRepository()
-                  .disableProject((event as DisableProjectEvent).projectId),
+                  .disableProject((event as DisableProject).projectId),
             );
             break;
-          case EnableProjectEvent:
+          case EnableProject:
             yield ProjectUpdated(
               await ProjectRepository()
-                  .enableProject((event as EnableProjectEvent).projectId),
+                  .enableProject((event as EnableProject).projectId),
             );
             break;
-          case DisablePublicAccessEvent:
+          case DisablePublicAccess:
             yield ProjectUpdated(
               await ProjectRepository().disablePublicAccess(
-                (event as DisablePublicAccessEvent).projectId,
+                (event as DisablePublicAccess).projectId,
               ),
             );
             break;
-          case EnablePublicAccessEvent:
+          case EnablePublicAccess:
             yield ProjectUpdated(
               await ProjectRepository().enablePublicAccess(
-                (event as EnablePublicAccessEvent).projectId,
+                (event as EnablePublicAccess).projectId,
               ),
             );
             break;
-          case AddUserToProjectEvent:
+          case AddUserToProject:
             yield ProjectUpdated(
               await ProjectRepository().addUserToProject(
-                projectId: (event as AddUserToProjectEvent).projectId,
-                userId: (event as AddUserToProjectEvent).userId,
-                role: (event as ChangeUserRoleEvent).userRole,
+                projectId: (event as AddUserToProject).projectId,
+                userId: (event as AddUserToProject).userId,
+                role: (event as ChangeUserRole).userRole,
               ),
             );
             break;
-          case ChangeUserRoleEvent:
+          case ChangeUserRole:
             yield ProjectUpdated(
               await ProjectRepository().changeUserRole(
-                projectId: (event as ChangeUserRoleEvent).projectId,
-                userId: (event as ChangeUserRoleEvent).userId,
-                role: (event as ChangeUserRoleEvent).userRole,
+                projectId: (event as ChangeUserRole).projectId,
+                userId: (event as ChangeUserRole).userId,
+                role: (event as ChangeUserRole).userRole,
               ),
             );
             break;
-          case RemoveUserFromProjectEvent:
+          case RemoveUserFromProject:
             yield ProjectUpdated(
               await ProjectRepository().removeUserFromProject(
-                projectId: (event as RemoveUserFromProjectEvent).projectId,
-                userId: (event as RemoveUserFromProjectEvent).userId,
+                projectId: (event as RemoveUserFromProject).projectId,
+                userId: (event as RemoveUserFromProject).userId,
               ),
             );
             break;
-          case AddGroupToProjectEvent:
+          case AddGroupToProject:
             yield ProjectUpdated(
               await ProjectRepository().addGroupToProject(
-                projectId: (event as AddGroupToProjectEvent).projectId,
-                groupId: (event as AddGroupToProjectEvent).groupId,
-                role: (event as AddGroupToProjectEvent).groupRole,
+                projectId: (event as AddGroupToProject).projectId,
+                groupId: (event as AddGroupToProject).groupId,
+                role: (event as AddGroupToProject).groupRole,
               ),
             );
             break;
-          case ChangeGroupRoleEvent:
+          case ChangeGroupRole:
             yield ProjectUpdated(
               await ProjectRepository().changeGroupRole(
-                projectId: (event as ChangeGroupRoleEvent).projectId,
-                groupId: (event as ChangeGroupRoleEvent).groupId,
-                role: (event as ChangeGroupRoleEvent).groupRole,
+                projectId: (event as ChangeGroupRole).projectId,
+                groupId: (event as ChangeGroupRole).groupId,
+                role: (event as ChangeGroupRole).groupRole,
               ),
             );
             break;
-          case RemoveGroupFromProjectEvent:
+          case RemoveGroupFromProject:
             yield ProjectUpdated(
               await ProjectRepository().removeGroupFromProject(
-                projectId: (event as RemoveGroupFromProjectEvent).projectId,
-                groupId: (event as RemoveGroupFromProjectEvent).groupId,
+                projectId: (event as RemoveGroupFromProject).projectId,
+                groupId: (event as RemoveGroupFromProject).groupId,
               ),
             );
             break;
-          case AddMetadataEvent:
+          case AddMetadata:
             yield ProjectUpdated(
               await ProjectRepository().addToProjectMetadata(
-                projectId: (event as AddMetadataEvent).projectId,
-                key: (event as AddMetadataEvent).key,
-                value: (event as AddMetadataEvent).value,
+                projectId: (event as AddMetadata).projectId,
+                key: (event as AddMetadata).key,
+                value: (event as AddMetadata).value,
               ),
             );
             break;
-          case RemoveMetadataEvent:
+          case RemoveMetadata:
             yield ProjectUpdated(
               await ProjectRepository().removeFromProjectMetadata(
-                projectId: (event as RemoveMetadataEvent).projectId,
-                key: (event as RemoveMetadataEvent).key,
+                projectId: (event as RemoveMetadata).projectId,
+                key: (event as RemoveMetadata).key,
               ),
             );
             break;
@@ -215,7 +215,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
             yield const ProjectError('Unknown update event');
             break;
         }
-      } else if (event is DeleteEvent) {
+      } else if (event is DeleteProjectEvent) {
         yield ProjectRemoved(
           await ProjectRepository().removeProject(event.projectId),
         );

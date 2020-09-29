@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../projects_bloc.dart';
 
-abstract class ReadEvent extends ProjectsEvent {
-  const ReadEvent();
+abstract class ReadProjectEvent extends ProjectsEvent {
+  const ReadProjectEvent();
 
   @override
   List<Object> get props => [];
@@ -12,26 +12,26 @@ abstract class ReadEvent extends ProjectsEvent {
 ///
 /// ---- Fetch Project ----
 ///
-class FetchByIdEvent extends ReadEvent {
+class FetchProjectById extends ReadProjectEvent {
   final int projectId;
 
-  const FetchByIdEvent(this.projectId);
+  const FetchProjectById(this.projectId);
 
   @override
   List<Object> get props => [projectId];
 }
 
-class FetchByNameEvent extends ReadEvent {
+class FethchProjectByName extends ReadProjectEvent {
   final String projectName;
 
-  const FetchByNameEvent({this.projectName});
+  const FethchProjectByName({this.projectName});
 
   @override
   List<Object> get props => [projectName];
 }
 
-class FetchAllEvent extends ReadEvent {
-  const FetchAllEvent();
+class FetchAllProjects extends ReadProjectEvent {
+  const FetchAllProjects();
 
   @override
   List<Object> get props => [];
@@ -40,10 +40,10 @@ class FetchAllEvent extends ReadEvent {
 ///
 /// ---- Project FEED ----
 ///
-class FetchFeedEvent extends ReadEvent {
+class FetchFeedForProject extends ReadProjectEvent {
   final int projectId;
 
-  const FetchFeedEvent(this.projectId);
+  const FetchFeedForProject(this.projectId);
 
   @override
   List<Object> get props => [projectId];
@@ -52,29 +52,29 @@ class FetchFeedEvent extends ReadEvent {
 ///
 /// ---- Project USERS ----
 ///
-class FetchUsersEvent extends ReadEvent {
+class FetchProjectUsers extends ReadProjectEvent {
   final int projectId;
 
-  const FetchUsersEvent(this.projectId);
+  const FetchProjectUsers(this.projectId);
 
   @override
   List<Object> get props => [projectId];
 }
 
-class FetchAssignableUsersEvent extends ReadEvent {
+class FetchAssignableUsers extends ReadProjectEvent {
   final int projectId;
 
-  const FetchAssignableUsersEvent(this.projectId);
+  const FetchAssignableUsers(this.projectId);
 
   @override
   List<Object> get props => [projectId];
 }
 
-class FetchUserRoleEvent extends ReadEvent {
+class FetchUserRole extends ReadProjectEvent {
   final int projectId;
   final int userId;
 
-  const FetchUserRoleEvent({
+  const FetchUserRole({
     @required this.projectId,
     @required this.userId,
   });
@@ -86,11 +86,11 @@ class FetchUserRoleEvent extends ReadEvent {
 ///
 /// ---- Project METADATA ----
 ///
-class FetchMetadataByKeyEvent extends ReadEvent {
+class FetchMetadataByKey extends ReadProjectEvent {
   final int projectId;
   final String key;
 
-  const FetchMetadataByKeyEvent({
+  const FetchMetadataByKey({
     @required this.projectId,
     @required this.key,
   });
@@ -98,10 +98,10 @@ class FetchMetadataByKeyEvent extends ReadEvent {
   List<Object> get props => [projectId, key];
 }
 
-class FetchAllMetadataEvent extends ReadEvent {
+class FetchAllMetadata extends ReadProjectEvent {
   final int projectId;
 
-  const FetchAllMetadataEvent(this.projectId);
+  const FetchAllMetadata(this.projectId);
 
   @override
   List<Object> get props => [projectId];

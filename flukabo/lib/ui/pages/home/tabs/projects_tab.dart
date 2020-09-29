@@ -54,7 +54,7 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
               builder: (context, state) => builder(
                 context,
                 state,
-                defaultEvent: const FetchAllEvent(),
+                defaultEvent: const FetchAllProjects(),
                 successBuilder: tileListBuilder,
               ),
             ),

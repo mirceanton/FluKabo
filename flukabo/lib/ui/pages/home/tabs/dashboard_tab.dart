@@ -48,7 +48,7 @@ class StarredProjectsSection extends StatelessWidget {
         builder: (context, state) => project.builder(
           context,
           state,
-          defaultEvent: const FetchAllEvent(),
+          defaultEvent: const FetchAllProjects(),
           successBuilder: project.cardListBuilder,
         ),
       ),

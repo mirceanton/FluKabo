@@ -54,7 +54,7 @@ Widget tileListBuilder(BuildContext context, ProjectsState state) {
 Widget builder(
   BuildContext context,
   ProjectsState state, {
-  @required ReadEvent defaultEvent,
+  @required ReadProjectEvent defaultEvent,
   @required Widget Function(BuildContext, ProjectsState) successBuilder,
 }) {
   if (state is ProjectLoading) {
