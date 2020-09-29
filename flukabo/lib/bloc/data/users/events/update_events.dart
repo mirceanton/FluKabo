@@ -1,35 +1,35 @@
 import '../../../../data/models/user.dart';
 import '../users_bloc.dart';
 
-abstract class UpdateEvent extends UserEvent {
-  const UpdateEvent();
+abstract class UpdateUserEvent extends UserEvent {
+  const UpdateUserEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class UpdateUserEvent extends UpdateEvent {
+class UpdateUser extends UpdateUserEvent {
   final UserModel updatedUser;
 
-  const UpdateUserEvent({this.updatedUser});
+  const UpdateUser({this.updatedUser});
 
   @override
   List<Object> get props => [updatedUser];
 }
 
-class EnableUserEvent extends UpdateEvent {
+class EnableUser extends UpdateUserEvent {
   final int userId;
 
-  const EnableUserEvent({this.userId});
+  const EnableUser({this.userId});
 
   @override
   List<Object> get props => [userId];
 }
 
-class DisableUserEvent extends UpdateEvent {
+class DisableUser extends UpdateUserEvent {
   final int userId;
 
-  const DisableUserEvent({this.userId});
+  const DisableUser({this.userId});
 
   @override
   List<Object> get props => [userId];

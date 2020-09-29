@@ -35,7 +35,7 @@ class _AccountTabState extends HomeTabState {
     }
     // if the state is InitState, attempt a Fetch Event
     context.bloc<UsersBloc>().add(
-          FetchByUsernameEvent(
+          FetchUserByUsername(
             username: UserPreferences().userName,
           ),
         );

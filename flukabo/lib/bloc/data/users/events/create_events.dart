@@ -1,10 +1,10 @@
 import '../../../../data/models/user.dart';
 import '../users_bloc.dart';
 
-class CreateEvent extends UserEvent {
+class CreateUser extends UserEvent {
   final UserModel newUser;
 
-  const CreateEvent({this.newUser});
+  const CreateUser({this.newUser});
 
   @override
   List<Object> get props => [newUser];

@@ -18,7 +18,7 @@ class UsersBloc extends Bloc<UserEvent, UserState> {
   Stream<UserState> mapEventToState(UserEvent event) async* {
     yield const LoadingState();
     try {
-      if (event is CreateEvent) {
+      if (event is CreateUser) {
         final UserModel user = event.newUser;
         user.id = await UserRepository().createUser(
           username: user.username,
@@ -28,24 +28,24 @@ class UsersBloc extends Bloc<UserEvent, UserState> {
           role: user.role,
         );
         yield UserCreatedState(user: user);
-      } else if (event is ReadEvent) {
-        if (event is FetchByIdEvent) {
+      } else if (event is ReadUserEvent) {
+        if (event is FetchUserById) {
           yield UserFetchedState(
             user: await UserRepository().getUserById(event.userId),
           );
-        } else if (event is FetchByUsernameEvent) {
+        } else if (event is FetchUserByUsername) {
           yield UserFetchedState(
             user: await UserRepository().getUserByUsername(event.username),
           );
-        } else if (event is FetchAllEvent) {
+        } else if (event is FetchAllUsers) {
           yield UsersFetchedState(users: await UserRepository().getAllUsers());
-        } else if (event is FetchGroupsEvent) {
+        } else if (event is FetchGroups) {
           yield GroupsFetchedState(
             groups: await UserRepository().getGroupsForUser(event.userId),
           );
         }
-      } else if (event is UpdateEvent) {
-        if (event is UpdateUserEvent) {
+      } else if (event is UpdateUserEvent) {
+        if (event is UpdateUser) {
           yield UserUpdatedState(
             wasSuccessful: await UserRepository().updateUser(
               id: event.updatedUser.id,
@@ -55,16 +55,16 @@ class UsersBloc extends Bloc<UserEvent, UserState> {
               role: event.updatedUser.role,
             ),
           );
-        } else if (event is EnableUserEvent) {
+        } else if (event is EnableUser) {
           yield UserUpdatedState(
             wasSuccessful: await UserRepository().enableUser(event.userId),
           );
-        } else if (event is DisableUserEvent) {
+        } else if (event is DisableUser) {
           yield UserUpdatedState(
             wasSuccessful: await UserRepository().disableUser(event.userId),
           );
         }
-      } else if (event is DeleteEvent) {
+      } else if (event is DeleteUserEvent) {
         yield UserRemovedState(
           wasSuccessful: await UserRepository().removeUser(event.userId),
         );
