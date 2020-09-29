@@ -27,3 +27,13 @@ class ProjectBlocLoadingWidget extends StatelessWidget {
     return const LoadingBlocWidget('Fetching projects');
   }
 }
+
+/// A centered text widget letting the user know there is no content
+class ProjectBlocEmptyContentWidget extends StatelessWidget {
+  const ProjectBlocEmptyContentWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text('Nothing to see here'));
+  }
+}
