@@ -13,7 +13,7 @@ class ProjectBlocErrorWidget extends StatelessWidget {
     return ErrorBlocWidget(
       callback: callback,
       icon: MdiIcons.downloadOff,
-      message: 'Connection failed',
+      message: 'Uh oh... Project fetching failed...',
     );
   }
 }
