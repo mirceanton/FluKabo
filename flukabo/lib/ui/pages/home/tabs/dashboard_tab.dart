@@ -1,21 +1,15 @@
-import 'package:flukabo/bloc/data/projects/states/states.dart';
-import 'package:flukabo/ui/templates/bloc_widgets/projects_bloc_widgets.dart';
-import 'package:flukabo/ui/templates/bloc_widgets/task_bloc_widgets.dart';
-import 'package:flukabo/ui/templates/project/project_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flukabo/bloc/data/projects/events/events.dart';
+import '../../../../bloc/data/projects/events/events.dart';
 import '../../../../bloc/data/projects/functions.dart' as project;
 import '../../../../bloc/data/projects/projects_bloc.dart';
 
 import '../../../../bloc/data/tasks/events/events.dart' as task_events;
 import '../../../../bloc/data/tasks/functions.dart' as task;
-import '../../../../bloc/data/tasks/states/states.dart' as task_states;
 import '../../../../bloc/data/tasks/tasks_bloc.dart';
 
 import '../../../../res/dimensions.dart';
-import '../../../../ui/templates/task/task_list_view.dart';
 
 import 'abstract_tab_class.dart';
 
@@ -43,22 +37,6 @@ class SectionTitle extends StatelessWidget {
 
 /// A horizontal scrolling list with starred projects in the CardLayout
 class StarredProjectsSection extends StatelessWidget {
-  Widget _successBuilder(BuildContext context, ProjectsState state) {
-    if (state is ProjectListFetchedState) {
-      if (state.projects.isEmpty) {
-        return const ProjectBlocEmptyContentWidget();
-      } else {
-        return ProjectListView(
-          height: cardHeight,
-          width: double.infinity,
-          projects: state.projects,
-          showCards: true,
-        );
-      }
-    }
-    return const SizedBox(width: 0, height: 0);
-  }
-
   const StarredProjectsSection();
   @override
   Widget build(BuildContext context) {
@@ -71,7 +49,7 @@ class StarredProjectsSection extends StatelessWidget {
           context,
           state,
           defaultEvent: const FetchAllEvent(),
-          successBuilder: _successBuilder,
+          successBuilder: project.cardListBuilder,
         ),
       ),
     );
@@ -83,21 +61,6 @@ class StarredProjectsSection extends StatelessWidget {
 /// ListTile Layout
 ///
 class YourTasksSection extends StatelessWidget {
-  Widget _successBuilder(BuildContext context, TasksState state) {
-    if (state is task_states.TaskListFetchedState) {
-      if (state.tasks.isEmpty) {
-        return const TaskBlocEmptyContentWidget();
-      } else {
-        return TaskListView(
-          height: double.infinity,
-          width: double.infinity,
-          tasks: state.tasks,
-        );
-      }
-    }
-    return const SizedBox(width: 0, height: 0);
-  }
-
   const YourTasksSection();
   @override
   Widget build(BuildContext context) {
@@ -111,7 +74,7 @@ class YourTasksSection extends StatelessWidget {
             projectId: 1,
             isActive: true,
           ), // FIXME
-          successBuilder: _successBuilder,
+          successBuilder: task.taskListBuilder,
         ),
       ),
     );

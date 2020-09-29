@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../ui/commons.dart';
 import '../../../ui/templates/bloc_widgets/bloc_commons.dart';
 import '../../../ui/templates/bloc_widgets/task_bloc_widgets.dart';
+import '../../../ui/templates/task/task_list_view.dart';
 import './events/events.dart';
 import './states/states.dart';
 import './tasks_bloc.dart';
@@ -12,6 +13,21 @@ void listener(BuildContext context, TasksState state) {
   if (state is ErrorState) {
     showSnackbar(context: context, content: state.errmsg);
   }
+}
+
+Widget taskListBuilder(BuildContext context, TasksState state) {
+  if (state is TaskListFetchedState) {
+    if (state.tasks.isEmpty) {
+      return const TaskBlocEmptyContentWidget();
+    } else {
+      return TaskListView(
+        height: double.infinity,
+        width: double.infinity,
+        tasks: state.tasks,
+      );
+    }
+  }
+  return const SizedBox(width: 0, height: 0);
 }
 
 Widget builder(

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../res/dimensions.dart';
+
 import '../../../ui/commons.dart';
 import '../../../ui/templates/bloc_widgets/bloc_commons.dart';
 import '../../../ui/templates/bloc_widgets/projects_bloc_widgets.dart';
+import '../../../ui/templates/project/project_list_view.dart';
 
 import './events/events.dart';
 import './projects_bloc.dart';
@@ -14,6 +17,38 @@ void listener(BuildContext context, ProjectsState state) {
   if (state is ErrorState) {
     showSnackbar(context: context, content: state.errmsg);
   }
+}
+
+Widget cardListBuilder(BuildContext context, ProjectsState state) {
+  if (state is ProjectListFetchedState) {
+    if (state.projects.isEmpty) {
+      return const ProjectBlocEmptyContentWidget();
+    } else {
+      return ProjectListView(
+        height: cardHeight,
+        width: double.infinity,
+        projects: state.projects,
+        showCards: true,
+      );
+    }
+  }
+  return const SizedBox(width: 0, height: 0);
+}
+
+Widget tileListBuilder(BuildContext context, ProjectsState state) {
+  if (state is ProjectListFetchedState) {
+    if (state.projects.isEmpty) {
+      return const ProjectBlocEmptyContentWidget();
+    } else {
+      return ProjectListView(
+        height: double.infinity,
+        width: double.infinity,
+        projects: state.projects,
+        showCards: false,
+      );
+    }
+  }
+  return const SizedBox(height: 0, width: 0);
 }
 
 Widget builder(
