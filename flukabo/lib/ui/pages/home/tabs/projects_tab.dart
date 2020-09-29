@@ -2,6 +2,7 @@ import 'package:flukabo/bloc/data/projects/events/events.dart';
 import 'package:flukabo/bloc/data/projects/projects_bloc.dart';
 import 'package:flukabo/bloc/data/projects/states/states.dart';
 import 'package:flukabo/data/models/project.dart';
+import 'package:flukabo/ui/templates/bloc_widgets/bloc_commons.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,13 +45,12 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
 
   Widget _builder(BuildContext context, ProjectsState state) {
     if (state is LoadingState) {
-      return buildLoading();
+      return const LoadingBlocWidget('Loading projects...');
     } else if (state is ErrorState) {
-      return buildError(
-        context,
+      return const ErrorBlocWidget(
+        callback: null,
         icon: MdiIcons.accessPointNetworkOff,
         message: 'Connection failed',
-        onButtonPress: () => retryAuth(context),
       );
     } else if (state is SuccessState) {
       if (state is ProjectListFetchedState) {
@@ -69,7 +69,7 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
     }
     // if the state is InitState, attempt a Fetch Event
     context.bloc<ProjectsBloc>().add(const FetchAllEvent());
-    return buildInitial();
+    return const InitialBlocWidget();
   }
 
   void _listener(BuildContext context, ProjectsState state) {

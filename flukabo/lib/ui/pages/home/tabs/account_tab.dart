@@ -2,6 +2,8 @@ import 'package:flukabo/bloc/data/users/events/events.dart';
 import 'package:flukabo/bloc/data/users/states/states.dart';
 import 'package:flukabo/bloc/data/users/users_bloc.dart';
 import 'package:flukabo/data/singletons/user_preferences.dart';
+import 'package:flukabo/ui/templates/bloc_widgets/auth_bloc_widgets.dart';
+import 'package:flukabo/ui/templates/bloc_widgets/bloc_commons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -23,14 +25,9 @@ class AccountTab extends HomeTab {
 class _AccountTabState extends HomeTabState {
   Widget _builder(BuildContext context, UserState state) {
     if (state is LoadingState) {
-      return buildLoading();
+      return const LoadingBlocWidget('Fetching active user...');
     } else if (state is ErrorState) {
-      return buildError(
-        context,
-        icon: MdiIcons.accessPointNetworkOff,
-        message: 'Connection failed',
-        onButtonPress: () => retryAuth(context),
-      );
+      return const AuthBlocErrorWidget();
     } else if (state is SuccessState) {
       if (state is UserFetchedState) {
         return Center(child: Text("${state.user.name} - ${state.user.email}"));
@@ -42,7 +39,7 @@ class _AccountTabState extends HomeTabState {
             username: UserPreferences().userName,
           ),
         );
-    return buildInitial();
+    return const InitialBlocWidget();
   }
 
   void _listener(BuildContext context, UserState state) {

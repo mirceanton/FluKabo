@@ -1,11 +1,11 @@
 import 'package:flukabo/bloc/data/tasks/events/events.dart';
 import 'package:flukabo/bloc/data/tasks/states/states.dart';
 import 'package:flukabo/bloc/data/tasks/tasks_bloc.dart';
+import 'package:flukabo/ui/templates/bloc_widgets/bloc_commons.dart';
 import 'package:flukabo/ui/templates/task/task_list_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import '../../../commons.dart';
 import 'abstract_tab_class.dart';
 
 class TasksTab extends HomeTab {
@@ -23,14 +23,13 @@ class TasksTab extends HomeTab {
 class _TasksTabState extends HomeTabState {
   Widget _builder(BuildContext context, TasksState state) {
     if (state is LoadingState) {
-      return buildLoading();
+      return const LoadingBlocWidget('Loading tasks...');
     }
     if (state is ErrorState) {
-      return buildError(
-        context,
+      return const ErrorBlocWidget(
+        callback: null,
         icon: MdiIcons.accessPointNetworkOff,
         message: 'Connection failed',
-        onButtonPress: () => retryAuth(context),
       );
     }
     if (state is SuccessState) {
@@ -45,7 +44,7 @@ class _TasksTabState extends HomeTabState {
     context
         .bloc<TasksBloc>()
         .add(const FetchAllForProjectEvent(projectId: 1, isActive: true));
-    return buildInitial();
+    return const InitialBlocWidget();
   }
 
   void _listener(BuildContext context, TasksState state) {}
