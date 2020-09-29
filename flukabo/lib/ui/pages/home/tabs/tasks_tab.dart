@@ -1,15 +1,13 @@
-import 'package:flukabo/bloc/data/tasks/events/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../../../../bloc/data/tasks/events/events.dart';
 import '../../../../bloc/data/tasks/tasks_bloc.dart';
 import '../../../../ui/templates/task/task_list_consumer.dart';
 import 'abstract_tab_class.dart';
 
 class TasksTab extends HomeTab {
-  TasksTab();
-
   @override
   String get name => 'Tasks';
   @override

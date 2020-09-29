@@ -1,4 +1,3 @@
-import 'package:flukabo/ui/templates/project/project_list_consumer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -6,6 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../../../../bloc/data/projects/events/events.dart';
 import '../../../../bloc/data/projects/projects_bloc.dart';
 
+import '../../../../ui/templates/project/project_list_consumer.dart';
 import 'abstract_tab_class.dart';
 
 class FakeTabBar extends StatelessWidget {
@@ -36,9 +36,6 @@ class FakeTabBar extends StatelessWidget {
 }
 
 class ProjectsTab extends HomeTab {
-  // Constructor
-  ProjectsTab();
-
   @override
   String get name => 'Projects';
   @override

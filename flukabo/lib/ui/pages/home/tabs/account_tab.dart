@@ -1,18 +1,17 @@
-import 'package:flukabo/bloc/data/users/events/events.dart';
-import 'package:flukabo/bloc/data/users/states/states.dart';
-import 'package:flukabo/bloc/data/users/users_bloc.dart';
-import 'package:flukabo/data/singletons/user_preferences.dart';
-import 'package:flukabo/ui/templates/bloc_widgets/auth_bloc_widgets.dart';
-import 'package:flukabo/ui/templates/bloc_widgets/bloc_commons.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:flutter/material.dart';
+
+import '../../../../bloc/data/users/events/events.dart';
+import '../../../../bloc/data/users/states/states.dart';
+import '../../../../bloc/data/users/users_bloc.dart';
+import '../../../../data/singletons/user_preferences.dart';
+import '../../../../ui/templates/bloc_widgets/auth_bloc_widgets.dart';
+import '../../../../ui/templates/bloc_widgets/bloc_commons.dart';
 import '../../../commons.dart';
 import 'abstract_tab_class.dart';
 
 class AccountTab extends HomeTab {
-  AccountTab();
-
   @override
   String get name => 'Account';
   @override

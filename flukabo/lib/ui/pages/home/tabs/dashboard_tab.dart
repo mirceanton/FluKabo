@@ -14,7 +14,7 @@ import 'abstract_tab_class.dart';
 /// A pretty-fied text widget
 class SectionTitle extends StatelessWidget {
   final String title;
-  const SectionTitle({this.title});
+  const SectionTitle(this.title);
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,6 @@ class SectionTitle extends StatelessWidget {
 }
 
 class DashboardTab extends HomeTab {
-  DashboardTab(); // empty constructor
-
   @override
   String get name => 'Dashboard';
   @override
@@ -55,10 +53,10 @@ class _DashboardTabState extends HomeTabState {
       ],
       child: Column(
         children: const [
-          SectionTitle(title: 'Starred Projects'),
+          SectionTitle('Starred Projects'),
           ProjectCardListBlocConsumer(FetchStarredProjects()),
           Divider(height: 0.5),
-          SectionTitle(title: 'Your Tasks'),
+          SectionTitle('Your Tasks'),
           TasksTileListBlocConsumer(
               FetchAllTasksForProject(projectId: 1, isActive: true)),
         ],
