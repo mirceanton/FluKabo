@@ -1,3 +1,4 @@
+import 'package:flukabo/bloc/data/tasks/events/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -23,7 +24,12 @@ class _TasksTabState extends HomeTabState {
   Widget buildContent() {
     return BlocProvider(
       create: (context) => TasksBloc(),
-      child: const YourTasksTileListBlocConsumer(),
+      child: Column(
+        children: const [
+          TasksTileListBlocConsumer(
+              FetchAllTasksForProject(projectId: 1, isActive: true))
+        ],
+      ),
     );
   }
 }
