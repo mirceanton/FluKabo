@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../../../../bloc/data/projects/events/events.dart';
 import '../../../../bloc/data/projects/projects_bloc.dart';
 
 import 'abstract_tab_class.dart';
 
 class FakeTabBar extends StatelessWidget {
   final TabController controller;
-  const FakeTabBar({this.controller});
+  final List<Tab> tabs;
+  const FakeTabBar({
+    @required this.controller,
+    @required this.tabs,
+  });
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -51,14 +56,29 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
 
   @override
   Widget buildContent() {
-    return BlocProvider(
-      create: (context) => ProjectsBloc(),
-      child: Column(
-        children: [
-          FakeTabBar(controller: _tabController),
-          const ProjectTileListBlocConsumer(),
-        ],
-      ),
+    return Column(
+      children: [
+        FakeTabBar(
+          controller: _tabController,
+          tabs: const [Tab(text: 'Personal'), Tab(text: 'Public')],
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              BlocProvider(
+                create: (context) => ProjectsBloc(),
+                child:
+                    const ProjectTileListBlocConsumer(FetchPersonalProjects()),
+              ),
+              BlocProvider(
+                create: (context) => ProjectsBloc(),
+                child: const ProjectTileListBlocConsumer(FetchPublicProjects()),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
