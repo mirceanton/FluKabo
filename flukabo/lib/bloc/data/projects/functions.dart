@@ -1,10 +1,10 @@
-import 'package:flukabo/ui/templates/bloc_widgets/bloc_commons.dart';
-import 'package:flukabo/ui/templates/bloc_widgets/projects_bloc_widgets.dart';
-import 'package:flukabo/ui/templates/project/project_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flukabo/ui/commons.dart';
+import '../../../ui/commons.dart';
+import '../../../ui/templates/bloc_widgets/bloc_commons.dart';
+import '../../../ui/templates/bloc_widgets/projects_bloc_widgets.dart';
+import '../../../ui/templates/project/project_list_view.dart';
 
 import './events/events.dart';
 import './projects_bloc.dart';
