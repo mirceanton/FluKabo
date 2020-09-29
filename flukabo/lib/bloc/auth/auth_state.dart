@@ -33,13 +33,9 @@ class AuthSuccess extends AuthState {
 
 /// Error State -> login attempt failed
 class AuthError extends AuthState {
-  final int errno; // error number
   final String errmsg; // error message
-  const AuthError({
-    this.errno,
-    @required this.errmsg,
-  });
+  const AuthError(this.errmsg);
 
   @override
-  List<Object> get props => [errno, errmsg];
+  List<Object> get props => [errmsg];
 }

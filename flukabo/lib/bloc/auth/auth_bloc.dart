@@ -12,9 +12,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(const AuthInitial());
 
   @override
-  Stream<AuthState> mapEventToState(
-    AuthEvent event,
-  ) async* {
+  Stream<AuthState> mapEventToState(AuthEvent event) async* {
     // we don't have to check for event type since we only have 1 type of events
     yield const AuthLoading();
     try {
@@ -26,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       yield const AuthSuccess();
     } on Failure catch (f) {
-      yield AuthError(errmsg: f.message);
+      yield AuthError(f.message);
     }
   }
 }
