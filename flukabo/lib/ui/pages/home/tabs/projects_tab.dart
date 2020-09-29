@@ -1,14 +1,15 @@
-import 'package:flukabo/bloc/data/projects/events/events.dart';
-import 'package:flukabo/bloc/data/projects/projects_bloc.dart';
-import 'package:flukabo/bloc/data/projects/states/states.dart';
-import 'package:flukabo/data/models/project.dart';
-import 'package:flukabo/ui/templates/bloc_widgets/bloc_commons.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../../../../bloc/data/projects/events/events.dart';
+import '../../../../bloc/data/projects/functions.dart';
+import '../../../../bloc/data/projects/projects_bloc.dart';
+
+import '../../../../data/models/project.dart';
 
 import '../../../../ui/templates/project/project_list_view.dart';
-import '../../../commons.dart';
+
 import 'abstract_tab_class.dart';
 
 class ProjectsTab extends HomeTab {
@@ -43,44 +44,6 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
     }
   }
 
-  Widget _builder(BuildContext context, ProjectsState state) {
-    if (state is LoadingState) {
-      return const LoadingBlocWidget('Loading projects...');
-    } else if (state is ErrorState) {
-      return const ErrorBlocWidget(
-        callback: null,
-        icon: MdiIcons.accessPointNetworkOff,
-        message: 'Connection failed',
-      );
-    } else if (state is SuccessState) {
-      if (state is ProjectListFetchedState) {
-        return TabBarView(
-          controller: _tabController,
-          children: [
-            _buildProjectListView(
-              state.projects.where((element) => element.isPrivate).toList(),
-            ),
-            _buildProjectListView(
-              state.projects.where((element) => !element.isPrivate).toList(),
-            ),
-          ],
-        );
-      }
-    }
-    // if the state is InitState, attempt a Fetch Event
-    context.bloc<ProjectsBloc>().add(const FetchAllEvent());
-    return const InitialBlocWidget();
-  }
-
-  void _listener(BuildContext context, ProjectsState state) {
-    if (state is ErrorState) {
-      showSnackbar(
-        context: context,
-        content: state.errmsg,
-      );
-    }
-  }
-
   @override
   Widget buildContent() {
     return BlocProvider(
@@ -104,8 +67,13 @@ class _ProjectsTabState extends HomeTabState with TickerProviderStateMixin {
           ),
           Expanded(
             child: BlocConsumer<ProjectsBloc, ProjectsState>(
-              listener: _listener,
-              builder: _builder,
+              listener: listener,
+              builder: (context, state) => builder(
+                context,
+                state,
+                defaultEvent: const FetchAllEvent(),
+                // showCards: false,
+              ),
             ),
           )
         ],
