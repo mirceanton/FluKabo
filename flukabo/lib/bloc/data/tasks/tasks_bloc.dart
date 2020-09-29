@@ -46,7 +46,10 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         );
         await task.init();
         yield TaskCreated(task);
-      } else if (event is ReadTaskEvent) {
+        return;
+      }
+
+      if (event is ReadTaskEvent) {
         if (event is ReadObjectEvent) {
           TaskModel task;
 
@@ -61,7 +64,10 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
           await task.init();
           yield TaskFetched(task);
-        } else if (event is ReadObjectListEvent) {
+          return;
+        }
+
+        if (event is ReadObjectListEvent) {
           List<TaskModel> tasks = [];
 
           if (event is FetchAllTasksForProject) {
@@ -86,71 +92,71 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
             await tasks[i].init();
           }
           yield TaskListFetched(tasks);
+          return;
         }
-      } else if (event is UpdateTaskEvent) {
+      }
+
+      if (event is UpdateTaskEvent) {
+        bool status = false;
         if (event is UpdateTask) {
-          yield TaskUpdated(
-            await TaskRepository().updateTask(
-              taskId: event.task.id,
-              title: event.task.title,
-              colorId: event.task.colorId,
-              ownerId: event.task.ownerId,
-              dateDue: event.task.dateDue,
-              description: event.task.description,
-              categoryId: event.task.categoryId,
-              complexity: event.task.complexity,
-              priority: event.task.priority,
-              recurrenceStatus: event.task.recurrenceStatus,
-              recurrenceTrigger: event.task.recurrenceTrigger,
-              recurrenceFactor: event.task.recurrenceFactor,
-              recurrenceTimeframe: event.task.recurrenceTimeframe,
-              recurrenceBasedate: event.task.recurrenceBasedate,
-              reference: event.task.reference,
-              tags: event.task.tagNames,
-              dateStarted: event.task.dateStarted,
-            ),
+          status = await TaskRepository().updateTask(
+            taskId: event.task.id,
+            title: event.task.title,
+            colorId: event.task.colorId,
+            ownerId: event.task.ownerId,
+            dateDue: event.task.dateDue,
+            description: event.task.description,
+            categoryId: event.task.categoryId,
+            complexity: event.task.complexity,
+            priority: event.task.priority,
+            recurrenceStatus: event.task.recurrenceStatus,
+            recurrenceTrigger: event.task.recurrenceTrigger,
+            recurrenceFactor: event.task.recurrenceFactor,
+            recurrenceTimeframe: event.task.recurrenceTimeframe,
+            recurrenceBasedate: event.task.recurrenceBasedate,
+            reference: event.task.reference,
+            tags: event.task.tagNames,
+            dateStarted: event.task.dateStarted,
           );
         } else if (event is OpenTask) {
-          yield TaskUpdated(await TaskRepository().openTask(event.taskId));
+          status = await TaskRepository().openTask(event.taskId);
         } else if (event is CloseTask) {
-          yield TaskUpdated(
-            await TaskRepository().closeTask(event.taskId),
-          );
+          status = await TaskRepository().closeTask(event.taskId);
         } else if (event is MoveTaskWithinProject) {
-          yield TaskUpdated(
-            await TaskRepository().moveTaskToPosition(
-              projectId: event.projectId,
-              taskId: event.taskId,
-              columnId: event.columnId,
-              position: event.position,
-              swimlaneId: event.swimlaneId,
-            ),
+          status = await TaskRepository().moveTaskToPosition(
+            projectId: event.projectId,
+            taskId: event.taskId,
+            columnId: event.columnId,
+            position: event.position,
+            swimlaneId: event.swimlaneId,
           );
         } else if (event is MoveTaskToProject) {
-          yield TaskUpdated(
-            await TaskRepository().moveTaskToProject(
-              taskId: event.taskId,
-              projectId: event.projectId,
-              swimlaneId: event.swimlaneId,
-              columnId: event.columnId,
-              categoryId: event.categoryId,
-              ownerId: event.ownerId,
-            ),
+          status = await TaskRepository().moveTaskToProject(
+            taskId: event.taskId,
+            projectId: event.projectId,
+            swimlaneId: event.swimlaneId,
+            columnId: event.columnId,
+            categoryId: event.categoryId,
+            ownerId: event.ownerId,
           );
         } else if (event is CloneTaskToProject) {
-          yield TaskUpdated(
-            await TaskRepository().cloneTaskToProject(
-              taskId: event.taskId,
-              projectId: event.projectId,
-              swimlaneId: event.swimlaneId,
-              columnId: event.columnId,
-              categoryId: event.categoryId,
-              ownerId: event.ownerId,
-            ),
+          status = await TaskRepository().cloneTaskToProject(
+            taskId: event.taskId,
+            projectId: event.projectId,
+            swimlaneId: event.swimlaneId,
+            columnId: event.columnId,
+            categoryId: event.categoryId,
+            ownerId: event.ownerId,
           );
         }
-      } else if (event is DeleteTask) {
-        yield TaskDeleted(await TaskRepository().removeTask(event.taskId));
+        yield TaskUpdated(status);
+        return;
+      }
+
+      if (event is DeleteTask) {
+        final bool status = await TaskRepository().removeTask(event.taskId);
+        yield TaskDeleted(status);
+        return;
       }
     } on Failure catch (f) {
       yield TaskError(f.message);
