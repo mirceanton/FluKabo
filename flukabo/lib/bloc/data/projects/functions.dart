@@ -14,13 +14,13 @@ import './states/states.dart';
 
 /// [listener] handles showing a snackbar if the state is [ProjectError]
 void listener(BuildContext context, ProjectsState state) {
-  if (state is ErrorState) {
+  if (state is ProjectError) {
     showSnackbar(context: context, content: state.errmsg);
   }
 }
 
 Widget cardListBuilder(BuildContext context, ProjectsState state) {
-  if (state is ProjectListFetchedState) {
+  if (state is ProjectListFetched) {
     if (state.projects.isEmpty) {
       return const ProjectBlocEmptyContentWidget();
     } else {
@@ -36,7 +36,7 @@ Widget cardListBuilder(BuildContext context, ProjectsState state) {
 }
 
 Widget tileListBuilder(BuildContext context, ProjectsState state) {
-  if (state is ProjectListFetchedState) {
+  if (state is ProjectListFetched) {
     if (state.projects.isEmpty) {
       return const ProjectBlocEmptyContentWidget();
     } else {
@@ -57,11 +57,11 @@ Widget builder(
   @required ReadEvent defaultEvent,
   @required Widget Function(BuildContext, ProjectsState) successBuilder,
 }) {
-  if (state is LoadingState) {
+  if (state is ProjectLoading) {
     print('Projects loading...');
     return const ProjectBlocLoadingWidget();
   }
-  if (state is ErrorState) {
+  if (state is ProjectError) {
     print('Projects error');
     return ProjectBlocErrorWidget(
       (context) => context.bloc<ProjectsBloc>().add(defaultEvent),

@@ -15,10 +15,10 @@ abstract class SuccessState extends ProjectsState {
 /// ---- SUCCES STATES FOR CREATE EVENTS ----
 ///
 /// The SuccessState associated to [CreateEvent]
-class ProjectCreatedState extends SuccessState {
+class ProjectCreated extends SuccessState {
   final ProjectModel project;
 
-  const ProjectCreatedState(this.project);
+  const ProjectCreated(this.project);
 
   @override
   List<Object> get props => [project];
@@ -28,70 +28,70 @@ class ProjectCreatedState extends SuccessState {
 /// ---- SUCCES STATES FOR FETCH EVENTS ----
 ///
 /// The SuccessState associated to [FetchByIdEvent], [FetchByNameEvent]
-class ProjectFetchedState extends SuccessState {
+class ProjectFetched extends SuccessState {
   final ProjectModel project;
 
-  const ProjectFetchedState(this.project);
+  const ProjectFetched(this.project);
 
   @override
   List<Object> get props => [project];
 }
 
 /// The SuccessState associated to [FetchAllEvent]
-class ProjectListFetchedState extends SuccessState {
+class ProjectListFetched extends SuccessState {
   final List<ProjectModel> projects;
 
-  const ProjectListFetchedState(this.projects);
+  const ProjectListFetched(this.projects);
 
   @override
   List<Object> get props => [projects];
 }
 
 /// The SuccessState associated to [FetchFeedEvent]
-class FeedFetchedState extends SuccessState {
+class FeedFetched extends SuccessState {
   final List<EventModel> feed;
 
-  const FeedFetchedState(this.feed);
+  const FeedFetched(this.feed);
 
   @override
   List<Object> get props => [feed];
 }
 
 /// The SuccessState associated to [FetchUsersEvent], [FetchAssignableUsersEvent]
-class UserListFetchedState extends SuccessState {
+class UserListFetched extends SuccessState {
   final List<UserModel> users;
 
-  const UserListFetchedState(this.users);
+  const UserListFetched(this.users);
 
   @override
   List<Object> get props => [users];
 }
 
 /// The SuccessState associated to [FetchUserRoleEvent]
-class UserRoleFetchedState extends SuccessState {
+class UserRoleFetched extends SuccessState {
   final String role;
 
-  const UserRoleFetchedState(this.role);
+  const UserRoleFetched(this.role);
 
   @override
   List<Object> get props => [role];
 }
 
 /// The SuccessState associated to [FetchMetadataByKeyEvent]
-class MetadataFetchedByKeyState extends SuccessState {
+class MetadataFetchedByKey extends SuccessState {
   final String value;
 
-  const MetadataFetchedByKeyState(this.value);
+  const MetadataFetchedByKey(this.value);
 
   @override
   List<Object> get props => [value];
 }
 
 /// The SuccessState associated to [FetchAllMetadataEvent]
-class MetadataFetchedState extends SuccessState {
+class MetadataFetched extends SuccessState {
   final Map<String, String> metadata;
 
-  const MetadataFetchedState(this.metadata);
+  const MetadataFetched(this.metadata);
 
   @override
   List<Object> get props => [metadata];
@@ -115,11 +115,11 @@ class MetadataFetchedState extends SuccessState {
 ///   - [AddMetadataEvent]
 ///   - [RemoveMetadataEvent]
 ///
-class ProjectUpdatedState extends SuccessState {
+class ProjectUpdated extends SuccessState {
   final bool wasSuccessful;
 
   // ignore: avoid_positional_boolean_parameters
-  const ProjectUpdatedState(this.wasSuccessful);
+  const ProjectUpdated(this.wasSuccessful);
 
   @override
   List<Object> get props => [wasSuccessful];
@@ -129,11 +129,11 @@ class ProjectUpdatedState extends SuccessState {
 /// ---- SUCCES STATES FOR DELETE EVENTS ----
 ///
 /// The SuccessState associated to [DeleteEvent]
-class ProjectRemovedState extends SuccessState {
+class ProjectRemoved extends SuccessState {
   final bool wasSuccessful;
 
   // ignore: avoid_positional_boolean_parameters
-  const ProjectRemovedState(this.wasSuccessful);
+  const ProjectRemoved(this.wasSuccessful);
 
   @override
   List<Object> get props => [wasSuccessful];

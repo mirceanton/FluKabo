@@ -1,7 +1,7 @@
 import '../projects_bloc.dart';
 
-class LoadingState extends ProjectsState {
-  const LoadingState();
+class ProjectLoading extends ProjectsState {
+  const ProjectLoading();
 
   @override
   List<Object> get props => [];
