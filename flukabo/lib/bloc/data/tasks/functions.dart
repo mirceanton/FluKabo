@@ -10,13 +10,13 @@ import './states/states.dart';
 import './tasks_bloc.dart';
 
 void listener(BuildContext context, TasksState state) {
-  if (state is ErrorState) {
+  if (state is TaskError) {
     showSnackbar(context: context, content: state.errmsg);
   }
 }
 
 Widget taskListBuilder(BuildContext context, TasksState state) {
-  if (state is TaskListFetchedState) {
+  if (state is TaskListFetched) {
     if (state.tasks.isEmpty) {
       return const TaskBlocEmptyContentWidget();
     } else {
@@ -36,11 +36,11 @@ Widget builder(
   @required ReadEvent defaultEvent,
   @required Widget Function(BuildContext, TasksState) successBuilder,
 }) {
-  if (state is LoadingState) {
+  if (state is TaskLoading) {
     print('Tasks loading...');
     return const TaskBlocLoadingWidget();
   }
-  if (state is ErrorState) {
+  if (state is TaskError) {
     print('Tasks error');
     return TaskBlocErrorWidget(
       (context) => context.bloc<TasksBloc>().add(defaultEvent),

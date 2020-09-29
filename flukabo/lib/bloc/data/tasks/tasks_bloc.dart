@@ -18,7 +18,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   Stream<TasksState> mapEventToState(
     TasksEvent event,
   ) async* {
-    yield const LoadingState();
+    yield const TaskLoading();
     try {
       if (event is CreateEvent) {
         final TaskModel task = event.task;
@@ -45,7 +45,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
           dateStarted: task.dateStarted,
         );
         await task.init();
-        yield TaskCreatedState(task);
+        yield TaskCreated(task);
       } else if (event is ReadEvent) {
         if (event is ReadObjectEvent) {
           TaskModel task;
@@ -60,7 +60,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
           }
 
           await task.init();
-          yield TaskFetchedState(task);
+          yield TaskFetched(task);
         } else if (event is ReadObjectListEvent) {
           List<TaskModel> tasks = [];
 
@@ -85,11 +85,11 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
           for (int i = 0; i < tasks.length; i++) {
             await tasks[i].init();
           }
-          yield TaskListFetchedState(tasks);
+          yield TaskListFetched(tasks);
         }
       } else if (event is UpdateEvent) {
         if (event is UpdateTaskEvent) {
-          yield TaskUpdatedState(
+          yield TaskUpdated(
             await TaskRepository().updateTask(
               taskId: event.task.id,
               title: event.task.title,
@@ -111,13 +111,13 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
             ),
           );
         } else if (event is OpenTaskEvent) {
-          yield TaskUpdatedState(await TaskRepository().openTask(event.taskId));
+          yield TaskUpdated(await TaskRepository().openTask(event.taskId));
         } else if (event is CloseTaskEvent) {
-          yield TaskUpdatedState(
+          yield TaskUpdated(
             await TaskRepository().closeTask(event.taskId),
           );
         } else if (event is MoveTaskWithinProjectEvent) {
-          yield TaskUpdatedState(
+          yield TaskUpdated(
             await TaskRepository().moveTaskToPosition(
               projectId: event.projectId,
               taskId: event.taskId,
@@ -127,7 +127,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
             ),
           );
         } else if (event is MoveTaskToProjectEvent) {
-          yield TaskUpdatedState(
+          yield TaskUpdated(
             await TaskRepository().moveTaskToProject(
               taskId: event.taskId,
               projectId: event.projectId,
@@ -138,7 +138,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
             ),
           );
         } else if (event is CloneTaskToProjectEvent) {
-          yield TaskUpdatedState(
+          yield TaskUpdated(
             await TaskRepository().cloneTaskToProject(
               taskId: event.taskId,
               projectId: event.projectId,
@@ -150,10 +150,10 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
           );
         }
       } else if (event is DeleteEvent) {
-        yield TaskDeletedState(await TaskRepository().removeTask(event.taskId));
+        yield TaskDeleted(await TaskRepository().removeTask(event.taskId));
       }
     } on Failure catch (f) {
-      yield ErrorState(f.message);
+      yield TaskError(f.message);
     }
   }
 }

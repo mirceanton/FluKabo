@@ -1,7 +1,7 @@
 import '../tasks_bloc.dart';
 
-class LoadingState extends TasksState {
-  const LoadingState();
+class TaskLoading extends TasksState {
+  const TaskLoading();
 
   @override
   List<Object> get props => [];

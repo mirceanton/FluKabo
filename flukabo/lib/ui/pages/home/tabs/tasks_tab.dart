@@ -24,7 +24,7 @@ class TasksTab extends HomeTab {
 
 class _TasksTabState extends HomeTabState {
   Widget _successBuilder(BuildContext context, TasksState state) {
-    if (state is TaskListFetchedState) {
+    if (state is TaskListFetched) {
       if (state.tasks.isEmpty) {
         return const TaskBlocEmptyContentWidget();
       } else {

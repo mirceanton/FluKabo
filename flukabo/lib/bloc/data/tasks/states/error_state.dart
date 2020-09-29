@@ -1,8 +1,8 @@
 import '../tasks_bloc.dart';
 
-class ErrorState extends TasksState {
+class TaskError extends TasksState {
   final String errmsg; // error message
-  const ErrorState(this.errmsg);
+  const TaskError(this.errmsg);
 
   @override
   List<Object> get props => [errmsg];
