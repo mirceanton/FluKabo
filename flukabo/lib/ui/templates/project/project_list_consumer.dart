@@ -7,43 +7,72 @@ import '../../../bloc/data/projects/projects_bloc.dart';
 
 import '../../../res/dimensions.dart';
 
+class GenericListBlocConsumer extends StatelessWidget {
+  final Widget Function(BuildContext, ProjectsState) customBuilder;
+  final ReadProjectEvent defaultEvent;
+  const GenericListBlocConsumer({
+    @required this.customBuilder,
+    @required this.defaultEvent,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<ProjectsBloc, ProjectsState>(
+      listener: listener,
+      builder: (context, state) => builder(
+        context,
+        state,
+        defaultEvent: defaultEvent,
+        successBuilder: customBuilder,
+      ),
+    );
+  }
+}
+
 /// A vertical scrolling list with starred projects in the TileLayout
 class ProjectTileListBlocConsumer extends StatelessWidget {
-  const ProjectTileListBlocConsumer();
+  final ReadProjectEvent defaultEvent;
+  const ProjectTileListBlocConsumer(this.defaultEvent);
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: BlocConsumer<ProjectsBloc, ProjectsState>(
-        listener: listener,
-        builder: (context, state) => builder(
-          context,
-          state,
-          defaultEvent: const FetchAllProjects(),
-          successBuilder: tileListBuilder,
-        ),
-      ),
+    return GenericListBlocConsumer(
+      customBuilder: tileListBuilder,
+      defaultEvent: defaultEvent,
     );
   }
 }
 
 /// A horizontal scrolling list with starred projects in the CardLayout
 class ProjectCardListBlocConsumer extends StatelessWidget {
-  const ProjectCardListBlocConsumer();
+  final ReadProjectEvent defaultEvent;
+  const ProjectCardListBlocConsumer(this.defaultEvent);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: cardHeight,
       margin: const EdgeInsets.only(bottom: 8.0),
-      child: BlocConsumer<ProjectsBloc, ProjectsState>(
-        listener: listener,
-        builder: (context, state) => builder(
-          context,
-          state,
-          defaultEvent: const FetchAllProjects(),
-          successBuilder: cardListBuilder,
-        ),
+      child: GenericListBlocConsumer(
+        customBuilder: cardListBuilder,
+        defaultEvent: defaultEvent,
+      ),
+    );
+  }
+}
+
+class TabbedProjectTileListBlocConsumer extends StatelessWidget {
+  final TabController tabController;
+  final List<Widget> Function() callback;
+  const TabbedProjectTileListBlocConsumer({
+    @required this.tabController,
+    this.callback,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: TabBarView(
+        controller: tabController,
+        children: callback(),
       ),
     );
   }
