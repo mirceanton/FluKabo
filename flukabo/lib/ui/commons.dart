@@ -12,27 +12,3 @@ void showSnackbar({
     content: Text(content),
   ));
 }
-
-Widget buildInitial() => Container();
-Widget buildLoading() => const Center(child: CircularProgressIndicator());
-
-Widget buildError(
-  BuildContext context, {
-  @required IconData icon,
-  @required String message,
-  void Function() onButtonPress,
-}) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Icon(icon, size: 128.0),
-      const SizedBox(height: 16.0),
-      Text(message, style: const TextStyle(letterSpacing: 1.25)),
-      const SizedBox(height: 16.0),
-      OutlineButton(
-        onPressed: () => onButtonPress,
-        child: const Text('Retry', style: TextStyle(letterSpacing: 1.15)),
-      ),
-    ],
-  );
-}
