@@ -1,22 +1,22 @@
-import 'package:flukabo/bloc/data/projects/events/events.dart';
+import 'package:flukabo/ui/templates/bloc_widgets/task_bloc_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flukabo/bloc/data/projects/events/events.dart';
 import '../../../../bloc/data/projects/functions.dart' as project;
 import '../../../../bloc/data/projects/projects_bloc.dart';
 
 import '../../../../bloc/data/tasks/events/events.dart' as task_events;
+import '../../../../bloc/data/tasks/functions.dart' as task;
 import '../../../../bloc/data/tasks/states/states.dart' as task_states;
 import '../../../../bloc/data/tasks/tasks_bloc.dart';
 
 import '../../../../res/dimensions.dart';
-
-import '../../../../ui/templates/bloc_widgets/auth_bloc_widgets.dart';
-import '../../../../ui/templates/bloc_widgets/bloc_commons.dart';
 import '../../../../ui/templates/task/task_list_view.dart';
 
 import 'abstract_tab_class.dart';
 
+/// A pretty-fied text widget
 class SectionTitle extends StatelessWidget {
   final String title;
   const SectionTitle({this.title});
@@ -25,13 +25,74 @@ class SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 36,
-      padding: const EdgeInsets.all(8.0),
+      height: 30,
+      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
       child: Text(
         title,
         style: const TextStyle(
           letterSpacing: 1.2,
           fontSize: 16,
+        ),
+      ),
+    );
+  }
+}
+
+/// A horizontal scrolling list with starred projects in the CardLayout
+class StarredProjectsSection extends StatelessWidget {
+  const StarredProjectsSection();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: cardHeight,
+      margin: const EdgeInsets.only(bottom: 8.0),
+      child: BlocConsumer<ProjectsBloc, ProjectsState>(
+        listener: project.listener,
+        builder: (context, state) => project.builder(
+          context,
+          state,
+          defaultEvent: const FetchAllEvent(),
+          showCards: true,
+        ),
+      ),
+    );
+  }
+}
+
+///
+/// A vertical scrolling list with tasks assigned to the current user in
+/// ListTile Layout
+///
+class YourTasksSection extends StatelessWidget {
+  Widget _successBuilder(BuildContext context, TasksState state) {
+    if (state is task_states.TaskListFetchedState) {
+      if (state.tasks.isEmpty) {
+        return const TaskBlocEmptyContentWidget();
+      } else {
+        return TaskListView(
+          height: double.infinity,
+          width: double.infinity,
+          tasks: state.tasks,
+        );
+      }
+    }
+    return const SizedBox(width: 0, height: 0);
+  }
+
+  const YourTasksSection();
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: BlocConsumer<TasksBloc, TasksState>(
+        listener: task.listener,
+        builder: (context, state) => task.builder(
+          context,
+          state,
+          defaultEvent: const task_events.FetchAllForProjectEvent(
+            projectId: 1,
+            isActive: true,
+          ), // FIXME
+          successBuilder: _successBuilder,
         ),
       ),
     );
@@ -51,31 +112,6 @@ class DashboardTab extends HomeTab {
 }
 
 class _DashboardTabState extends HomeTabState {
-  void _taskListener(BuildContext context, TasksState state) {}
-  Widget _tasksBuilder(BuildContext context, TasksState state) {
-    if (state is task_states.LoadingState) {
-      return const InitialBlocWidget();
-    }
-    if (state is task_states.ErrorState) {
-      return const AuthBlocErrorWidget();
-    }
-    if (state is task_states.SuccessState) {
-      if (state is task_states.TaskListFetchedState) {
-        if (state.tasks.isEmpty) {
-          return const Center(child: Text('No tasks to show'));
-        } else {
-          return TaskListView(
-            height: double.infinity,
-            width: double.infinity,
-            tasks: state.tasks,
-          );
-        }
-      }
-    }
-    context.bloc<TasksBloc>().add(const task_events.FetchAllOverdueEvent());
-    return const InitialBlocWidget();
-  }
-
   @override
   Widget buildContent() {
     return MultiBlocProvider(
@@ -84,29 +120,12 @@ class _DashboardTabState extends HomeTabState {
         BlocProvider(create: (context) => TasksBloc()),
       ],
       child: Column(
-        children: [
-          const SectionTitle(title: 'Starred Projects'),
-          Container(
-            height: cardHeight,
-            margin: const EdgeInsets.only(bottom: 8.0),
-            child: BlocConsumer<ProjectsBloc, ProjectsState>(
-              listener: project.listener,
-              builder: (context, state) => project.builder(
-                context,
-                state,
-                defaultEvent: const FetchAllEvent(),
-                showCards: true,
-              ),
-            ),
-          ),
-          const Divider(height: 0.5),
-          const SectionTitle(title: 'Your Tasks'),
-          Expanded(
-            child: BlocConsumer<TasksBloc, TasksState>(
-              listener: _taskListener,
-              builder: _tasksBuilder,
-            ),
-          )
+        children: const [
+          SectionTitle(title: 'Starred Projects'),
+          StarredProjectsSection(),
+          Divider(height: 0.5),
+          SectionTitle(title: 'Your Tasks'),
+          YourTasksSection(),
         ],
       ),
     );

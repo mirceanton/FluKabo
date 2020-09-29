@@ -1,11 +1,13 @@
 import 'package:flukabo/bloc/data/tasks/events/events.dart';
 import 'package:flukabo/bloc/data/tasks/states/states.dart';
-import 'package:flukabo/bloc/data/tasks/tasks_bloc.dart';
-import 'package:flukabo/ui/templates/bloc_widgets/bloc_commons.dart';
+import 'package:flukabo/ui/templates/bloc_widgets/task_bloc_widgets.dart';
 import 'package:flukabo/ui/templates/task/task_list_view.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:flutter/material.dart';
+
+import '../../../../bloc/data/tasks/functions.dart' as task;
+import '../../../../bloc/data/tasks/tasks_bloc.dart';
 import 'abstract_tab_class.dart';
 
 class TasksTab extends HomeTab {
@@ -21,19 +23,11 @@ class TasksTab extends HomeTab {
 }
 
 class _TasksTabState extends HomeTabState {
-  Widget _builder(BuildContext context, TasksState state) {
-    if (state is LoadingState) {
-      return const LoadingBlocWidget('Loading tasks...');
-    }
-    if (state is ErrorState) {
-      return const ErrorBlocWidget(
-        callback: null,
-        icon: MdiIcons.accessPointNetworkOff,
-        message: 'Connection failed',
-      );
-    }
-    if (state is SuccessState) {
-      if (state is TaskListFetchedState) {
+  Widget _successBuilder(BuildContext context, TasksState state) {
+    if (state is TaskListFetchedState) {
+      if (state.tasks.isEmpty) {
+        return const TaskBlocEmptyContentWidget();
+      } else {
         return TaskListView(
           height: double.infinity,
           width: double.infinity,
@@ -41,21 +35,24 @@ class _TasksTabState extends HomeTabState {
         );
       }
     }
-    context
-        .bloc<TasksBloc>()
-        .add(const FetchAllForProjectEvent(projectId: 1, isActive: true));
-    return const InitialBlocWidget();
+    return const SizedBox(width: 0, height: 0);
   }
-
-  void _listener(BuildContext context, TasksState state) {}
 
   @override
   Widget buildContent() {
     return BlocProvider(
       create: (context) => TasksBloc(),
       child: BlocConsumer<TasksBloc, TasksState>(
-        listener: _listener,
-        builder: _builder,
+        listener: task.listener,
+        builder: (context, state) => task.builder(
+          context,
+          state,
+          defaultEvent: const FetchAllForProjectEvent(
+            projectId: 1,
+            isActive: true,
+          ), // FIXME
+          successBuilder: _successBuilder,
+        ),
       ),
     );
   }
