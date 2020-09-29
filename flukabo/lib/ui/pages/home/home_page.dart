@@ -1,4 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flukabo/ui/commons.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'tabs/abstract_tab_class.dart';
@@ -7,6 +8,28 @@ import 'tabs/abstract_tab_class.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
+}
+
+class RotatingSettingsButton extends StatelessWidget {
+  final double angle;
+  final double size;
+  final void Function(BuildContext) onPressed;
+
+  const RotatingSettingsButton({
+    @required this.angle,
+    @required this.size,
+    @required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DynamicButton(
+      angle: angle,
+      size: size,
+      onPressed: onPressed,
+      icon: Icons.settings,
+    );
+  }
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
@@ -123,31 +146,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   /// to happen
   ///
   List<Widget> _getActions() => [
-        Transform.rotate(
+        DynamicHeroButton(
+          tag: 'searchBtn',
+          icon: Icons.search,
           angle: _searchAngle,
-          child: Hero(
-            tag: "searchBtn",
-            child: Material(
-              color: Colors.transparent,
-              child: IconButton(
-                icon: Icon(
-                  Icons.search,
-                  size: double.parse(_searchGrowAnim.value.toString()),
-                ),
-                onPressed: () => _onSearchPressed(context),
-              ),
-            ),
-          ),
+          size: double.parse(_searchGrowAnim.value.toString()),
+          onPressed: _onSearchPressed,
         ),
-        Transform.rotate(
-            angle: _settingsAngle,
-            child: IconButton(
-              icon: Icon(
-                Icons.settings,
-                size: double.parse(_settingsGrowAnim.value.toString()),
-              ),
-              onPressed: () => _onSettingsPressed(context),
-            )),
+        DynamicButton(
+          icon: Icons.settings,
+          angle: _settingsAngle,
+          size: double.parse(_settingsGrowAnim.value.toString()),
+          onPressed: _onSettingsPressed,
+        )
       ];
 
   ///
