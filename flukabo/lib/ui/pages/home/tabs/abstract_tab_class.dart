@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/auth/auth_bloc.dart';
-import '../../../../bloc/auth/functions.dart';
+import '../../../../bloc/auth/functions.dart' as auth;
 
 ///
 /// An abstract class from which all the tabs in the HomePage are derived.
@@ -29,7 +29,7 @@ abstract class HomeTab extends StatefulWidget {
 
 abstract class HomeTabState extends State<HomeTab> {
   ///
-  /// [buildContent] will return the actual UI of this tab, assuming the
+  /// [buildContent] will return the actual UI of each tab, assuming the
   /// AuthState is AuthSuccessState
   /// This layout will be unique to each tab and should be overriden in every
   /// implementation
@@ -39,8 +39,8 @@ abstract class HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: listener,
-      builder: (context, state) => builder(context, state, buildContent()),
+      listener: auth.listener,
+      builder: (context, state) => auth.builder(context, state, buildContent()),
     );
   }
 }
