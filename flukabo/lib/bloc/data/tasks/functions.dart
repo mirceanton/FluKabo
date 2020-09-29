@@ -33,7 +33,7 @@ Widget taskListBuilder(BuildContext context, TasksState state) {
 Widget builder(
   BuildContext context,
   TasksState state, {
-  @required ReadEvent defaultEvent,
+  @required ReadTaskEvent defaultEvent,
   @required Widget Function(BuildContext, TasksState) successBuilder,
 }) {
   if (state is TaskLoading) {

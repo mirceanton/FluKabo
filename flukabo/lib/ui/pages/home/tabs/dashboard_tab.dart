@@ -70,7 +70,7 @@ class YourTasksSection extends StatelessWidget {
         builder: (context, state) => task.builder(
           context,
           state,
-          defaultEvent: const FetchAllForProjectEvent(
+          defaultEvent: const FetchAllTasksForProject(
             projectId: 1,
             isActive: true,
           ), // FIXME

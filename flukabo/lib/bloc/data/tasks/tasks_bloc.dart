@@ -20,7 +20,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   ) async* {
     yield const TaskLoading();
     try {
-      if (event is CreateEvent) {
+      if (event is CreateTask) {
         final TaskModel task = event.task;
         task.id = await TaskRepository().createTask(
           title: task.title,
@@ -46,13 +46,13 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         );
         await task.init();
         yield TaskCreated(task);
-      } else if (event is ReadEvent) {
+      } else if (event is ReadTaskEvent) {
         if (event is ReadObjectEvent) {
           TaskModel task;
 
-          if (event is FetchByIdEvent) {
+          if (event is FetchTaskById) {
             task = await TaskRepository().getTaskById(event.taskId);
-          } else if (event is FetchByReferenceEvent) {
+          } else if (event is FetchTaskByReference) {
             task = await TaskRepository().getTaskByReference(
               projectId: event.projectId,
               reference: event.reference,
@@ -64,18 +64,18 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         } else if (event is ReadObjectListEvent) {
           List<TaskModel> tasks = [];
 
-          if (event is FetchAllForProjectEvent) {
+          if (event is FetchAllTasksForProject) {
             tasks = await TaskRepository().getAllTasks(
               projectId: event.projectId,
               isActive: event.isActive,
             );
-          } else if (event is FetchAllOverdueEvent) {
+          } else if (event is FetchAllOverdueTasks) {
             tasks = await TaskRepository().getAllOverdueTasks();
-          } else if (event is FetchOverdueForProjectEvent) {
+          } else if (event is FetchAllOverdueTasksForProject) {
             tasks = await TaskRepository().getOverdueTasksByProject(
               event.projectId,
             );
-          } else if (event is SearchEvent) {
+          } else if (event is SearchForTask) {
             tasks = await TaskRepository().searchTasks(
               projectId: event.projectId,
               query: event.query,
@@ -87,8 +87,8 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
           }
           yield TaskListFetched(tasks);
         }
-      } else if (event is UpdateEvent) {
-        if (event is UpdateTaskEvent) {
+      } else if (event is UpdateTaskEvent) {
+        if (event is UpdateTask) {
           yield TaskUpdated(
             await TaskRepository().updateTask(
               taskId: event.task.id,
@@ -110,13 +110,13 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
               dateStarted: event.task.dateStarted,
             ),
           );
-        } else if (event is OpenTaskEvent) {
+        } else if (event is OpenTask) {
           yield TaskUpdated(await TaskRepository().openTask(event.taskId));
-        } else if (event is CloseTaskEvent) {
+        } else if (event is CloseTask) {
           yield TaskUpdated(
             await TaskRepository().closeTask(event.taskId),
           );
-        } else if (event is MoveTaskWithinProjectEvent) {
+        } else if (event is MoveTaskWithinProject) {
           yield TaskUpdated(
             await TaskRepository().moveTaskToPosition(
               projectId: event.projectId,
@@ -126,7 +126,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
               swimlaneId: event.swimlaneId,
             ),
           );
-        } else if (event is MoveTaskToProjectEvent) {
+        } else if (event is MoveTaskToProject) {
           yield TaskUpdated(
             await TaskRepository().moveTaskToProject(
               taskId: event.taskId,
@@ -137,7 +137,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
               ownerId: event.ownerId,
             ),
           );
-        } else if (event is CloneTaskToProjectEvent) {
+        } else if (event is CloneTaskToProject) {
           yield TaskUpdated(
             await TaskRepository().cloneTaskToProject(
               taskId: event.taskId,
@@ -149,7 +149,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
             ),
           );
         }
-      } else if (event is DeleteEvent) {
+      } else if (event is DeleteTask) {
         yield TaskDeleted(await TaskRepository().removeTask(event.taskId));
       }
     } on Failure catch (f) {
