@@ -1,11 +1,9 @@
 import 'package:flukabo/ui/templates/project/project_list_consumer.dart';
+import 'package:flukabo/ui/templates/task/task_list_consumer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/data/projects/projects_bloc.dart';
-
-import '../../../../bloc/data/tasks/events/events.dart';
-import '../../../../bloc/data/tasks/functions.dart' as task;
 import '../../../../bloc/data/tasks/tasks_bloc.dart';
 
 import 'abstract_tab_class.dart';
@@ -26,31 +24,6 @@ class SectionTitle extends StatelessWidget {
         style: const TextStyle(
           letterSpacing: 1.2,
           fontSize: 16,
-        ),
-      ),
-    );
-  }
-}
-
-///
-/// A vertical scrolling list with tasks assigned to the current user in
-/// ListTile Layout
-///
-class YourTasksSection extends StatelessWidget {
-  const YourTasksSection();
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: BlocConsumer<TasksBloc, TasksState>(
-        listener: task.listener,
-        builder: (context, state) => task.builder(
-          context,
-          state,
-          defaultEvent: const FetchAllTasksForProject(
-            projectId: 1,
-            isActive: true,
-          ), // FIXME
-          successBuilder: task.taskListBuilder,
         ),
       ),
     );
@@ -83,7 +56,7 @@ class _DashboardTabState extends HomeTabState {
           ProjectCardListBlocConsumer(),
           Divider(height: 0.5),
           SectionTitle(title: 'Your Tasks'),
-          YourTasksSection(),
+          YourTasksTileListBlocConsumer(),
         ],
       ),
     );
