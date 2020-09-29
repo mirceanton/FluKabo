@@ -1,7 +1,7 @@
 import '../users_bloc.dart';
 
-class LoadingState extends UserState {
-  const LoadingState();
+class UserLoading extends UserState {
+  const UserLoading();
 
   @override
   List<Object> get props => [];

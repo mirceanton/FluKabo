@@ -24,12 +24,12 @@ class AccountTab extends HomeTab {
 
 class _AccountTabState extends HomeTabState {
   Widget _builder(BuildContext context, UserState state) {
-    if (state is LoadingState) {
+    if (state is UserLoading) {
       return const LoadingBlocWidget('Fetching active user...');
-    } else if (state is ErrorState) {
+    } else if (state is UserError) {
       return const AuthBlocErrorWidget();
     } else if (state is SuccessState) {
-      if (state is UserFetchedState) {
+      if (state is UserFetched) {
         return Center(child: Text("${state.user.name} - ${state.user.email}"));
       }
     }
@@ -43,7 +43,7 @@ class _AccountTabState extends HomeTabState {
   }
 
   void _listener(BuildContext context, UserState state) {
-    if (state is ErrorState) {
+    if (state is UserError) {
       showSnackbar(
         context: context,
         content: state.errmsg,
