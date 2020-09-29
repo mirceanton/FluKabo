@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/data/projects/events/events.dart';
 import '../../../../bloc/data/projects/projects_bloc.dart';
+import '../../../../bloc/data/tasks/events/fetch_events.dart';
 import '../../../../bloc/data/tasks/tasks_bloc.dart';
 
 import '../../../../ui/templates/project/project_list_consumer.dart';
@@ -58,7 +59,8 @@ class _DashboardTabState extends HomeTabState {
           ProjectCardListBlocConsumer(FetchStarredProjects()),
           Divider(height: 0.5),
           SectionTitle(title: 'Your Tasks'),
-          YourTasksTileListBlocConsumer(),
+          TasksTileListBlocConsumer(
+              FetchAllTasksForProject(projectId: 1, isActive: true)),
         ],
       ),
     );
