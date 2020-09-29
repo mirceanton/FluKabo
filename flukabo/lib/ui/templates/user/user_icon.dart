@@ -1,6 +1,7 @@
-import 'package:flukabo/data/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../../../data/models/user.dart';
 
 class UserIcon extends StatelessWidget {
   final UserModel user;

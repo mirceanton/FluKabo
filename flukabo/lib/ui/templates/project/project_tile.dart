@@ -1,8 +1,9 @@
-import 'package:flukabo/ui/templates/project/project_commons.dart';
 import 'package:flutter/material.dart';
+
 import '../../../data/models/project.dart';
 import '../../../res/dimensions.dart';
-import '../template_commons.dart';
+import '../../../ui/templates/project/project_commons.dart';
+import '../../commons.dart';
 
 ///
 /// A basic List tile showcasing a project

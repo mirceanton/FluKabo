@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// The UI for any BLoC Initial State
 class InitialBlocWidget extends StatelessWidget {
   const InitialBlocWidget();
   @override
@@ -8,6 +9,7 @@ class InitialBlocWidget extends StatelessWidget {
   }
 }
 
+/// A template for a loading animation with contextual information
 class LoadingBlocWidget extends StatelessWidget {
   final String message;
   const LoadingBlocWidget(this.message);
@@ -28,6 +30,7 @@ class LoadingBlocWidget extends StatelessWidget {
   }
 }
 
+/// A template for an error animation with contextual information and a button
 class ErrorBlocWidget extends StatelessWidget {
   final String message;
   final IconData icon;

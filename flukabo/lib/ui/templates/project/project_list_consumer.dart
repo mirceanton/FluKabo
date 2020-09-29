@@ -7,6 +7,9 @@ import '../../../bloc/data/projects/projects_bloc.dart';
 
 import '../../../res/dimensions.dart';
 
+/// A generic implementation of [BlocConsumer] that implements the custom
+/// builder and listener from the bloc/functions file, with a custom
+/// [successBuilder] and [defaultEvent]
 class GenericListBlocConsumer extends StatelessWidget {
   final Widget Function(BuildContext, ProjectsState) customBuilder;
   final ReadProjectEvent defaultEvent;
@@ -55,24 +58,6 @@ class ProjectCardListBlocConsumer extends StatelessWidget {
       child: GenericListBlocConsumer(
         customBuilder: cardListBuilder,
         defaultEvent: defaultEvent,
-      ),
-    );
-  }
-}
-
-class TabbedProjectTileListBlocConsumer extends StatelessWidget {
-  final TabController tabController;
-  final List<Widget> Function() callback;
-  const TabbedProjectTileListBlocConsumer({
-    @required this.tabController,
-    this.callback,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: TabBarView(
-        controller: tabController,
-        children: callback(),
       ),
     );
   }

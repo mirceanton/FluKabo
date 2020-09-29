@@ -1,13 +1,14 @@
-import 'package:flukabo/data/models/models.dart';
-import 'package:flukabo/ui/templates/tag/tag_list.dart';
-import 'package:flukabo/ui/templates/user/user_icon.dart';
 import 'package:flutter/material.dart';
 
-import '../template_commons.dart';
+import '../../../data/models/models.dart';
+import '../../../ui/templates/tag/tag_list.dart';
+import '../../../ui/templates/user/user_icon.dart';
+
+import '../../commons.dart';
 
 class TaskCard extends StatelessWidget {
   final TaskModel task;
-  const TaskCard({this.task});
+  const TaskCard(this.task);
 
   @override
   Widget build(BuildContext context) {

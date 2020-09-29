@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../data/models/task.dart';
 import '../../../ui/templates/task/task_tile.dart';
 
@@ -10,9 +11,9 @@ class TaskListView extends StatelessWidget {
   final List<TaskModel> tasks;
   final double width, height;
   const TaskListView({
-    this.tasks,
-    this.width,
-    this.height,
+    @required this.tasks,
+    @required this.width,
+    @required this.height,
   });
 
   @override

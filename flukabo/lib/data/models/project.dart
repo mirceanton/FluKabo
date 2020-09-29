@@ -1,9 +1,9 @@
 import 'dart:math';
-
-import 'package:flukabo/data/models/models.dart';
 import 'package:flutter/material.dart';
+
 import '../../data/helpers/json_parser.dart';
 import '../../data/models/abstract_model.dart';
+import '../../data/models/models.dart';
 import '../../ui/pages/project/project_board_page.dart';
 import '../repository/user_repository.dart';
 import 'user.dart';

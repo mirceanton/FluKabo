@@ -1,4 +1,4 @@
-import 'package:flukabo/ui/templates/template_commons.dart';
+import 'package:flukabo/ui//commons.dart';
 import 'package:flutter/material.dart';
 import '../../../data/models/task.dart';
 

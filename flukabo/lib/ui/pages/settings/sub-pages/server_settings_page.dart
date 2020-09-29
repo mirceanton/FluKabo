@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import '../../../../bloc/auth/auth_bloc.dart';
 import '../../../../data/singletons/user_preferences.dart';
+import '../../../commons.dart';
 
 ///
 /// A template class that is used to generate the fields via Lists
@@ -204,18 +206,6 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
   }
 
   ///
-  /// [_showSnack] is self explanatory. It shows the given [message] in a
-  /// custom Snackbar
-  void _showSnack({
-    @required BuildContext buildContext,
-    @required String message,
-  }) {
-    Scaffold.of(buildContext).showSnackBar(SnackBar(
-      content: Text(message),
-    ));
-  }
-
-  ///
   /// [_builder] is the builder for the BlocConsumer Widget in the [build]
   /// function.
   /// This makes sure that the apropriate build function gets called, based on
@@ -243,10 +233,10 @@ class _ServerSettingsPageState extends State<ServerSettingsPage> {
   void _listener(BuildContext context, AuthState state) {
     if (state is AuthError) {
       print('Error STATE');
-      _showSnack(buildContext: context, message: state.errmsg);
+      showSnackbar(context: context, content: state.errmsg);
     } else if (state is AuthSuccess) {
       _updatePreferences();
-      _showSnack(buildContext: context, message: 'Preferences Updated');
+      showSnackbar(context: context, content: 'Preferences Updated');
     }
   }
 

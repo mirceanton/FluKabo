@@ -1,8 +1,9 @@
-import 'package:flukabo/bloc/data/tasks/events/events.dart';
-import 'package:flukabo/bloc/data/tasks/functions.dart';
-import 'package:flukabo/bloc/data/tasks/tasks_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../bloc/data/tasks/events/events.dart';
+import '../../../bloc/data/tasks/functions.dart';
+import '../../../bloc/data/tasks/tasks_bloc.dart';
 
 ///
 /// A vertical scrolling list with tasks assigned to the current user in
