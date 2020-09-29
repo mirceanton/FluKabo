@@ -8,8 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// A vertical scrolling list with tasks assigned to the current user in
 /// ListTile Layout
 ///
-class YourTasksTileListBlocConsumer extends StatelessWidget {
-  const YourTasksTileListBlocConsumer();
+class TasksTileListBlocConsumer extends StatelessWidget {
+  final ReadTaskEvent defaultEvent;
+  const TasksTileListBlocConsumer(this.defaultEvent);
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +20,7 @@ class YourTasksTileListBlocConsumer extends StatelessWidget {
         builder: (context, state) => builder(
           context,
           state,
-          defaultEvent: const FetchAllTasksForProject(
-            projectId: 1,
-            isActive: true,
-          ), // FIXME
+          defaultEvent: defaultEvent,
           successBuilder: taskListBuilder,
         ),
       ),
