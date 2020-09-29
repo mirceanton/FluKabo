@@ -1,10 +1,12 @@
-import 'package:flukabo/ui/templates/project/project_list_consumer.dart';
-import 'package:flukabo/ui/templates/task/task_list_consumer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../bloc/data/projects/events/events.dart';
 import '../../../../bloc/data/projects/projects_bloc.dart';
 import '../../../../bloc/data/tasks/tasks_bloc.dart';
+
+import '../../../../ui/templates/project/project_list_consumer.dart';
+import '../../../../ui/templates/task/task_list_consumer.dart';
 
 import 'abstract_tab_class.dart';
 
@@ -53,7 +55,7 @@ class _DashboardTabState extends HomeTabState {
       child: Column(
         children: const [
           SectionTitle(title: 'Starred Projects'),
-          ProjectCardListBlocConsumer(),
+          ProjectCardListBlocConsumer(FetchStarredProjects()),
           Divider(height: 0.5),
           SectionTitle(title: 'Your Tasks'),
           YourTasksTileListBlocConsumer(),
