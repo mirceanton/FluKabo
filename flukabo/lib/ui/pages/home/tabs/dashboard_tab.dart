@@ -5,7 +5,7 @@ import '../../../../bloc/data/projects/events/events.dart';
 import '../../../../bloc/data/projects/functions.dart' as project;
 import '../../../../bloc/data/projects/projects_bloc.dart';
 
-import '../../../../bloc/data/tasks/events/events.dart' as task_events;
+import '../../../../bloc/data/tasks/events/events.dart';
 import '../../../../bloc/data/tasks/functions.dart' as task;
 import '../../../../bloc/data/tasks/tasks_bloc.dart';
 
@@ -70,7 +70,7 @@ class YourTasksSection extends StatelessWidget {
         builder: (context, state) => task.builder(
           context,
           state,
-          defaultEvent: const task_events.FetchAllForProjectEvent(
+          defaultEvent: const FetchAllForProjectEvent(
             projectId: 1,
             isActive: true,
           ), // FIXME
