@@ -2,33 +2,33 @@ import 'package:flutter/material.dart';
 
 import '../tasks_bloc.dart';
 
-abstract class ReadEvent extends TasksEvent {
-  const ReadEvent();
+abstract class ReadTaskEvent extends TasksEvent {
+  const ReadTaskEvent();
 
   @override
   List<Object> get props => [];
 }
 
-abstract class ReadObjectEvent extends ReadEvent {
+abstract class ReadObjectEvent extends ReadTaskEvent {
   const ReadObjectEvent();
   @override
   List<Object> get props => [];
 }
 
-class FetchByIdEvent extends ReadObjectEvent {
+class FetchTaskById extends ReadObjectEvent {
   final int taskId;
 
-  const FetchByIdEvent({@required this.taskId});
+  const FetchTaskById({@required this.taskId});
 
   @override
   List<Object> get props => [taskId];
 }
 
-class FetchByReferenceEvent extends ReadObjectEvent {
+class FetchTaskByReference extends ReadObjectEvent {
   final int projectId;
   final String reference;
 
-  const FetchByReferenceEvent({
+  const FetchTaskByReference({
     @required this.projectId,
     @required this.reference,
   });
@@ -37,17 +37,17 @@ class FetchByReferenceEvent extends ReadObjectEvent {
   List<Object> get props => [projectId, reference];
 }
 
-abstract class ReadObjectListEvent extends ReadEvent {
+abstract class ReadObjectListEvent extends ReadTaskEvent {
   const ReadObjectListEvent();
   @override
   List<Object> get props => [];
 }
 
-class FetchAllForProjectEvent extends ReadObjectListEvent {
+class FetchAllTasksForProject extends ReadObjectListEvent {
   final int projectId;
   final bool isActive;
 
-  const FetchAllForProjectEvent({
+  const FetchAllTasksForProject({
     @required this.projectId,
     @required this.isActive,
   });
@@ -56,27 +56,27 @@ class FetchAllForProjectEvent extends ReadObjectListEvent {
   List<Object> get props => [projectId, isActive];
 }
 
-class FetchAllOverdueEvent extends ReadObjectListEvent {
-  const FetchAllOverdueEvent();
+class FetchAllOverdueTasks extends ReadObjectListEvent {
+  const FetchAllOverdueTasks();
 
   @override
   List<Object> get props => [];
 }
 
-class FetchOverdueForProjectEvent extends ReadObjectListEvent {
+class FetchAllOverdueTasksForProject extends ReadObjectListEvent {
   final int projectId;
 
-  const FetchOverdueForProjectEvent({@required this.projectId});
+  const FetchAllOverdueTasksForProject({@required this.projectId});
 
   @override
   List<Object> get props => [projectId];
 }
 
-class SearchEvent extends ReadObjectListEvent {
+class SearchForTask extends ReadObjectListEvent {
   final int projectId;
   final String query;
 
-  const SearchEvent({
+  const SearchForTask({
     @required this.projectId,
     @required this.query,
   });

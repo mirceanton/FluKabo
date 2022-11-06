@@ -1,41 +1,41 @@
 import '../users_bloc.dart';
 
-abstract class ReadEvent extends UserEvent {
-  const ReadEvent();
+abstract class ReadUserEvent extends UserEvent {
+  const ReadUserEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class FetchByIdEvent extends ReadEvent {
+class FetchUserById extends ReadUserEvent {
   final int userId;
 
-  const FetchByIdEvent({this.userId});
+  const FetchUserById({this.userId});
 
   @override
   List<Object> get props => [userId];
 }
 
-class FetchByUsernameEvent extends ReadEvent {
+class FetchUserByUsername extends ReadUserEvent {
   final String username;
 
-  const FetchByUsernameEvent({this.username});
+  const FetchUserByUsername({this.username});
 
   @override
   List<Object> get props => [username];
 }
 
-class FetchAllEvent extends ReadEvent {
-  const FetchAllEvent();
+class FetchAllUsers extends ReadUserEvent {
+  const FetchAllUsers();
 
   @override
   List<Object> get props => [];
 }
 
-class FetchGroupsEvent extends ReadEvent {
+class FetchGroups extends ReadUserEvent {
   final int userId;
 
-  const FetchGroupsEvent({this.userId});
+  const FetchGroups({this.userId});
 
   @override
   List<Object> get props => [userId];

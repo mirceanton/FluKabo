@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../data/models/project.dart';
 import '../../../ui/templates/project/project_card.dart';
 import '../../../ui/templates/project/project_tile.dart';
@@ -35,22 +36,23 @@ class ProjectListView extends StatelessWidget {
       width: width,
       height: height,
       child: ListView.separated(
-          scrollDirection: showCards ? Axis.horizontal : Axis.vertical,
-          itemCount: projects.length,
-          separatorBuilder: (context, index) {
-            if (showCards) {
-              return const SizedBox(width: 4.0);
-            } else {
-              return const Divider(height: 1.0);
-            }
-          },
-          itemBuilder: (context, index) {
-            if (showCards) {
-              return ProjectCard(projects[index]);
-            } else {
-              return ProjectTile(projects[index]);
-            }
-          }),
+        scrollDirection: showCards ? Axis.horizontal : Axis.vertical,
+        itemCount: projects.length,
+        separatorBuilder: (context, index) {
+          if (showCards) {
+            return const SizedBox(width: 4.0);
+          } else {
+            return const Divider(height: 1.0);
+          }
+        },
+        itemBuilder: (context, index) {
+          if (showCards) {
+            return ProjectCard(projects[index]);
+          } else {
+            return ProjectTile(projects[index]);
+          }
+        },
+      ),
     );
   }
 }

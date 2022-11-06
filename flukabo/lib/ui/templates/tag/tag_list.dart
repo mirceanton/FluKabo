@@ -1,6 +1,7 @@
-import 'package:flukabo/data/models/models.dart';
-import 'package:flukabo/ui/templates/tag/tag_chip.dart';
 import 'package:flutter/material.dart';
+
+import '../../../data/models/models.dart';
+import '../../../ui/templates/tag/tag_chip.dart';
 
 class TagList extends StatelessWidget {
   final List<TagModel> tags;

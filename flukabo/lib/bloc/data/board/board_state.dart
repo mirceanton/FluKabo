@@ -22,16 +22,16 @@ class BoardLoading extends BoardState {
 }
 
 class BoardError extends BoardState {
-  final String message;
-  const BoardError({this.message});
+  final String errmsg;
+  const BoardError(this.errmsg);
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [errmsg];
 }
 
 class BoardLoaded extends BoardState {
   final BoardModel board;
-  const BoardLoaded({this.board});
+  const BoardLoaded(this.board);
 
   @override
   List<Object> get props => [board];

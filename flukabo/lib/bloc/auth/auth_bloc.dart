@@ -9,14 +9,12 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(const AuthInitialState());
+  AuthBloc() : super(const AuthInitial());
 
   @override
-  Stream<AuthState> mapEventToState(
-    AuthEvent event,
-  ) async* {
+  Stream<AuthState> mapEventToState(AuthEvent event) async* {
     // we don't have to check for event type since we only have 1 type of events
-    yield const AuthLoadingState();
+    yield const AuthLoading();
     try {
       await KanboardAPI().testConnection(
         url: event.url,
@@ -24,9 +22,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         token: event.token,
         acceptCerts: event.acceptAllCerts,
       );
-      yield const AuthSuccessState();
+      yield const AuthSuccess();
     } on Failure catch (f) {
-      yield AuthErrorState(errmsg: f.message);
+      yield AuthError(f.message);
     }
   }
 }

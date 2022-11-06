@@ -14,10 +14,10 @@ abstract class SuccessState extends UserState {
 /// ---- SUCCES STATES FOR CREATE EVENTS ----
 ///
 /// The SuccessState associated to [CreateEvent]
-class UserCreatedState extends SuccessState {
+class UserCreated extends SuccessState {
   final UserModel user;
 
-  const UserCreatedState({this.user});
+  const UserCreated({this.user});
 
   @override
   List<Object> get props => [user];
@@ -27,30 +27,30 @@ class UserCreatedState extends SuccessState {
 /// ---- SUCCES STATES FOR FETCH EVENTS ----
 ///
 /// The SuccessState associated to [FetchByIdEvent], [FetchByUsernameEvent]
-class UserFetchedState extends SuccessState {
+class UserFetched extends SuccessState {
   final UserModel user;
 
-  const UserFetchedState({this.user});
+  const UserFetched({this.user});
 
   @override
   List<Object> get props => [user];
 }
 
 /// The SuccessState associated to [FetchAllEvent]
-class UsersFetchedState extends SuccessState {
+class UserListFetched extends SuccessState {
   final List<UserModel> users;
 
-  const UsersFetchedState({this.users});
+  const UserListFetched({this.users});
 
   @override
   List<Object> get props => [users];
 }
 
 /// The SuccessState associated to [FetchGroups]
-class GroupsFetchedState extends SuccessState {
+class GroupListFetched extends SuccessState {
   final List<GroupModel> groups;
 
-  const GroupsFetchedState({this.groups});
+  const GroupListFetched({this.groups});
 
   @override
   List<Object> get props => [groups];
@@ -60,10 +60,10 @@ class GroupsFetchedState extends SuccessState {
 /// ---- SUCCES STATES FOR UPDATE EVENTS ----
 ///
 /// The SuccessState associated to [UpdateEvent], [EnableEvent], [DisableEvent]
-class UserUpdatedState extends SuccessState {
+class UserUpdated extends SuccessState {
   final bool wasSuccessful;
 
-  const UserUpdatedState({this.wasSuccessful});
+  const UserUpdated({this.wasSuccessful});
 
   @override
   List<Object> get props => [wasSuccessful];
@@ -73,10 +73,10 @@ class UserUpdatedState extends SuccessState {
 /// ---- SUCCES STATES FOR DELETE EVENTS ----
 ///
 /// The SuccessState associated to [RemoveEvent]
-class UserRemovedState extends SuccessState {
+class UserRemoved extends SuccessState {
   final bool wasSuccessful;
 
-  const UserRemovedState({this.wasSuccessful});
+  const UserRemoved({this.wasSuccessful});
 
   @override
   List<Object> get props => [wasSuccessful];

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import '../../../../bloc/theme/theme.dart';
 import '../../../../data/singletons/user_preferences.dart';
 
@@ -19,7 +20,10 @@ import '../../../../data/singletons/user_preferences.dart';
 class ThemePage extends StatelessWidget {
   final String name;
   final Color background;
-  const ThemePage({this.background, this.name});
+  const ThemePage({
+    @required this.background,
+    @required this.name,
+  });
 
   @override
   Widget build(BuildContext context) {

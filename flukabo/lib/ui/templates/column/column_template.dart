@@ -1,9 +1,10 @@
-import 'package:flukabo/data/models/column.dart';
 import 'package:flutter/material.dart';
+
+import '../../../data/models/column.dart';
 
 class ColumnTemplate extends StatelessWidget {
   final ExtendedColumnModel column;
-  const ColumnTemplate({this.column});
+  const ColumnTemplate(this.column);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class ColumnTemplate extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ColumnTitle(title: column.title),
+          ColumnTitle(column.title),
           const Divider(),
         ],
       ),
@@ -24,7 +25,7 @@ class ColumnTemplate extends StatelessWidget {
 
 class ColumnTitle extends StatelessWidget {
   final String title;
-  const ColumnTitle({this.title});
+  const ColumnTitle(this.title);
   @override
   Widget build(BuildContext context) {
     return Text(

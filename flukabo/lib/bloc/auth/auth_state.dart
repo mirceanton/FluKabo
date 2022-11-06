@@ -8,38 +8,34 @@ abstract class AuthState extends Equatable {
 }
 
 /// Initial state -> no login attempt made
-class AuthInitialState extends AuthState {
-  const AuthInitialState();
+class AuthInitial extends AuthState {
+  const AuthInitial();
 
   @override
   List<Object> get props => [];
 }
 
 /// Loading State -> currently processing a login attempt
-class AuthLoadingState extends AuthState {
-  const AuthLoadingState();
+class AuthLoading extends AuthState {
+  const AuthLoading();
 
   @override
   List<Object> get props => [];
 }
 
 /// Success State -> login attempt was successful
-class AuthSuccessState extends AuthState {
-  const AuthSuccessState();
+class AuthSuccess extends AuthState {
+  const AuthSuccess();
 
   @override
   List<Object> get props => [];
 }
 
 /// Error State -> login attempt failed
-class AuthErrorState extends AuthState {
-  final int errno; // error number
+class AuthError extends AuthState {
   final String errmsg; // error message
-  const AuthErrorState({
-    this.errno,
-    @required this.errmsg,
-  });
+  const AuthError(this.errmsg);
 
   @override
-  List<Object> get props => [errno, errmsg];
+  List<Object> get props => [errmsg];
 }

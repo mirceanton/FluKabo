@@ -1,5 +1,6 @@
-import 'package:flukabo/data/models/models.dart';
 import 'package:flutter/material.dart';
+
+import '../../../data/models/models.dart';
 
 class TagChip extends StatelessWidget {
   final TagModel tag;

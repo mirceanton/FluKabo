@@ -12,13 +12,13 @@ part 'user_event.dart';
 part 'user_state.dart';
 
 class UsersBloc extends Bloc<UserEvent, UserState> {
-  UsersBloc() : super(const InitialState());
+  UsersBloc() : super(const UserInitial());
 
   @override
   Stream<UserState> mapEventToState(UserEvent event) async* {
-    yield const LoadingState();
+    yield const UserLoading();
     try {
-      if (event is CreateEvent) {
+      if (event is CreateUser) {
         final UserModel user = event.newUser;
         user.id = await UserRepository().createUser(
           username: user.username,
@@ -27,26 +27,26 @@ class UsersBloc extends Bloc<UserEvent, UserState> {
           email: user.email,
           role: user.role,
         );
-        yield UserCreatedState(user: user);
-      } else if (event is ReadEvent) {
-        if (event is FetchByIdEvent) {
-          yield UserFetchedState(
+        yield UserCreated(user: user);
+      } else if (event is ReadUserEvent) {
+        if (event is FetchUserById) {
+          yield UserFetched(
             user: await UserRepository().getUserById(event.userId),
           );
-        } else if (event is FetchByUsernameEvent) {
-          yield UserFetchedState(
+        } else if (event is FetchUserByUsername) {
+          yield UserFetched(
             user: await UserRepository().getUserByUsername(event.username),
           );
-        } else if (event is FetchAllEvent) {
-          yield UsersFetchedState(users: await UserRepository().getAllUsers());
-        } else if (event is FetchGroupsEvent) {
-          yield GroupsFetchedState(
+        } else if (event is FetchAllUsers) {
+          yield UserListFetched(users: await UserRepository().getAllUsers());
+        } else if (event is FetchGroups) {
+          yield GroupListFetched(
             groups: await UserRepository().getGroupsForUser(event.userId),
           );
         }
-      } else if (event is UpdateEvent) {
-        if (event is UpdateUserEvent) {
-          yield UserUpdatedState(
+      } else if (event is UpdateUserEvent) {
+        if (event is UpdateUser) {
+          yield UserUpdated(
             wasSuccessful: await UserRepository().updateUser(
               id: event.updatedUser.id,
               name: event.updatedUser.name,
@@ -55,22 +55,22 @@ class UsersBloc extends Bloc<UserEvent, UserState> {
               role: event.updatedUser.role,
             ),
           );
-        } else if (event is EnableUserEvent) {
-          yield UserUpdatedState(
+        } else if (event is EnableUser) {
+          yield UserUpdated(
             wasSuccessful: await UserRepository().enableUser(event.userId),
           );
-        } else if (event is DisableUserEvent) {
-          yield UserUpdatedState(
+        } else if (event is DisableUser) {
+          yield UserUpdated(
             wasSuccessful: await UserRepository().disableUser(event.userId),
           );
         }
-      } else if (event is DeleteEvent) {
-        yield UserRemovedState(
+      } else if (event is DeleteUserEvent) {
+        yield UserRemoved(
           wasSuccessful: await UserRepository().removeUser(event.userId),
         );
       }
     } on Failure catch (f) {
-      yield ErrorState(errmsg: f.message);
+      yield UserError(errmsg: f.message);
     }
   }
 }

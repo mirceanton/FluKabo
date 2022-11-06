@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flukabo/data/singletons/user_preferences.dart';
 import 'package:flutter/material.dart';
 
+import '../../data/singletons/user_preferences.dart';
 import '../../res/app_themes.dart';
 
 part 'theme_event.dart';

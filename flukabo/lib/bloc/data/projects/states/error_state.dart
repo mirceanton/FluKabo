@@ -1,8 +1,8 @@
 import '../projects_bloc.dart';
 
-class ErrorState extends ProjectsState {
+class ProjectError extends ProjectsState {
   final String errmsg; // error message
-  const ErrorState(this.errmsg);
+  const ProjectError(this.errmsg);
 
   @override
   List<Object> get props => [errmsg];

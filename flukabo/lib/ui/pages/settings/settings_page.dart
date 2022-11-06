@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 /// are only strings, not Text Widgets
 ///
 class SettingsItem extends StatelessWidget {
-  final Function() onTap;
+  final void Function() onTap;
   final IconData leading;
   final String title, subtitle;
 
@@ -30,18 +30,21 @@ class SettingsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        color: Colors.transparent,
-        child: InkWell(
-            onTap: onTap,
-            child: ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                leading: Icon(
-                  leading,
-                  size: 32,
-                  color: Theme.of(context).accentColor,
-                ),
-                title: Text(title),
-                subtitle: Text(subtitle))));
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: ListTile(
+          contentPadding: const EdgeInsets.all(0),
+          leading: Icon(
+            leading,
+            size: 32,
+            color: Theme.of(context).accentColor,
+          ),
+          title: Text(title),
+          subtitle: Text(subtitle),
+        ),
+      ),
+    );
   }
 }
 

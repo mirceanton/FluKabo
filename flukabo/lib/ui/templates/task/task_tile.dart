@@ -1,7 +1,8 @@
-import 'package:flukabo/ui/templates/task/task_commons.dart';
 import 'package:flutter/material.dart';
+
+import '../../.../../../ui/templates/task/task_commons.dart';
 import '../../../data/models/task.dart';
-import '../template_commons.dart';
+import '../../commons.dart';
 
 ///
 /// A basic list tile used to showcase a Task

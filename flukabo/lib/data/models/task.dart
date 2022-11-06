@@ -1,12 +1,12 @@
-import 'package:flukabo/data/repository/tag_repository.dart';
-import 'package:flukabo/ui/templates/task/task_commons.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../data/models/category.dart';
 import '../../data/models/swimlane.dart';
+import '../../data/repository/tag_repository.dart';
 import '../../res/kanboard/kanboard_colors.dart';
 import '../../ui/pages/task/task_details_page.dart';
+import '../../ui/templates/task/task_commons.dart';
 import '../helpers/json_parser.dart';
 import '../repository/user_repository.dart';
 import 'abstract_model.dart';

@@ -1,7 +1,7 @@
 import '../users_bloc.dart';
 
-class InitialState extends UserState {
-  const InitialState();
+class UserInitial extends UserState {
+  const UserInitial();
 
   @override
   List<Object> get props => [];

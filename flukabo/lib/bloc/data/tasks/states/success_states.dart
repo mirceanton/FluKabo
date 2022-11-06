@@ -12,10 +12,10 @@ abstract class SuccessState extends TasksState {
 /// ---- SUCCES STATES FOR CREATE EVENTS ----
 ///
 /// The SuccessState associated to [CreateEvent]
-class TaskCreatedState extends SuccessState {
+class TaskCreated extends SuccessState {
   final TaskModel task;
 
-  const TaskCreatedState(this.task);
+  const TaskCreated(this.task);
 
   @override
   List<Object> get props => [task];
@@ -25,10 +25,10 @@ class TaskCreatedState extends SuccessState {
 /// ---- SUCCES STATES FOR FETCH EVENTS ----
 ///
 /// The SuccessState associated to [FetchByIdEvent], [FetchByReferenceEvent]
-class TaskFetchedState extends SuccessState {
+class TaskFetched extends SuccessState {
   final TaskModel task;
 
-  const TaskFetchedState(this.task);
+  const TaskFetched(this.task);
 
   @override
   List<Object> get props => [task];
@@ -41,10 +41,10 @@ class TaskFetchedState extends SuccessState {
 ///   - [FetchOverdueForProjectEvent]
 ///   - [SearchEvent]
 ///
-class TaskListFetchedState extends SuccessState {
+class TaskListFetched extends SuccessState {
   final List<TaskModel> tasks;
 
-  const TaskListFetchedState(this.tasks);
+  const TaskListFetched(this.tasks);
 
   @override
   List<Object> get props => [tasks];
@@ -61,11 +61,11 @@ class TaskListFetchedState extends SuccessState {
 ///   - [MoveTaskToProjectEvent]
 ///   - [CloneTaskToProjectEvent]
 ///
-class TaskUpdatedState extends SuccessState {
+class TaskUpdated extends SuccessState {
   final bool wasSuccessful;
 
   // ignore: avoid_positional_boolean_parameters
-  const TaskUpdatedState(this.wasSuccessful);
+  const TaskUpdated(this.wasSuccessful);
 
   @override
   List<Object> get props => [wasSuccessful];
@@ -76,11 +76,11 @@ class TaskUpdatedState extends SuccessState {
 ///
 /// The SuccessState associated to [DeleteEvent]
 ///
-class TaskDeletedState extends SuccessState {
+class TaskDeleted extends SuccessState {
   final bool wasSuccessful;
 
   // ignore: avoid_positional_boolean_parameters
-  const TaskDeletedState(this.wasSuccessful);
+  const TaskDeleted(this.wasSuccessful);
 
   @override
   List<Object> get props => [wasSuccessful];
